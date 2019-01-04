@@ -25,10 +25,13 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
 
     let ad = req.files.adimage;
     console.log('fajlot e ',ad);
-    console.log('filename ad.originalFilename', ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name, ad.headers.filename);
-    console.log('MIMETYPE',ad.mimetype,ad.headers.type);
+    console.log('filename ad.originalFilename',ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name);
+    console.log('HEADERS:', req.headers, ' S ', ad.headers);
+    console.log('MIMETYPE',ad.mimetype,ad.type);
+    // ad.originalFilename go cita sigurno tiff.TIFF
+    //i ad .name go cita
     let adurl = req.body.adurl;
-    let ext = ad.originalFilename.slice((ad.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+    let ext = ad.originalFilename.slice((ad.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     ad.mimetype = ad.mimetype.toLowerCase();
     if(!getFileExtension(ad.name)) {
         return res.status(400).json('Bad Request');

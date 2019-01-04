@@ -25,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="28" column="56" selection-start-line="28" selection-start-column="56" selection-end-line="28" selection-end-column="56" />
+            <state relative-caret-position="236">
+              <caret line="29" column="42" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -118,7 +118,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546619807942" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546620146926" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.12.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../ReactProjects/3x3Macedonia" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -169,12 +169,12 @@
       <workItem from="1546447716802" duration="1371000" />
       <workItem from="1546537271696" duration="3254000" />
       <workItem from="1546557891192" duration="748000" />
-      <workItem from="1546595483830" duration="14539000" />
+      <workItem from="1546595483830" duration="14877000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95123000" />
+    <option name="totallyTimeSpent" value="95461000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -295,8 +295,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="28" column="56" selection-start-line="28" selection-start-column="56" selection-end-line="28" selection-end-column="56" />
+        <state relative-caret-position="236">
+          <caret line="29" column="42" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
         </state>
       </provider>
     </entry>
