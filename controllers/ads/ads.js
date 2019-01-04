@@ -23,10 +23,20 @@ const getAds=(req,res,db)=>{
 const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     // console.log('dadada');
     const s3 = new aws.S3();
-    console.log('THE BUCKET IS', process.env.S3_BUCKET);
+    const S3_BUCKET = process.env.S3_BUCKET;
     console.log('s3', s3, 'aws', aws);
+
     let ad = req.files.adimage;
-    // console.log('fajlot e ',ad);
+    const fileName = ad.originalFilename;
+    const fileType = ad.type;
+    const s3Params = {
+        Bucket: S3_BUCKET,
+        Key: fileName,
+        Expires: 60,
+        ContentType: fileType,
+        ACL: 'public-read'
+    };
+        // console.log('fajlot e ',ad);
     // console.log('filename ad.originalFilename',ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name);
     // console.log('HEADERS:', req.headers, ' S ', ad.headers);
     // console.log('MIMETYPE',ad.mimetype,ad.type)
@@ -34,7 +44,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     // ad.originalFilename go cita sigurno tiff.TIFF
     //i ad .name go cita
     let adurl = req.body.adurl;
-    console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name, typeof ad.originalFilename, typeof ad.type);
+    // console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name, typeof ad.originalFilename, typeof ad.type);
 
     let ext = ad.originalFilename.slice((ad.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     ad.mimetype = ad.type.toLowerCase();
@@ -75,7 +85,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
                     let url = data[0].url;
                     const reqPath = path.join(__dirname, '..\\..\\');
                     // console.log('DIrname is:',__dirname);
-                    console.log('file from ', ad, 'path : ', ad.path);
+                    // console.log('file from ', ad, 'path : ', ad.path);
                     // console.log()
                     const stream = fs.createReadStream(ad.path);
                     return S3FSImplementation.writeFile(img, stream)
