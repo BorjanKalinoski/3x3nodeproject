@@ -50,10 +50,9 @@ app.use(bodyParser.json());
 app.use(cors());
 // app.use(upload());
 app.use(multiparty(multipartyMiddleware));
-const S3_BUCKET = process.env.S3_BUCKET;
+// const S3_BUCKET = process.env.S3_BUCKET;
 console.log('port', Number(process.env.PORT));
-
-aws.config.region = 'eu-west-1';
+aws.config.region = 'eu-west-2';
 app.get('/account', (req, res) => res.render('account.html'));
 app.get('/',(req,res)=>{
    res.json('Hello world');
@@ -72,6 +71,7 @@ app.get('/aboutus',(req,res)=>{
             res.status(200).json(aboutusimages);
         }).catch(err=>console.log(err));
 });
+console.log('THE BUCKET IS', process.env.S3_BUCKET);
 
 app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db)});
 app.get('/ads',(req,res)=>{ads.getAds(req,res,db);});

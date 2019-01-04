@@ -20,9 +20,11 @@ const getAds=(req,res,db)=>{
             res.status(200).json(ads);
         }).catch(err=>console.log(err));
 };
-const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
+const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     // console.log('dadada');
-
+    const s3 = new aws.S3();
+    console.log('THE BUCKET IS', process.env.S3_BUCKET);
+    console.log('s3', s3, 'aws', aws);
     let ad = req.files.adimage;
     // console.log('fajlot e ',ad);
     // console.log('filename ad.originalFilename',ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name);
@@ -32,21 +34,21 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
     // ad.originalFilename go cita sigurno tiff.TIFF
     //i ad .name go cita
     let adurl = req.body.adurl;
-    console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name,typeof ad.originalFilename,typeof ad.type);
+    console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name, typeof ad.originalFilename, typeof ad.type);
 
     let ext = ad.originalFilename.slice((ad.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     ad.mimetype = ad.type.toLowerCase();
-    if(!getFileExtension(ad.originalFilename)) {
+    if (!getFileExtension(ad.originalFilename)) {
         return res.status(400).json('Bad Request');
     }
     if (ad.type !== 'image/gif' && ad.type !== 'image/tiff' && ad.type !== 'image/jpg'
         && ad.type !== 'image/jpeg' && ad.type !== 'image/png') {
         return res.status(400).json('Bad Request');
     }
-    if(!adurl) {
+    if (!adurl) {
         adurl = null;
-    }else{
-        urlExists(adurl,(err,exists)=>{
+    } else {
+        urlExists(adurl, (err, exists) => {
             if (!exists) {
                 adurl = null;
             }
@@ -75,14 +77,14 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
                     // console.log('DIrname is:',__dirname);
                     console.log('file from ', ad, 'path : ', ad.path);
                     // console.log()
-                    const stream= fs.createReadStream(ad.path);
-                    return S3FSImplementation.writeFile(img,stream)
-                        .then(()=>{
+                    const stream = fs.createReadStream(ad.path);
+                    return S3FSImplementation.writeFile(img, stream)
+                        .then(() => {
                             console.log('da?');
-                            fs.unlink(ad.path,(err => {
+                            fs.unlink(ad.path, (err => {
                                 if (err) {
                                     console.log(err);
-                                    res.status(400).json('er',err);
+                                    res.status(400).json('er', err);
                                 }
                                 return res.json({
                                     file: `${img}`,
@@ -90,8 +92,7 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
                                 });
 
                             }))
-                        }).catch(err=>
-                        {
+                        }).catch(err => {
                             console.log('eeeeeeeee', err);
                             return res.status(400).json(err);
                         });
