@@ -16,12 +16,12 @@ const db =knex({
         // host : '127.0.0.1',
         // host: ' postgresql-concave-31306',
         host: process.env.DATABASE_URL,
-        user: 'borjan',
+        ssl:true,
+        // user: 'borjan',
         // user : 'postgres',
-        password: '',
-        database: '3x3macedonia'
+        // password: '',
+        // database: '3x3macedonia'
     }
-
 });
 const app=express();
 
