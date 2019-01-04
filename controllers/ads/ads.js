@@ -64,7 +64,8 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
                     let url = data[0].url;
                     const reqPath = path.join(__dirname, '..\\..\\');
                     // console.log('DIrname is:',__dirname);
-                    console.log('file from ', ad,'path : ',ad.path);
+                    console.log('file from ', ad, 'path : ', ad.path);
+                    // console.log()
                     const stream= fs.createReadStream(ad.path);
                     return S3FSImplementation.writeFile(img,stream)
                         .then(()=>{

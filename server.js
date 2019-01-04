@@ -14,7 +14,7 @@ const S3FSImplementation = new S3FS('3x3macedonia',{
 aws
 //(s3bucket,options
 const multiparty = require('connect-multiparty');
-const upload = require('express-fileupload');
+// const upload = require('express-fileupload');
 const urlExists = require('url-exists');
 
 const posts = require('./controllers/posts/posts');
@@ -48,7 +48,7 @@ app.use(express.static('./public'));
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 app.use(cors());
-app.use(upload());
+// app.use(upload());
 app.use(multiparty(multipartyMiddleware));
 const S3_BUCKET = process.env.S3_BUCKET;
 console.log('port', Number(process.env.PORT));
