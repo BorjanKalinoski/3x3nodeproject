@@ -24,7 +24,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     // console.log('dadada');
     const s3 = new aws.S3();
     const S3_BUCKET = process.env.S3_BUCKET;
-    console.log('s3', s3, 'aws', aws);
+    // console.log('s3', s3, 'aws', aws);
 
     let ad = req.files.adimage;
     const fileName = ad.originalFilename;
