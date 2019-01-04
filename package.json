@@ -1,0 +1,25 @@
+{
+  "name": "3x3macedoniaapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.1-alpha.1",
+    "knex": "^0.16.3",
+    "moment": "^2.23.0",
+    "nodemon": "^1.18.9",
+    "path": "^0.12.7",
+    "pg": "^7.7.1",
+    "url-exists": "^1.0.3"
+  }
+}
