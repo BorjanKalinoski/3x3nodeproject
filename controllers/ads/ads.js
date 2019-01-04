@@ -25,19 +25,21 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
 
     let ad = req.files.adimage;
     console.log('fajlot e ',ad);
-    console.log('filename ad.originalFilename',ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name);
-    console.log('HEADERS:', req.headers, ' S ', ad.headers);
-    console.log('MIMETYPE',ad.mimetype,ad.type);
+    // console.log('filename ad.originalFilename',ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name);
+    // console.log('HEADERS:', req.headers, ' S ', ad.headers);
+    // console.log('MIMETYPE',ad.mimetype,ad.type)
+    //ad.headers i ad.type gi cita
     // ad.originalFilename go cita sigurno tiff.TIFF
     //i ad .name go cita
     let adurl = req.body.adurl;
+    console.log('TYPEOF ad.name i ad.originalfilename I type',ad.name,ad.originalFilename,ad.type)
     let ext = ad.originalFilename.slice((ad.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-    ad.mimetype = ad.mimetype.toLowerCase();
-    if(!getFileExtension(ad.name)) {
+    ad.mimetype = ad.type.toLowerCase();
+    if(!getFileExtension(ad.originalFilename)) {
         return res.status(400).json('Bad Request');
     }
-    if (ad.mimetype !== 'image/gif' && ad.mimetype !== 'image/tiff' && ad.mimetype !== 'image/jpg'
-        && ad.mimetype !== 'image/jpeg' && ad.mimetype !== 'image/png') {
+    if (ad.type !== 'image/gif' && ad.type !== 'image/tiff' && ad.type !== 'image/jpg'
+        && ad.type !== 'image/jpeg' && ad.type !== 'image/png') {
         return res.status(400).json('Bad Request');
     }
     if(!adurl) {
@@ -53,7 +55,7 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
 
     db('ads')
         .insert({
-            image: ad.name,
+            image: ad.originalFilename,
             url: adurl
         })
         .returning('id')
