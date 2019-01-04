@@ -16,7 +16,7 @@ const db =knex({
         // host : '127.0.0.1',
         // host: ' postgresql-concave-31306',
         connectionString: process.env.DATABASE_URL,
-        
+
 
 
         ssl:true,
