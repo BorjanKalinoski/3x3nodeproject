@@ -12,6 +12,7 @@ const S3FSImplementation = new S3FS('3x3macedonia', {
     secretAccessKey: '5/QgvIHSL/kX26EhBwkD1o9JODWBoJPB/41GkE9D',
     region:'eu-west-2',
 });
+S3FSImplementation.create();
 //(s3bucket,options
 const multiparty = require('connect-multiparty');
 // const upload = require('express-fileupload');
@@ -75,7 +76,7 @@ console.log('THE BUCKET IS', process.env.S3_BUCKET);
 
 app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db)});
 app.get('/ads',(req,res)=>{ads.getAds(req,res,db);});
-app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplementation,S3FS);});
+app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplementation,aws);});
 app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment)});
 app.get('/getposts',(req,res)=>{posts.getPosts(req,res,db)});
 
