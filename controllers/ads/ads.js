@@ -57,6 +57,7 @@ const uploadAd= (req,res,db,urlExists)=>{
                     let img = data[0].image;
                     let url = data[0].url;
                     const reqPath = path.join(__dirname, '..\\..\\');
+                    console.log('DIrname is:',__dirname);
                     ad.mv(`${reqPath}/public/${img}`, (err) =>{
                         if (err) {
                             console.log(err);
