@@ -21,6 +21,8 @@ const getAds=(req,res,db)=>{
         }).catch(err=>console.log(err));
 };
 const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
+    console.log('dadada');
+
     let ad = req.files.adimage;
     let adurl = req.body.adurl;
     let ext = ad.name.slice((ad.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
@@ -41,6 +43,8 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
             }
         });
     }
+    console.log('dadada');
+
     db('ads')
         .insert({
             image: ad.name,
@@ -54,6 +58,8 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
                 .where('id', '=', id[0])
                 .returning(['image', 'url'])
                 .then(data => {
+                    console.log('dadada');
+
                     let img = data[0].image;
                     let url = data[0].url;
                     const reqPath = path.join(__dirname, '..\\..\\');
@@ -62,16 +68,17 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
                     const stream= fs.createReadStream(ad.path);
                     return S3FSImplementation.writeFile(img,stream)
                         .then(()=>{
+                            console.log('da?');
                             fs.unlink(ad.path,(err => {
                                 if (err)
                                     console.log(err);
-                                res.json({
+                                return res.json({
                                     file: `${img}`,
                                     url: url
                                 });
 
                             }))
-                        });
+                        }).catch(err=>console.log(err));
                     // ad.mv(`${reqPath}/public/${img}`, (err) =>{
                     //     if (err) {
                     //         console.log(err);
