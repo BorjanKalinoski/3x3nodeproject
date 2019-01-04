@@ -104,7 +104,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
                             }))
                         }).catch(err => {
                             console.log('eeeeeeeee');
-                            return res.status(400).json(err);
+                            return res.status(400).json('e');
                         });
                     // ad.mv(`${reqPath}/public/${img}`, (err) =>{
                     //     if (err) {
