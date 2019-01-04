@@ -59,6 +59,7 @@ const uploadAd= (req,res,db,urlExists)=>{
                     const reqPath = path.join(__dirname, '..\\..\\');
                     ad.mv(`${reqPath}/public/${img}`, (err) =>{
                         if (err) {
+                            console.log(err);
                             return res.status(500).send(err);
                         }
                         res.json({
