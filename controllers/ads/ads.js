@@ -84,7 +84,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
                             fs.unlink(ad.path, (err => {
                                 if (err) {
                                     console.log(err);
-                                    res.status(400).json('er', err);
+                                    res.status(400).json('er');
                                 }
                                 return res.json({
                                     file: `${img}`,
@@ -93,7 +93,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
 
                             }))
                         }).catch(err => {
-                            console.log('eeeeeeeee', err);
+                            console.log('eeeeeeeee');
                             return res.status(400).json(err);
                         });
                     // ad.mv(`${reqPath}/public/${img}`, (err) =>{
