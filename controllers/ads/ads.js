@@ -20,7 +20,7 @@ const getAds=(req,res,db)=>{
             res.status(200).json(ads);
         }).catch(err=>console.log(err));
 };
-const uploadAd= (req,res,db,urlExists)=>{
+const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
     let ad = req.files.adimage;
     let adurl = req.body.adurl;
     let ext = ad.name.slice((ad.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
@@ -57,17 +57,31 @@ const uploadAd= (req,res,db,urlExists)=>{
                     let img = data[0].image;
                     let url = data[0].url;
                     const reqPath = path.join(__dirname, '..\\..\\');
-                    console.log('DIrname is:',__dirname);
-                    ad.mv(`${reqPath}/public/${img}`, (err) =>{
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send(err);
-                        }
-                        res.json({
-                            file: `${img}`,
-                            url: url
+                    // console.log('DIrname is:',__dirname);
+                    console.log('file from ', ad,'path : ',ad.path);
+                    const stream= fs.createReadStream(ad.path);
+                    return S3FSImplementation.writeFile(img,stream)
+                        .then(()=>{
+                            fs.unlink(ad.path,(err => {
+                                if (err)
+                                    console.log(err);
+                                res.json({
+                                    file: `${img}`,
+                                    url: url
+                                });
+
+                            }))
                         });
-                    });
+                    // ad.mv(`${reqPath}/public/${img}`, (err) =>{
+                    //     if (err) {
+                    //         console.log(err);
+                    //         return res.status(500).send(err);
+                    //     }
+                    //     res.json({
+                    //         file: `${img}`,
+                    //         url: url
+                    //     });
+                    // });
                 }).catch(err => console.log(err));
         }).catch(err => console.log(err));
 };

@@ -4,6 +4,16 @@ const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
 const moment = require('moment');
+const aws = require('aws-sdk');
+const S3FS= require('s3fs');
+const fs = require('fs');
+const S3FSImplementation = new S3FS('3x3macedonia',{
+    accessKeyId: 'AWSAccessKeyId=AKIAJ5ZXQFFBJ2UVGRLQ',
+    secretAccessKey: '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',
+});
+aws
+//(s3bucket,options
+const multiparty = require('connect-multiparty');
 const upload = require('express-fileupload');
 const urlExists = require('url-exists');
 
@@ -27,10 +37,24 @@ const db =knex({
     }
 });
 const app=express();
+const multipartyMiddleware=multiparty();
+//anythight that should go to S3 it is getting processed
+// to multipartmiddleware, intercepts the file and saves it %temp% requiest.files.file obect,
+// router.use(multipartMiddleware);
+app.set('views','./views');
+app.use(express.static('./public'));
 
+// app.use(express.static('./public'));
+app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 app.use(cors());
 app.use(upload());
+app.use(multiparty(multipartyMiddleware));
+const S3_BUCKET = process.env.S3_BUCKET;
+console.log('port', Number(process.env.PORT));
+
+aws.config.region = 'eu-west-1';
+app.get('/account', (req, res) => res.render('account.html'));
 app.get('/',(req,res)=>{
    res.json('Hello world');
 });
@@ -51,7 +75,7 @@ app.get('/aboutus',(req,res)=>{
 
 app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db)});
 app.get('/ads',(req,res)=>{ads.getAds(req,res,db);});
-app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists);});
+app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplementation,S3FS);});
 app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment)});
 app.get('/getposts',(req,res)=>{posts.getPosts(req,res,db)});
 
@@ -105,4 +129,3 @@ app.post('/register',(req,res)=>{
 app.listen(process.env.PORT || 3001,()=>{
     console.log(`app is running on port ${process.env.PORT}`);
 });
-
