@@ -13,10 +13,12 @@ const ads = require('./controllers/ads/ads');
 const db =knex({
     client: 'pg',//deka koristi PostgreSQL
     connection: {
-        host : '127.0.0.1',
-        user : 'postgres',
+        // host : '127.0.0.1',
+        host: ' postgresql-concave-31306',
+        user:'borjan',
+        // user : 'postgres',
         password : '',
-        database : 'postgres'
+        database : '3x3macedonia'
     }
 });
 const app=express();
