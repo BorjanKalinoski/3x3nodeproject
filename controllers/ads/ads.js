@@ -21,9 +21,10 @@ const getAds=(req,res,db)=>{
         }).catch(err=>console.log(err));
 };
 const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
-    console.log('dadada');
+    // console.log('dadada');
 
     let ad = req.files.adimage;
+    console.log('fajlot e ',ad);
     let adurl = req.body.adurl;
     let ext = ad.name.slice((ad.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     ad.mimetype = ad.mimetype.toLowerCase();
