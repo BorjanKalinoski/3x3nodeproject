@@ -24,7 +24,7 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
     // console.log('dadada');
 
     let ad = req.files.adimage;
-    console.log('fajlot e ',ad);
+    // console.log('fajlot e ',ad);
     // console.log('filename ad.originalFilename',ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name);
     // console.log('HEADERS:', req.headers, ' S ', ad.headers);
     // console.log('MIMETYPE',ad.mimetype,ad.type)
@@ -32,7 +32,8 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
     // ad.originalFilename go cita sigurno tiff.TIFF
     //i ad .name go cita
     let adurl = req.body.adurl;
-    console.log('TYPEOF ad.name i ad.originalfilename I type',ad.name,ad.originalFilename,ad.type)
+    console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name,typeof ad.originalFilename,typeof ad.type);
+
     let ext = ad.originalFilename.slice((ad.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     ad.mimetype = ad.type.toLowerCase();
     if(!getFileExtension(ad.originalFilename)) {
@@ -51,7 +52,7 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
             }
         });
     }
-    console.log('dadada');
+    console.log('dadadaBAZA');
 
     db('ads')
         .insert({
@@ -66,7 +67,7 @@ const uploadAd= (req,res,db,urlExists,fs,S3FSImplementation,S3FS)=>{
                 .where('id', '=', id[0])
                 .returning(['image', 'url'])
                 .then(data => {
-                    console.log('dadada');
+                    console.log('VlagaAdadada');
 
                     let img = data[0].image;
                     let url = data[0].url;

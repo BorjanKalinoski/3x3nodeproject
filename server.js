@@ -7,11 +7,12 @@ const moment = require('moment');
 const aws = require('aws-sdk');
 const S3FS= require('s3fs');
 const fs = require('fs');
-const S3FSImplementation = new S3FS('3x3macedonia',{
+const S3FSImplementation = new S3FS('3x3macedonia', {
     accessKeyId: 'AWSAccessKeyId=AKIAJ5ZXQFFBJ2UVGRLQ',
     secretAccessKey: '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',
+    region:'eu-west-2',
+
 });
-aws
 //(s3bucket,options
 const multiparty = require('connect-multiparty');
 // const upload = require('express-fileupload');
