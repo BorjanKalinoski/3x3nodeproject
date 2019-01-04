@@ -24,6 +24,9 @@ const app=express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(upload());
+app.get('/',(req,res)=>{
+   res.json('Hello world');
+});
 app.get('/sponsors',(req,res)=>{
    db('sponsors')
        .select('*')
@@ -92,7 +95,7 @@ app.post('/register',(req,res)=>{
     }).catch(err=>res.status(400).json('Bad Request'));
 });
 
-app.listen(3001,()=>{
-    console.log('app is running on port 3001');
+app.listen(process.env.PORT || 3001,()=>{
+    console.log(`app is running on port ${process.env.PORT}`);
 });
 
