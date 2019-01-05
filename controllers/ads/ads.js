@@ -8,8 +8,11 @@ const getAd=(req,res,db,fs,S3FSImplementation)=>{
         .then(ad=>{
             console.log(ad[0]);
             const stream=fs.createReadStream(ad[0].image);
+            // st
+            console.log('Stream',stream);
+
             // return S3FSImplementation.getFile(ad[0].image,stream)
-            return S3FSImplementation.readFile(ad[0].image,stream)
+            return S3FSImplementation.readFile(stream.path,stream)
                 .then(()=>{
                     // if(err)
                     //     console.log(err);
@@ -38,7 +41,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     // console.log('dadada');
     const s3 = new aws.S3();
     const S3_BUCKET = process.env.S3_BUCKET;
-    console.log('s3', s3, 'aws', aws);
+    // console.log('s3', s3, 'aws', aws);
 
     let ad = req.files.adimage;
     const fileName = ad.originalFilename;
@@ -101,6 +104,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
                     // console.log('DIrname is:',__dirname);
                     // console.log('file from ', ad, 'path : ', ad.path);
                     // console.log()
+                    console.log('adpath',ad.path);
                     const stream = fs.createReadStream(ad.path);
                     return S3FSImplementation.writeFile(img, stream)
                         .then(() => {
