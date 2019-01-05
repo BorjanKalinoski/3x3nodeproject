@@ -10,13 +10,17 @@ const getAd=(req,res,db,fs,S3FSImplementation)=>{
             const stream=fs.createReadStream(ad[0].image);
             // return S3FSImplementation.getFile(ad[0].image,stream)
             return S3FSImplementation.readFile(ad[0].image,stream)
-                .then((err,data)=>{
-                    if(err)
-                        console.log(err);
-                    console.log(data);
-                    return res.json(data);
+                .then(()=>{
+                    // if(err)
+                    //     console.log(err);
+                    // console.log(data);
+                    return res.json('aaa');
                 })
-                .catch(err=>console.log(err));
+                .catch(err=>{
+
+                    console.log(err);
+                    res.json('b');
+                });
             // return res.json(ad[0]);
         }).catch(err=>{
         console.log(err);
