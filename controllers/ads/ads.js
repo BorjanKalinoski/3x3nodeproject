@@ -6,7 +6,7 @@ const getAd=(req,res,db)=>{
         .select('*')
         .where({id:id})
         .then(ad=>{
-            console.log(ad[0]);
+            console.log('aaa',ad[0]);
             return res.json(ad[0]);
         }).catch(err=>{
         console.log(err);
