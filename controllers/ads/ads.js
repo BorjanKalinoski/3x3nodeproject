@@ -1,13 +1,21 @@
 const path = require('path');
-const getAd=(req,res,db)=>{
+const getAd=(req,res,db,fs,S3FSImplementation)=>{
     const {id} = req.params;
     console.log(id);
     db('ads')
         .select('*')
         .where({id:id})
         .then(ad=>{
-            console.log('aaa',ad[0]);
-            return res.json(ad[0]);
+            console.log(ad[0]);
+            const stream=fs.createReadStream(ad[0].image);
+            return S3FSImplementation.getFile(ad[0].image,stream)
+                .then((err,data)=>{
+                    if(err)
+                        console.log(err);
+                    console.log(data);
+                    return res.json(data);
+                });
+            // return res.json(ad[0]);
         }).catch(err=>{
         console.log(err);
         return res.status(404).json('Image not found');
