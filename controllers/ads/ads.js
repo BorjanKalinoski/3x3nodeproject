@@ -8,13 +8,15 @@ const getAd=(req,res,db,fs,S3FSImplementation)=>{
         .then(ad=>{
             console.log(ad[0]);
             const stream=fs.createReadStream(ad[0].image);
+            // return S3FSImplementation.getFile(ad[0].image,stream)
             return S3FSImplementation.getFile(ad[0].image,stream)
                 .then((err,data)=>{
                     if(err)
                         console.log(err);
                     console.log(data);
                     return res.json(data);
-                });
+                })
+                .catch(err=>console.log(err));
             // return res.json(ad[0]);
         }).catch(err=>{
         console.log(err);
