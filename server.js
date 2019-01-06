@@ -33,6 +33,7 @@ const fs = require('fs');
     }catch (e) {
         console.log('error is ',e);
     }
+    debugger;
 })();
 const multiparty = require('connect-multiparty');
 // const upload = require('express-fileupload');
