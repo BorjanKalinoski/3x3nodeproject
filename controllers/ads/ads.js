@@ -18,8 +18,8 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             // var file = S3FSImplementation.readFileSync(ad[0].image, 'utf-8');
             var slika= S3FSImplementation.readFile(ad[0].image,'utf-8',(err,data)=>{
                 if (err)
-                    console.log(err);
-                console.log('daaa',data);
+                    console.log('erpr');
+                console.log('daaa');
             });
             // console.log('FILE IS ',slika);
             console.log('mina');
