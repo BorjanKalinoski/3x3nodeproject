@@ -6,28 +6,14 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
         .select('*')
         .where({id: id})
         .then(ad => {
-            let image = ad[0].image;
-            console.log(image)
-            let url = ad[0].url;
-            let ext = image.slice((image.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-            return S3FSImplementation.readFile(image ,(err, data) => {
+            return S3FSImplementation.readFile(ad[0].image ,(err, data) => {
                 if (err) {
-                    console.log('erpr',err);
-                    return res.status(400).json('Image Not Found in AWS');
+                    console.log('erpr');
+                    return res.json('Image Not Found in AWS');
                 }
                 let base64data = new Buffer(data).toString('base64');
-                // console.log(base64data);
-                let response={
-                    base64data:base64data,
-                    url:url,
-                    ext:ext
-                };
-                console.log('response is',response);
-                return res.json(response);
-            }).catch(err=>{
-                console.log('eror');
-                return res.status(400).json('erreer',err);
-            });
+                return res.json(data);
+            }).catch(err=>console.log('eror',err));
             // return S3FSImplementation.getFile(ad[0].image,stream)
             //     return S3FSImplementation.readFile(stream.path, (err, data) => {
             //         if (err)
@@ -35,7 +21,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         console.log(data);
             //         res.json('aa', data);
             //     })
-        }).catch(err => res.json(err));
+        }).catch(err => res.json('Image Not found in database'));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
