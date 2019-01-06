@@ -10,15 +10,18 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             // const stream = fs.createReadStream(ad[0].image);
             // console.log('str',stream);
             // st
-            if (ad[0].image !== 'ad23.tif' && ad[0].image !== 'ad26.gif') {
-                return false;
-            }
+            // if (ad[0].image !== 'ad23.tif' && ad[0].image !== 'ad26.gif') {
+            //     return false;
+            // }
             console.log('pomimna za ', ad[0].image);
             // console.log('Stream',stream);
             // var file = S3FSImplementation.readFileSync(ad[0].image, 'utf-8');
-            var slika= S3FSImplementation.readFile(ad[0].image,'utf-8',(err,data)=>{
+            var slika= S3FSImplementation.readFile(ad[0].image,(err,data)=>{
                 if (err)
+                {
                     console.log('erpr');
+                    return res.json('nema');
+                }
                 console.log('daaa');
             });
             // console.log('FILE IS ',slika);
