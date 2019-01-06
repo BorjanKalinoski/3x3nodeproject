@@ -28,7 +28,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         console.log(data);
             //         res.json('aa', data);
             //     })
-        }).catch(err => res.json('Image Not found in database'));
+        }).catch(err => res.json(err));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
