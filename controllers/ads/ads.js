@@ -15,11 +15,14 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                     return res.json('Image Not Found in AWS');
                 }
                 let base64data = new Buffer(data).toString('base64');
-                return res.json({
-                    base64data: base64data,
+                // console.log(base64data);
+                let response={
+                    base64data:base64data,
                     url:url,
                     ext:ext
-                });
+                };
+                console.log('response is',response);
+                return res.json(response);
             }).catch(err=>console.log('eror'));
             // return S3FSImplementation.getFile(ad[0].image,stream)
             //     return S3FSImplementation.readFile(stream.path, (err, data) => {

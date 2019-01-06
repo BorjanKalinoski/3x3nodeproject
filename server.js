@@ -10,7 +10,7 @@ const fs = require('fs');
 const S3FSImplementation = new S3FS('3x3macedonia', {
     // accessKeyId: 'AKIAIHWLUM63AAXH47QA',
     // AKIAIHWLUM63AAXH47QA
-    accessKeyId: 'AKIAIHWLUM63AAXH47QA',
+    accessKeyId: 'AKIAIHWLUM    63AAXH47QA',
     secretAccessKey: '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',
     //n+pH/aOAoft3ILuFCeVaGZQeLNn4i0JZg8E+9xLc
     // secretAccessKey: '5/QgvIHSL/kX26EhBwkD1o9JODWBoJPB/41GkE9D',
