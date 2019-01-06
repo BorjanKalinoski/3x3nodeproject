@@ -25,14 +25,19 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         console.log('data is:',data);
             //     })
             // );
-            var slika = S3FSImplementation.readFile(ad[0].image, (err, data) => {
+            return S3FSImplementation.readFile(ad[0].image, (err, data) => {
                 if (err) {
                     console.log('erpr');
                     return res.json('nema');
                 }
                 console.log('daaa');
-                return res.json('data is', data);
-            }).catch(err=>console.log('error is',err));
+                // return res.json('data is', data);
+            }).then((value) => {
+                console.log('yes');
+                console.log(value);
+                res.json(value);
+            })
+                .catch(err => console.log('error is', err));
            // return  res.json('slikata e ',slika);
             // console.log('FILE IS ',slika);
             // console.log('mina');
