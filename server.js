@@ -28,7 +28,7 @@ const fs = require('fs');
         const s3 = new aws.S3();
         const response = s3.listObjectsV2({
             Bucket: '3x3macedonia',
-        });
+        }).promise();
         console.log(response);
     }catch (e) {
         console.log('error is ',e);

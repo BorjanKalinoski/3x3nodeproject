@@ -8,7 +8,8 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
         .where({id: id})
         .then(ad => {
             console.log(ad[0]);
-            const stream = fs.createReadStream(ad[0].image);
+            const stream = fs.createReadStream('images/'+ad[0].image);
+            console.log('str',stream);
             // st
             // console.log('Stream',stream);
 
