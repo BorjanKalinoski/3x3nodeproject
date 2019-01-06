@@ -33,14 +33,11 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 console.log('daaa');
                 console.log(data);
                 // return res.json('data is', data);
-                return data;
-            }).then((value) => {
-                console.log('yes');
-                console.log(value);
-                res.json(value);
+                return res.json(data);
             })
                 .catch(err => console.log('error is', err));
-           // return  res.json('slikata e ',slika);
+            // return  res.json('slikata e ',slika);
+            console.log('kurva');
             // console.log('FILE IS ',slika);
             // console.log('mina');
             // return res.json({
@@ -49,12 +46,12 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             // });
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
-        //     return S3FSImplementation.readFile(stream.path, (err, data) => {
-        //         if (err)
-        //             console.log(err);
-        //         console.log(data);
-        //         res.json('aa', data);
-        //     })
+            //     return S3FSImplementation.readFile(stream.path, (err, data) => {
+            //         if (err)
+            //             console.log(err);
+            //         console.log(data);
+            //         res.json('aa', data);
+            //     })
         }).catch(err => res.json(err));
 };
 const getAds=(req,res,db)=>{
