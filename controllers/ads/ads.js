@@ -9,7 +9,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             console.log(ad[0]);
             console.log('pomimna za ', ad[0].image);
 
-            return S3FSImplementation.readFile(ad[0].image, (err, data) => {
+            return S3FSImplementation.readFile(ad[0].image ,(err, data) => {
                 if (err) {
                     console.log('erpr');
                     return res.json('nema');
