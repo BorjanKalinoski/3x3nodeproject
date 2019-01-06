@@ -13,7 +13,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             return S3FSImplementation.readFile(image ,(err, data) => {
                 if (err) {
                     console.log('erpr',err);
-                    return res.json('Image Not Found in AWS');
+                    return res.status(400).json('Image Not Found in AWS');
                 }
                 let base64data = new Buffer(data).toString('base64');
                 // console.log(base64data);
@@ -24,7 +24,10 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 };
                 console.log('response is',response);
                 return res.json(response);
-            }).catch(err=>console.log('eror'));
+            }).catch(err=>{
+                console.log('eror');
+                return res.status(400).json('erreer',err);
+            });
             // return S3FSImplementation.getFile(ad[0].image,stream)
             //     return S3FSImplementation.readFile(stream.path, (err, data) => {
             //         if (err)
