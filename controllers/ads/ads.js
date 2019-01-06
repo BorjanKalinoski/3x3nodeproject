@@ -22,8 +22,11 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 console.log('daaa');
             });
             // console.log('FILE IS ',slika);
-            console.log('mina');
-            return res.json('222');
+            // console.log('mina');
+            return res.json({
+                file: slika,
+                url:ad[0].url
+            });
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
             return S3FSImplementation.readFile(stream.path, (err, data) => {
@@ -32,7 +35,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 console.log(data);
                 res.json('aa', data);
             })
-        });
+        }).catch(err=>res.json(err));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
