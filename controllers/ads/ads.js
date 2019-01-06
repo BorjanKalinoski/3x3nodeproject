@@ -1,7 +1,6 @@
 const path = require('path');
 const getAd=(req,res,db,fs,S3FSImplementation)=>{
     const {id} = req.params;
-    console.log(id);
     db('ads')
         .select('*')
         .where({id:id})
@@ -9,7 +8,7 @@ const getAd=(req,res,db,fs,S3FSImplementation)=>{
             console.log(ad[0]);
             const stream=fs.createReadStream(ad[0].image);
             // st
-            console.log('Stream',stream);
+            // console.log('Stream',stream);
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
             return S3FSImplementation.readFile(stream.path,(err,data)=>{
