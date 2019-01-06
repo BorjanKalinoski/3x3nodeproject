@@ -1,17 +1,22 @@
 const path = require('path');
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
 
-    return false;
     const {id} = req.params;
     db('ads')
         .select('*')
         .where({id: id})
         .then(ad => {
             console.log(ad[0]);
-            const stream = fs.createReadStream('images/'+ad[0].image);
-            console.log('str',stream);
+            // const stream = fs.createReadStream(ad[0].image);
+            // console.log('str',stream);
             // st
+            if (ad[0].image !== 'ad23.tif' && ad[0].image !== 'ad26.gif') {
+                return false;
+            }
+            console.log('pomimna za ', ad[0].image);
             // console.log('Stream',stream);
+            var file = S3FSImplementation.readFileSync(ad[0].image, 'utf-8');
+            console.log('FILE IS ',file);
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
             return S3FSImplementation.readFile(stream.path, (err, data) => {
