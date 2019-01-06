@@ -79,45 +79,46 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
 
                     let img = data[0].image;
                     let url = data[0].url;
+                    console.log('adpath',ad.path);
+                    const stream = fs.createReadStream(ad.path);
+                    return S3FSImplementation.writeFile(img, stream)
+                        .then(() => {
+                            // console.log('da?');
+                            fs.unlink(ad.path, (err => {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(400).json('er');
+                                }
+                                return res.json({
+                                    file: `${img}`,
+                                    url: url
+                                });
+
+                            }))
+                        }).catch(err => {
+                            console.log('eeeeeeeee');
+                            return res.status(400).json(err);
+                        });
+                    // ^ is good
+
                     // const reqPath = path.join(__dirname, '..\\..\\');
-                    const s3 = new aws.S3();
-                    const s3Params = {
-                        Bucket: '3x3macedonia',
-                        Key: img,
-                        Expires: 60,
-                        ContentType: fileType,
-                        ACL: 'public-read'
-                    };
-                    s3.upload(s3Params,(err,data)=>{
-                        if(err) {
-                            console.log(err);
-                            res.json(err);
-                        }
-                        console.log('success');
-                        console.log(data);
-                        res.json(data);
-                    });
-                    // console.log('adpath',ad.path);
-                    // const stream = fs.createReadStream(ad.path);
-                    // return S3FSImplementation.writeFile(img, stream)
-                    //     .then(() => {
-                    //         console.log('da?');
-                    //         fs.unlink(ad.path, (err => {
-                    //             if (err) {
-                    //                 console.log(err);
-                    //                 res.status(400).json('er');
-                    //             }
-                    //             return res.json({
-                    //                 file: `${img}`,
-                    //                 url: url
-                    //             });
-                    //
-                    //         }))
-                    //     }).catch(err => {
-                    //         console.log('eeeeeeeee');
-                    //         return res.status(400).json(err);
-                    //     });
-                    //^ is good
+                    // const s3 = new aws.S3();
+                    // const s3Params = {
+                    //     Bucket: '3x3macedonia',
+                    //     Key: img,
+                    //     Expires: 60,
+                    //     ContentType: fileType,
+                    //     ACL: 'public-read'
+                    // };
+                    // s3.upload(s3Params,(err,data)=>{
+                    //     if(err) {
+                    //         console.log(err);
+                    //         res.json(err);
+                    //     }
+                    //     console.log('success');
+                    //     console.log(data);
+                    //     res.json(data);
+                    // });
 
                     // ad.mv(`${reqPath}/public/${img}`, (err) =>{
                     //     if (err) {
