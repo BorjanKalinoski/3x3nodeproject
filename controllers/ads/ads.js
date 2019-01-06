@@ -33,6 +33,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 console.log('daaa');
                 return res.json('data is', data);
             });
+            res.json(slika);
             // console.log('FILE IS ',slika);
             // console.log('mina');
             // return res.json({
