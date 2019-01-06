@@ -7,11 +7,12 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
         .where({id: id})
         .then(ad => {
             let image = ad[0].image;
+            console.log(image)
             let url = ad[0].url;
             let ext = image.slice((image.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             return S3FSImplementation.readFile(image ,(err, data) => {
                 if (err) {
-                    console.log('erpr');
+                    console.log('erpr',err);
                     return res.json('Image Not Found in AWS');
                 }
                 let base64data = new Buffer(data).toString('base64');
