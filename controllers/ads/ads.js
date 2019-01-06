@@ -14,10 +14,12 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                     console.log('erpr');
                     return res.json('nema');
                 }
+                var base64data=new Buffer(data).toString('base64');
                 console.log('daaa');
                 console.log('tata');
+                console.log(base64data);
                 // return res.json('data is', data);
-                return res.json(data);
+                return res.json(base64data);
             });
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
