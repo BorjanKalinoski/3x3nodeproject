@@ -32,8 +32,8 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 }
                 console.log('daaa');
                 return res.json('data is', data);
-            });
-            res.json(slika);
+            }).catch(err=>console.log('error is',err));
+           return  res.json(slika);
             // console.log('FILE IS ',slika);
             // console.log('mina');
             // return res.json({
@@ -42,13 +42,13 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             // });
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
-            return S3FSImplementation.readFile(stream.path, (err, data) => {
-                if (err)
-                    console.log(err);
-                console.log(data);
-                res.json('aa', data);
-            })
-        }).catch(err => res.json(err));
+        //     return S3FSImplementation.readFile(stream.path, (err, data) => {
+        //         if (err)
+        //             console.log(err);
+        //         console.log(data);
+        //         res.json('aa', data);
+        //     })
+        // }).catch(err => res.json(err));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
