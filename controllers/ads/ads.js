@@ -9,19 +9,17 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             console.log(ad[0]);
             console.log('pomimna za ', ad[0].image);
 
-
             return S3FSImplementation.readFile(ad[0].image,'utf-8', (err, data) => {
                 if (err) {
                     console.log('erpr');
                     return res.json('nema');
                 }
                 console.log('daaa');
-                console.log(data);
+                console.log('tata');
                 // return res.json('data is', data);
                 return data;
             });
             // return  res.json('slikata e ',slika);
-            console.log('kurva');
             // console.log('FILE IS ',slika);
             // console.log('mina');
             // return res.json({
@@ -37,8 +35,9 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         res.json('aa', data);
             //     })
         }).then(data=>{
-            console.log('tuka be mamu ti ebem',data);
-            
+            console.log('tuka be mamu ti ebem');
+            return res.json(data);
+
     }).catch(err => res.json(err));
 };
 const getAds=(req,res,db)=>{
