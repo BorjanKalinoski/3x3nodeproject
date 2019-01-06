@@ -17,7 +17,23 @@ const S3FSImplementation = new S3FS('3x3macedonia', {
     region:'eu-west-2',
 });
 // S3FSImplementation.create();
-//(s3bucket,options
+(async function () {
+    try {
+        aws.setPromisesDependency();
+        aws.config.update({
+            accessKeyId: 'AKIAIHWLUM63AAXH47QA',
+            secretAccessKey: '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',
+            region: 'eu-west-2',
+        });
+        const s3 = new aws.S3();
+        const response = s3.listObjectsV2({
+            Bucket: '3x3macedonia',
+        });
+        console.log(response);
+    }catch (e) {
+        console.log('error is ',e);
+    }
+})();
 const multiparty = require('connect-multiparty');
 // const upload = require('express-fileupload');
 const urlExists = require('url-exists');
@@ -78,7 +94,7 @@ app.get('/aboutus',(req,res)=>{
 });
 console.log('THE BUCKET IS', process.env.S3_BUCKET);
 
-app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db,fs,S3FSImplementation)});
+app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db,fs,S3FSImplementation,aws)});
 app.get('/ads',(req,res)=>{ads.getAds(req,res,db);});
 app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplementation,aws);});
 app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment)});

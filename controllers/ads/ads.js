@@ -1,21 +1,23 @@
 const path = require('path');
-const getAd=(req,res,db,fs,S3FSImplementation)=>{
+const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
+
+    return false;
     const {id} = req.params;
     db('ads')
         .select('*')
-        .where({id:id})
-        .then(ad=>{
+        .where({id: id})
+        .then(ad => {
             console.log(ad[0]);
-            const stream=fs.createReadStream(ad[0].image);
+            const stream = fs.createReadStream(ad[0].image);
             // st
             // console.log('Stream',stream);
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
-            return S3FSImplementation.readFile(stream.path,(err,data)=>{
+            return S3FSImplementation.readFile(stream.path, (err, data) => {
                 if (err)
                     console.log(err);
                 console.log(data);
-                res.json('aa',data);
+                res.json('aa', data);
             })
         });
 };
