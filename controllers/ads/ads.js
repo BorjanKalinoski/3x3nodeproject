@@ -32,26 +32,13 @@ const getAds=(req,res,db)=>{
 const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     // console.log('dadada');
     const s3 = new aws.S3();
-    const S3_BUCKET = process.env.S3_BUCKET;
+    // const S3_BUCKET = process.env.S3_BUCKET;
     // console.log('s3', s3, 'aws', aws);
 
     let ad = req.files.adimage;
     const fileName = ad.originalFilename;
     const fileType = ad.type;
-    const s3Params = {
-        Bucket: S3_BUCKET,
-        Key: fileName,
-        Expires: 60,
-        ContentType: fileType,
-        ACL: 'public-read'
-    };
-        // console.log('fajlot e ',ad);
-    // console.log('filename ad.originalFilename',ad.originalFilename, '\n ad.name + ad.headers.filename', ad.name);
-    // console.log('HEADERS:', req.headers, ' S ', ad.headers);
-    // console.log('MIMETYPE',ad.mimetype,ad.type)
-    //ad.headers i ad.type gi cita
-    // ad.originalFilename go cita sigurno tiff.TIFF
-    //i ad .name go cita
+
     let adurl = req.body.adurl;
     // console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name, typeof ad.originalFilename, typeof ad.type);
 
@@ -92,30 +79,46 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
 
                     let img = data[0].image;
                     let url = data[0].url;
-                    const reqPath = path.join(__dirname, '..\\..\\');
-                    // console.log('DIrname is:',__dirname);
-                    // console.log('file from ', ad, 'path : ', ad.path);
-                    // console.log()
-                    console.log('adpath',ad.path);
-                    const stream = fs.createReadStream(ad.path);
-                    return S3FSImplementation.writeFile(img, stream)
-                        .then(() => {
-                            console.log('da?');
-                            fs.unlink(ad.path, (err => {
-                                if (err) {
-                                    console.log(err);
-                                    res.status(400).json('er');
-                                }
-                                return res.json({
-                                    file: `${img}`,
-                                    url: url
-                                });
+                    // const reqPath = path.join(__dirname, '..\\..\\');
+                    const s3 = new aws.S3();
+                    const s3Params = {
+                        Bucket: '3x3macedonia',
+                        Key: img,
+                        Expires: 60,
+                        ContentType: fileType,
+                        ACL: 'public-read'
+                    };
+                    s3.upload(s3Params,(err,data)=>{
+                        if(err) {
+                            console.log(err);
+                            res.json(err);
+                        }
+                        console.log('success');
+                        console.log(data);
+                        res.json(data);
+                    });
+                    // console.log('adpath',ad.path);
+                    // const stream = fs.createReadStream(ad.path);
+                    // return S3FSImplementation.writeFile(img, stream)
+                    //     .then(() => {
+                    //         console.log('da?');
+                    //         fs.unlink(ad.path, (err => {
+                    //             if (err) {
+                    //                 console.log(err);
+                    //                 res.status(400).json('er');
+                    //             }
+                    //             return res.json({
+                    //                 file: `${img}`,
+                    //                 url: url
+                    //             });
+                    //
+                    //         }))
+                    //     }).catch(err => {
+                    //         console.log('eeeeeeeee');
+                    //         return res.status(400).json(err);
+                    //     });
+                    //^ is good
 
-                            }))
-                        }).catch(err => {
-                            console.log('eeeeeeeee');
-                            return res.status(400).json(err);
-                        });
                     // ad.mv(`${reqPath}/public/${img}`, (err) =>{
                     //     if (err) {
                     //         console.log(err);
