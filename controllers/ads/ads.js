@@ -27,11 +27,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         console.log(data);
             //         res.json('aa', data);
             //     })
-        }).then(data=>{
-            console.log('tuka be mamu ti ebem');
-            return res.json(data);
-
-    }).catch(err => res.json(err));
+        }).catch(err => res.json(err));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
