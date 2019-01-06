@@ -17,21 +17,7 @@ const getAd=(req,res,db,fs,S3FSImplementation)=>{
                 console.log(data);
                 res.json('aa',data);
             })
-                .then(()=>{
-                    // if(err)
-                        // console.log(err);
-                    console.log('data');
-                    return res.json('aaa');
-                })
-                .catch(err=>{
-                    console.log(err);
-                    res.json('b');
-                });
-            // return res.json(ad[0]);
-        }).catch(err=>{
-        console.log(err);
-        return res.status(404).json('Image not found');
-    });
+        });
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
