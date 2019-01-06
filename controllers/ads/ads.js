@@ -7,25 +7,10 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
         .where({id: id})
         .then(ad => {
             console.log(ad[0]);
-            // const stream = fs.createReadStream(ad[0].image);
-            // console.log('str',stream);
-            // st
-            // if (ad[0].image !== 'ad23.tif' && ad[0].image !== 'ad26.gif') {
-            //     return false;
-            // }
             console.log('pomimna za ', ad[0].image);
-            // console.log('Stream',stream);
-            // var file = S3FSImplementation.readFileSync(ad[0].image, 'utf-8');
 
-            // const stream = S3FSImplementation.createReadStream(ad[0].image, 'utf-8');
-            // var data = '';
-            // stream.on('data',(chunk => {
-            //     data+=chunk;
-            //     }).on('end',()=>{
-            //         console.log('data is:',data);
-            //     })
-            // );
-            return S3FSImplementation.readFile(ad[0].image, (err, data) => {
+
+            return S3FSImplementation.readFile(ad[0].image,'utf-8', (err, data) => {
                 if (err) {
                     console.log('erpr');
                     return res.json('nema');
@@ -33,9 +18,8 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 console.log('daaa');
                 console.log(data);
                 // return res.json('data is', data);
-                return res.json(data);
-            })
-                .catch(err => console.log('error is', err));
+                return data;
+            });
             // return  res.json('slikata e ',slika);
             console.log('kurva');
             // console.log('FILE IS ',slika);
@@ -52,7 +36,10 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         console.log(data);
             //         res.json('aa', data);
             //     })
-        }).catch(err => res.json(err));
+        }).then(data=>{
+            console.log('tuka be mamu ti ebem',data);
+            
+    }).catch(err => res.json(err));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
