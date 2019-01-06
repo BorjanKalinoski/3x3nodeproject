@@ -31,7 +31,9 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                     return res.json('nema');
                 }
                 console.log('daaa');
+                console.log(data);
                 // return res.json('data is', data);
+                return data;
             }).then((value) => {
                 console.log('yes');
                 console.log(value);
