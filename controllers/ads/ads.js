@@ -21,7 +21,9 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                     console.log(err);
                 console.log('daaa',data);
             });
-            console.log('FILE IS ',slika);
+            // console.log('FILE IS ',slika);
+            console.log('mina');
+            return res.json('222');
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
             return S3FSImplementation.readFile(stream.path, (err, data) => {
