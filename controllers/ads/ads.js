@@ -16,20 +16,29 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             console.log('pomimna za ', ad[0].image);
             // console.log('Stream',stream);
             // var file = S3FSImplementation.readFileSync(ad[0].image, 'utf-8');
-            var slika= S3FSImplementation.readFile(ad[0].image,(err,data)=>{
-                if (err)
-                {
+
+            // const stream = S3FSImplementation.createReadStream(ad[0].image, 'utf-8');
+            // var data = '';
+            // stream.on('data',(chunk => {
+            //     data+=chunk;
+            //     }).on('end',()=>{
+            //         console.log('data is:',data);
+            //     })
+            // );
+            var slika = S3FSImplementation.readFile(ad[0].image, (err, data) => {
+                if (err) {
                     console.log('erpr');
                     return res.json('nema');
                 }
                 console.log('daaa');
+                return res.json('data is', data);
             });
             // console.log('FILE IS ',slika);
             // console.log('mina');
-            return res.json({
-                file: slika,
-                url:ad[0].url
-            });
+            // return res.json({
+            //     file: slika,
+            //     url:ad[0].url
+            // });
 
             // return S3FSImplementation.getFile(ad[0].image,stream)
             return S3FSImplementation.readFile(stream.path, (err, data) => {
@@ -38,7 +47,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 console.log(data);
                 res.json('aa', data);
             })
-        }).catch(err=>res.json(err));
+        }).catch(err => res.json(err));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
