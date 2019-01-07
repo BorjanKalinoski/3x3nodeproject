@@ -1,7 +1,8 @@
 const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
     let sponsor = req.files.sponsorimage;
     let url = req.body.sponsorurl;
-
+    console.log(sponsor);
+    console.log(req.files);
     let ext = sponsor.originalFilename.slice((sponsor.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     sponsor.mimetype = sponsor.type.toLowerCase();
     if (!getFileExtension(sponsor.originalFilename)) {
