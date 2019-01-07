@@ -23,7 +23,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
     }
     db('sponsors')
         .insert({
-            image:sponsor,
+            image:sponsor.originalFilename,
             url:url
         })
         .returning('id')
