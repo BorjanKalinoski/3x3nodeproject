@@ -1,19 +1,35 @@
 const path = require('path');
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
-
     const {id} = req.params;
     db('ads')
         .select('*')
         .where({id: id})
         .then(ad => {
-            return S3FSImplementation.readFile(ad[0].image ,(err, data) => {
-                if (err) {
-                    console.log('erpr');
-                    return res.json('Image Not Found in AWS');
-                }
-                let base64data = new Buffer(data).toString('base64');
-                return res.json(base64data);
-            }).catch(err=>console.log('error',err));
+            let data = '';
+            let readStream = S3FSImplementation.createReadStream(ad[0].image, 'utf-8');
+            // readStream.on('data', chunk => {
+            //     data += chunk;
+            // }).on('end', () => {
+            //     console.log(data);
+            // });
+            readStream.on('error',(err => {
+                res.status(400).json('Image not found');
+                return res.end();
+            }));
+            console.log(data);
+            return readStream.pipe(res);
+
+            let base64data = new Buffer(data).toString('base64');
+
+            //WORKS FOR READ FILE
+            //     return S3FSImplementation.readFile(ad[0].image ,(err, data) => {//istata data samo vo delcinja
+            //         if (err) {
+            //             console.log('erpr');
+            //             return res.json('Image Not Found in AWS');
+            //         }
+            //         let base64data = new Buffer(data).toString('base64');
+            //         return res.json(base64data);
+        }).catch(err => console.log('error', err));
             // return S3FSImplementation.getFile(ad[0].image,stream)
             //     return S3FSImplementation.readFile(stream.path, (err, data) => {
             //         if (err)
