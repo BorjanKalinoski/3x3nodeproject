@@ -5,21 +5,14 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
         .select('*')
         .where({id: id})
         .then(ad => {
-            let data = '';
             let readStream = S3FSImplementation.createReadStream(ad[0].image, 'utf-8');
-            // readStream.on('data', chunk => {
-            //     data += chunk;
-            // }).on('end', () => {
-            //     console.log(data);
-            // });
             readStream.on('error', (err => {
                 res.status(400).json('Image not found');
                 return res.end();
             }));
-            // console.log(data);
             return readStream.pipe(res);
 
-            let base64data = new Buffer(data).toString('base64');
+            // let base64data = new Buffer(data).toString('base64');
 
             //WORKS FOR READ FILE
             //     return S3FSImplementation.readFile(ad[0].image ,(err, data) => {//istata data samo vo delcinja
@@ -47,8 +40,6 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     // console.log('s3', s3, 'aws', aws);
 
     let ad = req.files.adimage;
-    const fileName = ad.originalFilename;
-    const fileType = ad.type;
 
     let adurl = req.body.adurl;
     // console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name, typeof ad.originalFilename, typeof ad.type);

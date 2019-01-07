@@ -41,7 +41,7 @@ const urlExists = require('url-exists');
 
 const posts = require('./controllers/posts/posts');
 const ads = require('./controllers/ads/ads');
-
+const sponsors = require('./controllers/sponsors/sponsors');
 const db =knex({
     client: 'pg',//deka koristi PostgreSQL
     connection: {
@@ -100,7 +100,7 @@ app.get('/ads',(req,res)=>{ads.getAds(req,res,db);});
 app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplementation,aws);});
 app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment)});
 app.get('/getposts',(req,res)=>{posts.getPosts(req,res,db)});
-
+app.post('/uploadsponsor',(req,res)=>{sponsors.uploadSponsor(req, res, db, urlExists, fs, S3FSImplementation);})
 app.post('/signin',(req,res)=>{
     const {username , password} =req.body;
 
