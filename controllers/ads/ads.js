@@ -12,11 +12,11 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             // }).on('end', () => {
             //     console.log(data);
             // });
-            readStream.on('error',(err => {
+            readStream.on('error', (err => {
                 res.status(400).json('Image not found');
                 return res.end();
             }));
-            console.log(data);
+            // console.log(data);
             return readStream.pipe(res);
 
             let base64data = new Buffer(data).toString('base64');
@@ -29,15 +29,9 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         }
             //         let base64data = new Buffer(data).toString('base64');
             //         return res.json(base64data);
-        }).catch(err => console.log('error', err));
+            // }).catch(err => console.log('error', err));
             // return S3FSImplementation.getFile(ad[0].image,stream)
-            //     return S3FSImplementation.readFile(stream.path, (err, data) => {
-            //         if (err)
-            //             console.log(err);
-            //         console.log(data);
-            //         res.json('aa', data);
-            //     })
-        }).catch(err => console.log('Image Not found in database'));
+        }).catch(err => console.log('Image Not found in database',err));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS
