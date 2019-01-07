@@ -39,7 +39,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let img = data[0].image;
                     let url = data[0].url;
                     const stream = fs.createWriteStream(sponsor.path);
-                    return S3FSImplementation.writeFile(sponsor.path, stream)
+                    return S3FSImplementation.writeFile(img, stream)
                         .then(() => {
                             fs.unlink(sponsor.path, (err => {
                                 if (err) {
