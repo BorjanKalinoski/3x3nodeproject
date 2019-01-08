@@ -11,7 +11,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
         return res.status(400).json('Bad Request');
     }
     if (sponsor.type !== 'image/gif' && sponsor.type !== 'image/tiff' && sponsor.type !== 'image/jpg'
-        && sponsortype !== 'image/jpeg' && sponsor.type !== 'image/png') {
+        && sponsor.type !== 'image/jpeg' && sponsor.type !== 'image/png' && sponsor.type !== 'image/webp') {
         return res.status(400).json('Bad Request');
     }
     if (!url) {
@@ -64,8 +64,9 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
 };
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'tif' && ext !== 'gif');
+    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'tif' && ext !== 'gif' && ext!=='webp');
 }
 module.exports={
-    uploadSponsor:uploadSponsor
+    uploadSponsor:uploadSponsor,
+    getSponsor:getSponsor
 };
