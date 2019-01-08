@@ -50,7 +50,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
         return res.status(400).json('Bad Request');
     }
     if (ad.type !== 'image/gif' && ad.type !== 'image/tiff' && ad.type !== 'image/jpg'
-        && ad.type !== 'image/jpeg' && ad.type !== 'image/png') {
+        && ad.type !== 'image/jpeg' && ad.type !== 'image/png' && ad.type!=='image/webp') {
         return res.status(400).json('Bad Request');
     }
     if (!adurl) {
@@ -142,5 +142,5 @@ module.exports = {
 };
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'tif' && ext !== 'gif');
+    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'tif' && ext !== 'gif' && ext!=='webp');
 }

@@ -1,3 +1,5 @@
+const getSponsor = (req, res, db, fs, S3FSImplementation) => {
+};
 const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
     let sponsor = req.files.sponsorimage;
     let url = req.body.sponsorurl;
@@ -39,6 +41,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let img = data[0].image;
                     let url = data[0].url;
                     const stream = fs.createWriteStream(sponsor.path);
+                    // console.log('ajvan');
                     return S3FSImplementation.writeFile(img, stream)
                         .then(() => {
                             fs.unlink(sponsor.path, (err => {
