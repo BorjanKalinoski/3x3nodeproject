@@ -2,21 +2,25 @@ const getSponsor = (req, res, db, fs, S3FSImplementation) => {
     const {id} = req.params;
     db('sponsors')
         .select('*')
-        .where({id:id})
-        .then(sponsor=>{
-            console.log(sponsor,'a ',sponsor[0].image);
-            let readStream = S3FSImplementation.createReadStream(sponsor[0].image);
-            readStream.on('error',(err)=>{
-                res.status(400).json('Error loading sponsor'+err);
+        .where({id: id})
+        .then(sponsor => {
+            console.log(sponsor, 'a ', sponsor[0].image);
+            let readStream = S3FSImplementation.createReadStream(sponsor[0].image, 'utf-8');
+            readStream.on('error', (err) => {
+                res.status(400).json('Error loading sponsor' + err);
                 return res.end();
             });
             return readStream.pipe(res);
-        }).catch(err=>res.status(400).json('Sponsor not found in database'));
+        }).catch(err => res.status(400).json('Sponsor not found in database'));
 
 };
-// const getSponsors = (req, res){
-//
-// }
+const getSponsors = (req, res, db) => {
+    db('sponsors')
+        .select('*')
+        .then(sponsors => {
+            res.status(200).json(sponsors);
+        }).catch(err => res.status(400).json('There are no sponsors'));
+};
 const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
     let sponsor = req.files.sponsorimage;
     let url = req.body.sponsorurl;
@@ -84,5 +88,6 @@ function getFileExtension(filename) {
 }
 module.exports={
     uploadSponsor:uploadSponsor,
-    getSponsor:getSponsor
+    getSponsor:getSponsor,
+    getSponsors:getSponsors
 };

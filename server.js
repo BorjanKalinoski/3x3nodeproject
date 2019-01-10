@@ -82,6 +82,7 @@ app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplem
 app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment)});
 app.get('/getposts',(req,res)=>{posts.getPosts(req,res,db)});
 app.post('/uploadsponsor',(req,res)=>{sponsors.uploadSponsor(req, res, db, urlExists, fs, S3FSImplementation);})
+app.get('/sponsors',(req,res)=>{sponsors.getSponsors(req, res, db);});
 app.get('/sponsor/:id',(req,res)=>{sponsors.getSponsor(req, res, db, fs, S3FSImplementation);});
 app.post('/signin',(req,res)=>{
     const {username , password} =req.body;
