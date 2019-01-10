@@ -5,8 +5,9 @@ const getSponsor = (req, res, db, fs, S3FSImplementation) => {
         .where('id','=',id)
         .then(sponsor=>{
             let readStream = S3FSImplementation.createReadStream(sponsor[0].image);
+            console.log('Sponsor:'+sponsor);
             readStream.on('error',(err)=>{
-                res.status(400).json('Error loading sponsor');
+                res.status(400).json('Error loading sponsor',err);
                 return res.end();
             });
             return readStream.pipe(res);
