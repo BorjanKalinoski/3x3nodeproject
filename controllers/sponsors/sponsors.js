@@ -1,4 +1,17 @@
 const getSponsor = (req, res, db, fs, S3FSImplementation) => {
+    const {id} = req.params;
+    db('sponsors')
+        .select('*')
+        .where('id','=',id)
+        .then(sponsor=>{
+            let readStream = S3FSImplementation.createReadStream(sponsor[0].image);
+            readStream.on('error',(err)=>{
+                res.status(400).json('Error loading sponsor');
+                return res.end();
+            });
+            return readStream.pipe(res);
+        }).catch(err=>res.status(400).json('Sponsor not found in database'));
+
 };
 const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
     let sponsor = req.files.sponsorimage;
@@ -41,12 +54,11 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let img = data[0].image;
                     let url = data[0].url;
                     const stream = fs.createWriteStream(sponsor.path);
-                    // console.log('ajvan');
                     return S3FSImplementation.writeFile(img, stream)
                         .then(() => {
                             fs.unlink(sponsor.path, (err => {
                                 if (err) {
-                                    console.log('tuka',err);
+                                    console.log('tuka', err);
                                     return res.status(400).json(err);
                                 }
                                 return res.json({

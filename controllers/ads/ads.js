@@ -1,4 +1,3 @@
-const path = require('path');
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
     const {id} = req.params;
     db('ads')
@@ -11,7 +10,6 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
                 return res.end();
             }));
             return readStream.pipe(res);
-
             // let base64data = new Buffer(data).toString('base64');
 
             //WORKS FOR READ FILE
@@ -24,7 +22,7 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             //         return res.json(base64data);
             // }).catch(err => console.log('error', err));
             // return S3FSImplementation.getFile(ad[0].image,stream)
-        }).catch(err => console.log('Image Not found in database',err));
+        }).catch(err => res.status(400).json('Ad not found in database'));
 };
 const getAds=(req,res,db)=>{
     db('ads')//so ova se zemaat site ADS

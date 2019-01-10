@@ -8,12 +8,8 @@ const aws = require('aws-sdk');
 const S3FS= require('s3fs');
 const fs = require('fs');
 const S3FSImplementation = new S3FS('3x3macedonia', {
-    // accessKeyId: 'AKIAIHWLUM63AAXH47QA',
-    // AKIAIHWLUM63AAXH47QA
     accessKeyId: 'AKIAIHWLUM63AAXH47QA',
     secretAccessKey: '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',
-    //n+pH/aOAoft3ILuFCeVaGZQeLNn4i0JZg8E+9xLc
-    // secretAccessKey: '5/QgvIHSL/kX26EhBwkD1o9JODWBoJPB/41GkE9D',
     region:'eu-west-2',
 });
 // S3FSImplementation.create();
@@ -36,26 +32,16 @@ const S3FSImplementation = new S3FS('3x3macedonia', {
 //     debugger;
 // })();
 const multiparty = require('connect-multiparty');
-// const upload = require('express-fileupload');
 const urlExists = require('url-exists');
 
 const posts = require('./controllers/posts/posts');
 const ads = require('./controllers/ads/ads');
 const sponsors = require('./controllers/sponsors/sponsors');
-const db =knex({
+const db = knex({
     client: 'pg',//deka koristi PostgreSQL
     connection: {
-        // host : '127.0.0.1',
-        // host: ' postgresql-concave-31306',
         connectionString: process.env.DATABASE_URL,
-
-
-
-        ssl:true,
-        // user: 'borjan',
-        // user : 'postgres',
-        // password: '',
-        // database: '3x3macedonia'
+        ssl: true,
     }
 });
 const app=express();
@@ -66,16 +52,11 @@ const multipartyMiddleware=multiparty();
 app.set('views','./views');
 app.use(express.static('./public'));
 
-// app.use(express.static('./public'));
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 app.use(cors());
-// app.use(upload());
 app.use(multiparty(multipartyMiddleware));
-// const S3_BUCKET = process.env.S3_BUCKET;
 console.log('port', Number(process.env.PORT));
-aws.config.region = 'eu-west-2';
-// app.get('/account', (req, res) => res.render('account.html'));
 app.get('/',(req,res)=>{
    res.json('Hello world');
 });
@@ -101,7 +82,8 @@ app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplem
 app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment)});
 app.get('/getposts',(req,res)=>{posts.getPosts(req,res,db)});
 app.post('/uploadsponsor',(req,res)=>{sponsors.uploadSponsor(req, res, db, urlExists, fs, S3FSImplementation);})
-app.get('/sponsor:/id',(req,res)=>{sponsors.getSponsor(req, res, db, fs, S3FSImplementation);});
+app.get('/sponsor/:id',(req,res)=>{sponsors.getSponsor(req, res, db, fs, S3FSImplementation);});
+
 app.post('/signin',(req,res)=>{
     const {username , password} =req.body;
 
