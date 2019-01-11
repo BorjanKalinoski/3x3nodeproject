@@ -43,6 +43,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
             }
         });
     }
+    console.log('pred DB');
     db('sponsors')
         .insert({
             image: sponsor.originalFilename,
@@ -57,6 +58,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                 .where('id', '=', id[0])
                 .returning(['image', 'url'])
                 .then(data => {
+                    console.log('%c VO UPDATE', 'background: #222; color: #bada55');
                     console.log('data is', data);
                     let img = data[0].image;
                     let url = data[0].url;
@@ -65,18 +67,16 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                         .then(() => {
                             fs.unlink(sponsor.path, (err => {
                                 if (err) {
-                                    console.log('tuka', err);
-                                    return res.status(400).json(err);
+                                    console.log('%c greskata e ',err, 'background: #222; color: #bada55');
+                                    return res.status(400).json(err).end();
                                 }
                                 return res.json({
                                     file: img,
                                     url: url
                                 });
                             }))
-
-                        }).catch(err => console.log('greska', err));
+                        }).catch(err => console.log('DRUGA GRESKA', err));
                 });
-
         });
 
 
