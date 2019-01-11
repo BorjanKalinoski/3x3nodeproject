@@ -1,7 +1,6 @@
 const deleteAd = (req, res, db, fs, S3FSImplementation) => {
     console.log('reqbody', req.body, 'params', req.params);
-    const {id} = req.params;
-    console.log('reqbody', req.body, 'params', req.params);
+    const {id} = req.body;
     db('ads')
         .where({id: id})
         .del()
@@ -11,12 +10,12 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
             S3FSImplementation.unlink(ad[0], (err) => {
                 if(err){
                     console.log(err);
-                    return res.status(400).json('Cant delete because ',err);
+                    return res.status(400).json('Cant delete because '+err);
                 }
                return res.json('Deleted !');
             });
         }).catch(err => {
-        res.json('error deleteing ad',err);
+        res.json('error deleteing ad'+err);
     });
 };
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
