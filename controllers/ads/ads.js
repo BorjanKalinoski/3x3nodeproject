@@ -1,5 +1,6 @@
 const deleteAd = (req, res, db, fs, S3FSImplementation) => {
-    const {id} = req.body;
+    console.log('reqbody', req.body, 'params', req.params);
+    const {id} = req.params;
     console.log('reqbody', req.body, 'params', req.params);
     db('ads')
         .where({id: id})
