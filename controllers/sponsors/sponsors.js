@@ -62,12 +62,15 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     console.log('data is', data);
                     let img = data[0].image;
                     let url = data[0].url;
-                    const stream = fs.createWriteStream(sponsor.path);
+                    const stream = fs.createReadStream(sponsor.path);
                     console.log('IMG VO WRITEFILE:',img);
+                    console.log('Path vo writestream', sponsor.path);
                     return S3FSImplementation.writeFile(img, stream,(err)=>{
                         if(err){
                             console.log('GRESKATA E', err);
                             db('sponsors').where({id: id[0]}).del().catch(err=>console.log('Greska za delete',err));
+                        }else{
+                            console.log('file is saved!!!!');
                         }
                         fs.unlink(sponsor.path,(err)=>{
                             if(err){
@@ -75,7 +78,6 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                             }
                             console.log('unlink succ');
                         });
-                        console.log('file is saved!!!!');
                     });
                     return false;
                     return S3FSImplementation.writeFile(img, stream)
