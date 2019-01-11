@@ -114,5 +114,6 @@ function getFileExtension(filename) {
 module.exports={
     uploadSponsor:uploadSponsor,
     getSponsor:getSponsor,
-    getSponsors:getSponsors
+    getSponsors:getSponsors,
+    deleteSponsor:deleteSponsor
 };

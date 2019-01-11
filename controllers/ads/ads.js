@@ -4,17 +4,17 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
     db('ads')
         .where({id: id})
         .del()
-        .returning(['id', 'image', 'url'])
+        .returning(['id', 'image'])
         .then(ad => {
             S3FSImplementation.unlink(ad[0].image, (err) => {
                 if (err) {
                     console.log(err);
-                    return res.status(400).json('Cant delete because ' + err).end();
+                    return res.status(400).json('No such image in storage' + err).end();
                 }
                 return res.status(200).json('Deleted !').end();
             });
         }).catch(err => {
-        return res.status(400).json('ERROR AT RETURNING' + err).end();
+        return res.status(400).json('No such image in database').end();
     });
 };
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
