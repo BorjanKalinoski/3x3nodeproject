@@ -6,9 +6,7 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
         .del()
         .returning(['id', 'image', 'url'])
         .then(ad => {
-            console.log('slika',ad[0].image);
             S3FSImplementation.unlink(ad[0].image, (err) => {
-                console.log('vlaga');
                 if (err) {
                     console.log(err);
                     return res.status(400).json('Cant delete because ' + err);
