@@ -25,7 +25,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
+            <state relative-caret-position="-322">
               <caret line="76" column="31" selection-start-line="76" selection-start-column="31" selection-end-line="76" selection-end-column="31" />
             </state>
           </provider>
@@ -34,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="72" column="61" selection-start-line="72" selection-start-column="61" selection-end-line="72" selection-end-column="61" />
+            <state relative-caret-position="304">
+              <caret line="84" column="14" lean-forward="true" selection-start-line="84" selection-start-column="14" selection-end-line="84" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -51,8 +51,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>static</find>
-      <find>APP.USE</find>
       <find>router</find>
       <find>s3s</find>
       <find>500</find>
@@ -80,7 +78,9 @@
       <find>greska</find>
       <find>gets</find>
       <find>data is</find>
+      <find>sponsor</find>
       <find>%c</find>
+      <find>i</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -186,12 +186,12 @@
       <workItem from="1546953312324" duration="2327000" />
       <workItem from="1547099479060" duration="5732000" />
       <workItem from="1547158414393" duration="101000" />
-      <workItem from="1547165811499" duration="3068000" />
+      <workItem from="1547165811499" duration="3750000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133194000" />
+    <option name="totallyTimeSpent" value="133876000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -225,7 +225,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32941177" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.39558825" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.18235295" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5033557" side_tool="true" weight="0.4970588" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -361,15 +361,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
+        <state relative-caret-position="-322">
           <caret line="76" column="31" selection-start-line="76" selection-start-column="31" selection-end-line="76" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="72" column="61" selection-start-line="72" selection-start-column="61" selection-end-line="72" selection-end-column="61" />
+        <state relative-caret-position="304">
+          <caret line="84" column="14" lean-forward="true" selection-start-line="84" selection-start-column="14" selection-end-line="84" selection-end-column="14" />
         </state>
       </provider>
     </entry>

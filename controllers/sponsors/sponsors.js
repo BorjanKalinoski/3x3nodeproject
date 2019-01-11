@@ -43,7 +43,6 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
             }
         });
     }
-    console.log('pred DB');
     db('sponsors')
         .insert({
             image: sponsor.originalFilename,
@@ -63,40 +62,28 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let img = data[0].image;
                     let url = data[0].url;
                     const stream = fs.createReadStream(sponsor.path);
-                    console.log('IMG VO WRITEFILE:',img);
+                    console.log('IMG VO WRITEFILE:', img);
                     console.log('Path vo writestream', sponsor.path);
-                    return S3FSImplementation.writeFile(img, stream,(err)=>{
-                        if(err){
+                    return S3FSImplementation.writeFile(img, stream, (err) => {
+                        if (err) {
+                            db('sponsors').where({id: id[0]}).del().catch(err => {
+                                console.log('Greska pri brisenje od baza', err);
+                            });
                             console.log('GRESKATA E', err);
-                            db('sponsors').where({id: id[0]}).del().catch(err=>console.log('Greska za delete',err));
-                        }else{
-                            console.log('file is saved!!!!');
+                            return res.status(400).json('Se slucuva nekakva greska ', err);
                         }
-                        fs.unlink(sponsor.path,(err)=>{
-                            if(err){
-                                console.log('a ima i tuka',err);
+                        fs.unlink(sponsor.path, (err) => {
+                            if (err) {
+                                console.log('a ima i tuka', err);
                             }
-                            console.log('unlink succ');
+                        });
+                        return res.status(200).json({
+                            file: `${img}`,
+                            url: url
                         });
                     });
-                    return false;
-                    return S3FSImplementation.writeFile(img, stream)
-                        .then(() => {
-                            fs.unlink(sponsor.path, (err => {
-                                if (err) {
-                                    console.log('%c greskata e ', err, 'background: #222; color: #bada55');
-                                    return res.status(400).json(err).end();
-                                }
-                                return res.json({
-                                    file: img,
-                                    url: url
-                                });
-                            }))
-                        }).catch(err => {
-                            console.log('DRUGA GRESKA', err);
-                        });
                 });
-        });
+        }).catch(error => res.status(400).json('GRESKA!!!!!', error));
 
 
 };
