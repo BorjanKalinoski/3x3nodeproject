@@ -63,12 +63,26 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let img = data[0].image;
                     let url = data[0].url;
                     const stream = fs.createWriteStream(sponsor.path);
+                    console.log('IMG VO WRITEFILE:',img);
+                    return S3FSImplementation.writeFile(img, stream,(err)=>{
+                        if(err){
+                            console.log('GRESKATA E', err);
+                            db('sponsors').where({id: id[0]}).del().catch(err=>console.log('Greska za delete',err));
+                        }
+                        fs.unlink(sponsor.path,(err)=>{
+                            if(err){
+                                console.log('a ima i tuka',err);
+                            }
+                            console.log('unlink succ');
+                        });
+                        console.log('file is saved!!!!');
+                    });
+                    return false;
                     return S3FSImplementation.writeFile(img, stream)
                         .then(() => {
                             fs.unlink(sponsor.path, (err => {
                                 if (err) {
-                                    db('sponsors').where({id: id[0]}).del();
-                                    console.log('%c greskata e ',err, 'background: #222; color: #bada55');
+                                    console.log('%c greskata e ', err, 'background: #222; color: #bada55');
                                     return res.status(400).json(err).end();
                                 }
                                 return res.json({
@@ -76,7 +90,9 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                                     url: url
                                 });
                             }))
-                        }).catch(err => console.log('DRUGA GRESKA', err));
+                        }).catch(err => {
+                            console.log('DRUGA GRESKA', err);
+                        });
                 });
         });
 
