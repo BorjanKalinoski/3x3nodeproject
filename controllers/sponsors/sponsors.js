@@ -1,3 +1,22 @@
+const deleteSponsor = (req, res, db, S3FSImplementation) => {
+    const {id} = req.params;
+    db('sponsors')
+        .where({id: id})
+        .del()
+        .returning(['id','image'])
+        .then(sponsor=>{
+            S3FSImplementation.unlink(sponsor[0].image, (err) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).json('Error deleteing image' + err).end();
+                }
+                return res.status(200).json("Deleted").end();
+            });
+        }).catch(err=>{
+        console.log('Error here' + err);
+        return res.status(200).json('Error HERE' + err).end();
+    })
+};
 const getSponsor = (req, res, db, fs, S3FSImplementation) => {
     const {id} = req.params;
     db('sponsors')
