@@ -4,16 +4,16 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
     db('ads')
         .where({id: id})
         .del()
-        .returning(['image', 'url', 'id'])
+        .returning(['id', 'image', 'url'])
         .then(ad => {
-            console.log(ad[0].image);
+            console.log('slika',ad[0].image);
             S3FSImplementation.unlink(ad[0].image, (err) => {
-                console.log(vlaga);
-                if(err){
+                console.log('vlaga');
+                if (err) {
                     console.log(err);
-                    return res.status(400).json('Cant delete because '+err);
+                    return res.status(400).json('Cant delete because ' + err);
                 }
-               return res.json('Deleted !');
+                return res.json('Deleted !');
             });
         }).catch(err => {
         return res.json('ERROR AT RETURNING' + err);
