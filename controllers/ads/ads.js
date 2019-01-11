@@ -4,7 +4,7 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
     db('ads')
         .where({id: id})
         .del()
-        .returning(['image', 'url', id])
+        .returning(['image', 'url', 'id'])
         .then(ad => {
             console.log(ad);
             S3FSImplementation.unlink(ad[0], (err) => {
