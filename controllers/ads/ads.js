@@ -1,3 +1,22 @@
+const deleteAd = (req, res, db, fs, S3FSImplementation) => {
+    const {id} = req.params;
+    db('ads')
+        .where({id: id})
+        .del()
+        .returning(['image', 'url', id])
+        .then(ad => {
+            console.log(ad);
+            S3FSImplementation.unlink(ad[0], (err) => {
+                if(err){
+                    console.log(err);
+                    return res.status(400).json('Cant delete because ',err);
+                }
+               return res.json('Deleted !');
+            });
+        }).catch(err => {
+        res.json('error deleteing ad',err);
+    });
+};
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
     const {id} = req.params;
     db('ads')
@@ -47,10 +66,11 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     if (!getFileExtension(ad.originalFilename)) {
         return res.status(400).json('Bad Request');
     }
-    if (ad.type !== 'image/gif' && ad.type !== 'image/tiff' && ad.type !== 'image/jpg'
+    if (ad.type !== 'image/gif' && ad.type !== 'image/jpg'
         && ad.type !== 'image/jpeg' && ad.type !== 'image/png' && ad.type!=='image/webp') {
         return res.status(400).json('Bad Request');
     }
+    console.log('adurl IS', adurl);
     if (!adurl) {
         adurl = null;
     } else {
@@ -60,8 +80,6 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
             }
         });
     }
-    console.log('dadadaBAZA');
-
     db('ads')
         .insert({
             image: ad.originalFilename,
@@ -86,6 +104,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
                                     console.log(err);
                                     res.status(400).json('er');
                                 }
+                                console.log(url);
                                 return res.json({
                                     file: `${img}`,
                                     url: url,
@@ -133,7 +152,8 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
 module.exports = {
     getAds: getAds,
     uploadAd: uploadAd,
-    getAd:getAd
+    getAd:getAd,
+    deleteAd:deleteAd
 };
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
