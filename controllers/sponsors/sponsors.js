@@ -24,8 +24,7 @@ const getSponsors = (req, res, db) => {
 const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
     let sponsor = req.files.sponsorimage;
     let url = req.body.sponsorurl;
-    // console.log(sponsor);
-    // console.log(req.files);
+
     let ext = sponsor.originalFilename.slice((sponsor.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     sponsor.mimetype = sponsor.type.toLowerCase();
     if (!getFileExtension(sponsor.originalFilename)) {
@@ -46,11 +45,11 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
     }
     db('sponsors')
         .insert({
-            image:sponsor.originalFilename,
-            url:url
+            image: sponsor.originalFilename,
+            url: url
         })
         .returning('id')
-        .then(id=>{
+        .then(id => {
             db('sponsors')
                 .update({
                     image: `sponsor${id[0]}.${ext}`
@@ -58,7 +57,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                 .where('id', '=', id[0])
                 .returning(['image', 'url'])
                 .then(data => {
-                    console.log('data is',data);
+                    console.log('data is', data);
                     let img = data[0].image;
                     let url = data[0].url;
                     const stream = fs.createWriteStream(sponsor.path);
@@ -78,7 +77,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                         }).catch(err => console.log('greska', err));
                 });
 
-        })
+        });
 
 
 };
