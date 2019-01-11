@@ -25,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+            <state relative-caret-position="238">
+              <caret line="15" column="25" lean-forward="true" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -51,8 +51,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>e</find>
-      <find>render</find>
       <find>eeee</find>
       <find>console.log</find>
       <find>stream</find>
@@ -78,9 +76,11 @@
       <find>tif</find>
       <find>%c.</find>
       <find>uploadad</find>
-      <find>.delete</find>
       <find>reqbo</find>
       <find>upload</find>
+      <find>getAD</find>
+      <find>.delete</find>
+      <find>.json</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -187,12 +187,12 @@
       <workItem from="1546953312324" duration="2327000" />
       <workItem from="1547099479060" duration="5732000" />
       <workItem from="1547158414393" duration="101000" />
-      <workItem from="1547165811499" duration="12204000" />
+      <workItem from="1547165811499" duration="12653000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142330000" />
+    <option name="totallyTimeSpent" value="142779000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -361,13 +361,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="80" column="16" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1564">
@@ -375,10 +368,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="80" column="16" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+        <state relative-caret-position="238">
+          <caret line="15" column="25" lean-forward="true" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
         </state>
       </provider>
     </entry>
