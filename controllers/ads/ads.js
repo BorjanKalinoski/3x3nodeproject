@@ -6,8 +6,9 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
         .del()
         .returning(['image', 'url', 'id'])
         .then(ad => {
-            console.log(ad);
-            S3FSImplementation.unlink(ad[0], (err) => {
+            console.log(ad[0].image);
+            S3FSImplementation.unlink(ad[0].image, (err) => {
+                console.log(vlaga);
                 if(err){
                     console.log(err);
                     return res.status(400).json('Cant delete because '+err);
@@ -15,7 +16,7 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
                return res.json('Deleted !');
             });
         }).catch(err => {
-        res.json('error deleteing ad'+err);
+        return res.json('ERROR AT RETURNING' + err);
     });
 };
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
