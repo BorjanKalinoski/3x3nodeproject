@@ -14,7 +14,7 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
                 return res.json('Deleted !');
             });
         }).catch(err => {
-        return res.json('ERROR AT RETURNING' + err);
+        return res.status(400).json('ERROR AT RETURNING' + err);
     });
 };
 const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
