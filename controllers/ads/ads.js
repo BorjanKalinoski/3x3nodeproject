@@ -75,15 +75,12 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
                 .where('id', '=', id[0])
                 .returning(['image', 'url'])
                 .then(data => {
-                    console.log('VlagaAdadada');
-
                     let img = data[0].image;
                     let url = data[0].url;
                     console.log('adpath',ad.path);
                     const stream = fs.createReadStream(ad.path);
                     return S3FSImplementation.writeFile(img, stream)
                         .then(() => {
-                            // console.log('da?');
                             fs.unlink(ad.path, (err => {
                                 if (err) {
                                     console.log(err);
@@ -91,9 +88,9 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
                                 }
                                 return res.json({
                                     file: `${img}`,
-                                    url: url
+                                    url: url,
+                                    id: id[0]
                                 });
-
                             }))
                         }).catch(err => {
                             console.log('eeeeeeeee');
