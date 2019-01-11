@@ -67,6 +67,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                         .then(() => {
                             fs.unlink(sponsor.path, (err => {
                                 if (err) {
+                                    db('sponsors').where({id: id[0]}).del();
                                     console.log('%c greskata e ',err, 'background: #222; color: #bada55');
                                     return res.status(400).json(err).end();
                                 }
