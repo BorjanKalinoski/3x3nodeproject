@@ -35,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="209">
-              <caret line="103" column="20" lean-forward="true" selection-start-line="103" selection-start-column="20" selection-end-line="103" selection-end-column="20" />
+              <caret line="87" column="44" selection-start-line="87" selection-start-column="44" selection-end-line="87" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -51,7 +51,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>eeee</find>
       <find>console.log</find>
       <find>stream</find>
       <find>readstrea</find>
@@ -81,6 +80,7 @@
       <find>.json</find>
       <find>.delete</find>
       <find>upload</find>
+      <find>.pipe</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -190,12 +190,12 @@
       <workItem from="1547165811499" duration="13896000" />
       <workItem from="1547195237468" duration="622000" />
       <workItem from="1547200710489" duration="818000" />
-      <workItem from="1547421104135" duration="2374000" />
+      <workItem from="1547421104135" duration="2803000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="147836000" />
+    <option name="totallyTimeSpent" value="148265000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -381,7 +381,7 @@
     <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
-          <caret line="103" column="20" lean-forward="true" selection-start-line="103" selection-start-column="20" selection-end-line="103" selection-end-column="20" />
+          <caret line="87" column="44" selection-start-line="87" selection-start-column="44" selection-end-line="87" selection-end-column="44" />
         </state>
       </provider>
     </entry>

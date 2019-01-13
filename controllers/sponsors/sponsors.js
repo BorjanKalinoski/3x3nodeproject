@@ -82,15 +82,10 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let url = data[0].url;
                     console.log(sponsor.path);
                     console.log('a', img);
-                    const stream = fs.createReadStream(sponsor.path).pipe(S3FSImplementation.createWriteStream(img, () => {
-                        console.log('postoi');
-                        if (err) {
-                            db('sponsors').where({id: id[0]}).del().catch(err => {
-                                console.log('Greska pri brisenje od baza', err);
-                            });
-                            console.log('GRESKATA E', err);
-                            return res.status(400).json('Se slucuva nekakva greska ', err);
-                        }
+                    const stream = fs.createReadStream(sponsor.path).pipe(S3FSImplementation.createWriteStream(img));
+                    stream.on('end', () => {
+                        console.log(stream);
+                        console.log('ajde');
                         fs.unlink(sponsor.path, (err) => {
                             if (err) {
                                 console.log('a ima i tuka', err);
@@ -99,9 +94,9 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                         return res.status(200).json({
                             file: `${img}`,
                             url: url,
-                            id: id[0]
-                        }).end();
-                    }));
+                            id:id[0]
+                        });
+                    });
 
                     // }));
                     return;
