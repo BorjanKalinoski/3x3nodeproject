@@ -80,7 +80,10 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     console.log('data is', data);
                     let img = data[0].image;
                     let url = data[0].url;
-                    const stream = fs.createReadStream(sponsor.path).pipe(S3FSImplementation.createWriteStream(img, stream, (err)=>{
+                    console.log(sponsor.path);
+                    cosole.log('a', img);
+                    const stream = fs.createReadStream(sponsor.path).pipe(S3FSImplementation.createWriteStream(img, () => {
+                        console.log('postoi');
                         if (err) {
                             db('sponsors').where({id: id[0]}).del().catch(err => {
                                 console.log('Greska pri brisenje od baza', err);
@@ -96,9 +99,11 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                         return res.status(200).json({
                             file: `${img}`,
                             url: url,
-                            id:id[0]
+                            id: id[0]
                         }).end();
-                    }));
+                    })).then(console.log);
+
+                    // }));
                     return;
                     // stream.pipe()
                     console.log('IMG VO WRITEFILE:', img);
