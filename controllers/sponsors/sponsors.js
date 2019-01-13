@@ -101,7 +101,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                             url: url,
                             id: id[0]
                         }).end();
-                    })).then(console.log);
+                    }));
 
                     // }));
                     return;
