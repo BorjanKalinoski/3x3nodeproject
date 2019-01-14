@@ -83,9 +83,18 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     console.log(sponsor.path);
                     console.log('a', img);
                     const stream = fs.createReadStream(sponsor.path).pipe(S3FSImplementation.createWriteStream(img));
+                    console.log('STREAM', stream);
+                    res.status(200).json({
+                        file: `${img}`,
+                        url: url,
+                        id:id[0]
+                    });
+                    stream.on('error',()=>{
+                        console.log("nesto");
+                    });
                     stream.on('end', () => {
-                        console.log(stream);
                         console.log('ajde');
+                        console.log(stream);
                         fs.unlink(sponsor.path, (err) => {
                             if (err) {
                                 console.log('a ima i tuka', err);
