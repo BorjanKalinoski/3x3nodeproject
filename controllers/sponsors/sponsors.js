@@ -92,30 +92,14 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                             id:id[0]
                         });
                     });
-
-                    console.log('STREAM', stream);
-                    return res.status(200).json({
-                        file: `${img}`,
-                        url: url,
-                        id:id[0]
-                    });
-                    stream.on('error',()=>{
-                        console.log("nesto");
-                    });
-                    stream.on('end', () => {
-                        console.log('ajde');
-                        console.log(stream);
-
-                        fs.unlink(sponsor.path, (err) => {
-                            if (err) {
-                                console.log('a ima i tuka', err);
-                            }
-                        });
-                        return res.status(200).json({
-                            file: `${img}`,
-                            url: url,
-                            id:id[0]
-                        });
+                    writer.on('error', (err) => {
+                        if (err) {
+                            console.log('da', err);
+                            db('sponsors').where({id: id[0]}).del().catch(err => {
+                                console.log('Greska pri brisenje od baza', err);
+                            });
+                            return res.status(500).json(err);
+                        }
                     });
 
                     // }));
