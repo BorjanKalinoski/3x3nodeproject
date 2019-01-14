@@ -50,13 +50,8 @@ const getAds=(req,res,db)=>{
             res.status(200).json(ads);
         }).catch(err=>console.log(err));
 };
-const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
-    // console.log('dadada');
-    const s3 = new aws.S3();
-    // const S3_BUCKET = process.env.S3_BUCKET;
-    // console.log('s3', s3, 'aws', aws);
+const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation) => {
     console.log('da');
-
     let ad = req.files.adimage;
     console.log(ad);
     console.log('da');
