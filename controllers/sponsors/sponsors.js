@@ -82,9 +82,19 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let url = data[0].url;
                     console.log(sponsor.path);
                     console.log('a', img);
-                    const stream = fs.createReadStream(sponsor.path).pipe(S3FSImplementation.createWriteStream(img));
+                    var writer;
+                    const stream = fs.createReadStream(sponsor.path).pipe(writer = S3FSImplementation.createWriteStream(img));
+                    writer.on('finish',()=>{
+                        console.log('alah');
+                        return res.status(200).json({
+                            file: `${img}`,
+                            url: url,
+                            id:id[0]
+                        });
+                    });
+
                     console.log('STREAM', stream);
-                    res.status(200).json({
+                    return res.status(200).json({
                         file: `${img}`,
                         url: url,
                         id:id[0]
@@ -95,6 +105,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     stream.on('end', () => {
                         console.log('ajde');
                         console.log(stream);
+
                         fs.unlink(sponsor.path, (err) => {
                             if (err) {
                                 console.log('a ima i tuka', err);
