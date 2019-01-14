@@ -55,9 +55,11 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation, aws) => {
     const s3 = new aws.S3();
     // const S3_BUCKET = process.env.S3_BUCKET;
     // console.log('s3', s3, 'aws', aws);
+    console.log('da');
 
     let ad = req.files.adimage;
-
+    console.log(ad);
+    console.log('da');
     let adurl = req.body.adurl;
     // console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name, typeof ad.originalFilename, typeof ad.type);
 
