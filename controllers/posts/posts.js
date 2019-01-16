@@ -28,10 +28,10 @@ const getPosts = (req, res, db) => {
 };
 const uploadPOST = (req, res, db, moment) => {
     console.log('da');
-    console.log(req.body);
+    console.log(req);
+    const {title, sdesc, descr, mainimg, images, post_date} = req.body;
     console.log(req.files);
     return res.json(req.body).end();
-    const {title, sdesc, descr, mainimg, images, post_date} = req.body;
 };
 const uploadPost = (req, res, db, moment) => {
     const {title, sdesc, descr, mainimg, images, post_date} = req.body;
@@ -96,9 +96,9 @@ const uploadPost = (req, res, db, moment) => {
     });
     res.status(200).json('Post Submitted');
 };
-module.exports={
-    uploadPost:uploadPOST,
-    getPosts:getPosts
+module.exports = {
+    uploadPost: uploadPOST,
+    getPosts: getPosts
 };
 function getFileExtension(filename) {
     let ext= filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
