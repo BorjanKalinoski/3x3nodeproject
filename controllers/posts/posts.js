@@ -28,10 +28,12 @@ const getPosts = (req, res, db) => {
 };
 const uploadPOST = (req, res, db, moment) => {
     console.log('da');
-    console.log(req.body);
+    // console.log(req.body);
     const {title, sdesc, descr, post_date} = req.body;
     const {mainimg, images} = req.files;
     console.log(title, sdesc, descr, mainimg, images, post_date);
+    console.log('FILES', req.files);
+
     // console.log(req.files);
     return res.json(req.body).end();
 };
