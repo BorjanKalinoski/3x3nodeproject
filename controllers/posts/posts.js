@@ -27,7 +27,9 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 const uploadPOST = (req, res, db, moment) => {
+    console.log('da');
     console.log(req.body);
+    console.log(req.files);
     return res.json(req.body).end();
     const {title, sdesc, descr, mainimg, images, post_date} = req.body;
 };
