@@ -43,21 +43,16 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
             // return S3FSImplementation.getFile(ad[0].image,stream)
         }).catch(err => res.status(400).json('Ad not found in database'));
 };
-const getAds=(req,res,db)=>{
+const getAds = (req, res, db) => {
     db('ads')//so ova se zemaat site ADS
         .select('*')
-        .then(ads=>{
+        .then(ads => {
             res.status(200).json(ads);
-        }).catch(err=>console.log(err));
+        }).catch(err => console.log(err));
 };
 const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation) => {
-    console.log('da');
     let ad = req.files.adimage;
-    console.log(ad);
-    console.log('da');
     let adurl = req.body.adurl;
-    // console.log('TYPEOF ad.name i ad.originalfilename I type', typeof ad.name, typeof ad.originalFilename, typeof ad.type);
-
     let ext = ad.originalFilename.slice((ad.originalFilename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     ad.mimetype = ad.type.toLowerCase();
     if (!getFileExtension(ad.originalFilename)) {
@@ -67,7 +62,6 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation) => {
         && ad.type !== 'image/jpeg' && ad.type !== 'image/png' && ad.type!=='image/webp') {
         return res.status(400).json('Bad Request');
     }
-    console.log('adurl IS', adurl);
     if (!adurl) {
         adurl = null;
     } else {
@@ -92,7 +86,7 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation) => {
                 .then(data => {
                     let img = data[0].image;
                     let url = data[0].url;
-                    console.log('adpath',ad.path);
+                    console.log('adpath', ad.path);
                     const stream = fs.createReadStream(ad.path);
                     return S3FSImplementation.writeFile(img, stream)
                         .then(() => {
@@ -149,10 +143,11 @@ const uploadAd = (req, res, db, urlExists, fs, S3FSImplementation) => {
 module.exports = {
     getAds: getAds,
     uploadAd: uploadAd,
-    getAd:getAd,
-    deleteAd:deleteAd
+    getAd: getAd,
+    deleteAd: deleteAd
 };
+
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'tif' && ext !== 'gif' && ext!=='webp');
+    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'tif' && ext !== 'gif' && ext !== 'webp');
 }

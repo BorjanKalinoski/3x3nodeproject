@@ -3,8 +3,8 @@ const deleteSponsor = (req, res, db, S3FSImplementation) => {
     db('sponsors')
         .where({id: id})
         .del()
-        .returning(['id','image'])
-        .then(sponsor=>{
+        .returning(['id', 'image'])
+        .then(sponsor => {
             S3FSImplementation.unlink(sponsor[0].image, (err) => {
                 if (err) {
                     console.log(err);
@@ -12,7 +12,7 @@ const deleteSponsor = (req, res, db, S3FSImplementation) => {
                 }
                 return res.status(200).json("Deleted").end();
             });
-        }).catch(err=>{
+        }).catch(err => {
         console.log('Error here' + err);
         return res.status(200).json('Error HERE' + err).end();
     })
@@ -75,20 +75,18 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                 .where('id', '=', id[0])
                 .returning(['image', 'url'])
                 .then(data => {
-                    console.log('%c VO UPDATE', 'background: #222; color: #bada55');
-                    console.log('data is', data);
                     let img = data[0].image;
                     let url = data[0].url;
-                    console.log(sponsor.path);
-                    console.log('a', img);
-                    var writer;
+                    let writer;
                     const stream = fs.createReadStream(sponsor.path).pipe(writer = S3FSImplementation.createWriteStream(img));
-                    writer.on('finish',()=>{
-                        console.log('alah');
+                    stream.on('error', (err) => {
+                        return res.status(500).json('stream error', err);
+                    });
+                    writer.on('finish', () => {
                         return res.status(200).json({
                             file: `${img}`,
                             url: url,
-                            id:id[0]
+                            id: id[0]
                         });
                     });
                     writer.on('error', (err) => {
@@ -100,43 +98,39 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                             return res.status(500).json(err);
                         }
                     });
-
-                    // }));
-                    return;
-                    // stream.pipe()
-                    console.log('IMG VO WRITEFILE:', img);
-                    console.log('Path vo writestream', sponsor.path);
-                    return S3FSImplementation.writeFile(img, stream, (err) => {
-                        if (err) {
-                            db('sponsors').where({id: id[0]}).del().catch(err => {
-                                console.log('Greska pri brisenje od baza', err);
-                            });
-                            console.log('GRESKATA E', err);
-                            return res.status(400).json('Se slucuva nekakva greska ', err);
-                        }
-                        fs.unlink(sponsor.path, (err) => {
-                            if (err) {
-                                console.log('a ima i tuka', err);
-                            }
-                        });
-                        return res.status(200).json({
-                            file: `${img}`,
-                            url: url,
-                            id:id[0]
-                        });
-                    });
                 });
         }).catch(error => res.status(400).json('GRESKA!!!!!', error));
+    //     return S3FSImplementation.writeFile(img, stream, (err) => {
+                //         if (err) {
+                //             db('sponsors').where({id: id[0]}).del().catch(err => {
+                //                 console.log('Greska pri brisenje od baza', err);
+                //             });
+                //             console.log('GRESKATA E', err);
+                //             return res.status(400).json('Se slucuva nekakva greska ', err);
+                //         }
+                //         fs.unlink(sponsor.path, (err) => {
+                //             if (err) {
+                //                 console.log('a ima i tuka', err);
+                //             }
+                //         });
+                //         return res.status(200).json({
+                //             file: `${img}`,
+                //             url: url,
+                //             id:id[0]
+                //         });
+                //     });
 
 
 };
+
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'gif' && ext!=='webp');
+    return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'gif' && ext !== 'webp');
 }
-module.exports={
-    uploadSponsor:uploadSponsor,
-    getSponsor:getSponsor,
-    getSponsors:getSponsors,
-    deleteSponsor:deleteSponsor
+
+module.exports = {
+    uploadSponsor: uploadSponsor,
+    getSponsor: getSponsor,
+    getSponsors: getSponsors,
+    deleteSponsor: deleteSponsor
 };
