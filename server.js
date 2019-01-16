@@ -54,6 +54,7 @@ app.use(express.static('./public'));
 
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 app.use(multiparty(multipartyMiddleware));
 console.log('port', Number(process.env.PORT));
@@ -80,7 +81,7 @@ app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db,fs,S3FSImplementation,aws)});
 app.get('/ads',(req,res)=>{ads.getAds(req,res,db);});
 app.del('/ad/:id',(req,res)=>{ads.deleteAd(req, res, db, fs, S3FSImplementation);});
 app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplementation);});
-app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment)});
+app.post('/post',(req,res)=>{posts.uploadPOST(req,res,db,moment)});
 app.get('/getposts',(req,res)=>{posts.getPosts(req,res,db)});
 app.get('/sponsors',(req,res)=>{sponsors.getSponsors(req, res, db);});
 app.get('/sponsor/:id',(req,res)=>{sponsors.getSponsor(req, res, db, fs, S3FSImplementation);});
