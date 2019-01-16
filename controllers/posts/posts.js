@@ -95,7 +95,7 @@ const uploadPost = (req, res, db, moment) => {
     res.status(200).json('Post Submitted');
 };
 module.exports={
-    uploadPost:uploadPost,
+    uploadPost:uploadPOST,
     getPosts:getPosts
 };
 function getFileExtension(filename) {
