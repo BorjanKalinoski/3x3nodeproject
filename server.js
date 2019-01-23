@@ -8,7 +8,7 @@ const aws = require('aws-sdk');
 const S3FS= require('s3fs');
 const fs = require('fs');
 const api = require('./apiKeys');
-console.log('api', api);
+// console.log('api', api);
 const S3FSImplementation = new S3FS('3x3macedonia', api);
 
 // S3FSImplementation.create();
