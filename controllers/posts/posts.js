@@ -30,10 +30,11 @@ const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr, post_date, images} = req.body;
     const {mainimg} = req.files;
-    console.log('FILES', req.files);
+    // console.log('FILES', req.files);
     // console.log('slikite', req.files);
     // console.log('IMAGES', images);
-    console.log('SLIKA E ', images);
+    console.log('SLIKA E ', images[0]);
+
     // console.log('aa', imag);
     // console.log('BODY', req.body);
     // console.log('FILES', req.files);
