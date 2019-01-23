@@ -144,7 +144,7 @@ const uploadPost = (req, res, db, moment) => {
             sdesc: sdesc,
             descr: descr,
             mainimg: mainimg.name,
-            post_date: post_date
+            // post_date: post_date
         })
             .into('posts')
             .returning('id')
