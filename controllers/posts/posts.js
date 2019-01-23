@@ -33,7 +33,7 @@ const uploadPOST = (req, res, db, moment) => {
 
     // console.log('slikite', req.files);
     console.log('IMAGES', images);
-    console.log('SLIKA E ', images.item(0), 'or', images[0]);
+    console.log('SLIKA E ', images[0]);
     // console.log('aa', imag);
     console.log('BODY', req.body);
     // console.log('FILES', req.files);
