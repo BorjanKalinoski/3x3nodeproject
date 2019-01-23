@@ -28,9 +28,11 @@ const getPosts = (req, res, db) => {
 };
 const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-    const {title, sdesc, descr, post_date} = req.body;
-    const {mainimg, images} = req.files;
+    const {title, sdesc, descr, post_date, images} = req.body;
+    const {mainimg} = req.files;
+
     // console.log('slikite', req.files);
+    console.log('IMAGES', images);
     console.log('BODY', req.body);
     console.log('FILES', req.files);
     return req.files;
