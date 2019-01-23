@@ -32,10 +32,10 @@ const uploadPOST = (req, res, db, moment) => {
     const {mainimg} = req.files;
 
     // console.log('slikite', req.files);
-    console.log('IMAGES', images);
+    // console.log('IMAGES', images);
     console.log('SLIKA E ', images[0]);
     // console.log('aa', imag);
-    console.log('BODY', req.body);
+    // console.log('BODY', req.body);
     // console.log('FILES', req.files);
     return req.files;
     console.log(title, sdesc, descr, mainimg.name, images, post_date);
