@@ -17,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="85" column="52" selection-start-line="85" selection-start-column="52" selection-end-line="85" selection-end-column="52" />
+            <state relative-caret-position="79">
+              <caret line="121" column="35" lean-forward="true" selection-start-line="121" selection-start-column="35" selection-end-line="121" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -26,8 +26,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="106" column="2" selection-start-line="106" selection-start-column="2" selection-end-line="106" selection-end-column="2" />
+            <state relative-caret-position="170">
+              <caret line="92" column="26" lean-forward="true" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -43,7 +43,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>gets</find>
       <find>data is</find>
       <find>sponsor</find>
       <find>i</find>
@@ -67,12 +66,13 @@
       <find>post_im</find>
       <find>getspo</find>
       <find>port</find>
-      <find>trx</find>
       <find>uploadp</find>
       <find>images</find>
       <find>req.files</find>
       <find>errr</find>
       <find>post_date</find>
+      <find>greska</find>
+      <find>trx</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -134,7 +134,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548281369314" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548281488578" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.12.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -213,12 +213,12 @@
       <workItem from="1547421104135" duration="6039000" />
       <workItem from="1547667541959" duration="9192000" />
       <workItem from="1547679391475" duration="331000" />
-      <workItem from="1548261474673" duration="11909000" />
+      <workItem from="1548261474673" duration="12070000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="172933000" />
+    <option name="totallyTimeSpent" value="173094000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -252,7 +252,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32941177" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.2720588" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.4117647" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5033557" side_tool="true" weight="0.4970588" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -413,15 +413,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="85" column="52" selection-start-line="85" selection-start-column="52" selection-end-line="85" selection-end-column="52" />
+        <state relative-caret-position="79">
+          <caret line="121" column="35" lean-forward="true" selection-start-line="121" selection-start-column="35" selection-end-line="121" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="106" column="2" selection-start-line="106" selection-start-column="2" selection-end-line="106" selection-end-column="2" />
+        <state relative-caret-position="170">
+          <caret line="92" column="26" lean-forward="true" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
         </state>
       </provider>
     </entry>

@@ -81,13 +81,13 @@ const uploadPOST = (req, res, db, moment) => {
             .into('posts')
             .returning('id')
             .then(post_id => {
-                console.log('POSTOT E VNESEN');
                 images.map(image => {
                     trx.insert({
                         image: image.name,
                         post_id: post_id
                     })
                         .into('post_images')
+                        .returning('*')
                         .then(response => {
                             console.log('SLIKA POST E VNESEN', response);
                         })
