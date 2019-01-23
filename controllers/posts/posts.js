@@ -28,19 +28,10 @@ const getPosts = (req, res, db) => {
 };
 const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-    const {title, sdesc, descr, post_date, images} = req.body;
-    const {mainimg} = req.files;
-    // console.log('FILES', req.files);
-    // console.log('slikite', req.files);
-    // console.log('IMAGES', images);
-    console.log('SLIKA E ', req.files);
-    console.log('body', req.body);
+    const {title, sdesc, descr, post_date} = req.body;
+    const {mainimg, images} = req.files;
 
-
-    // console.log('aa', imag);
-    // console.log('BODY', req.body);
-    // console.log('FILES', req.files);
-    return req.files;
+    console.log('SLIKA E ', images);
     console.log(title, sdesc, descr, mainimg.name, images, post_date);
 
     if (!title || !sdesc || !descr || !mainimg.name) {
@@ -69,10 +60,12 @@ const uploadPOST = (req, res, db, moment) => {
         }
         allow = 1;
     }
+    console.log('mine');
     if (!allow) {
         return res.status(400).json('toa');
     }
-    console.log('Da znaes boki raboti ova');
+    console.log('mine');
+    return false;
 
     db.transaction(trx => {
         trx.insert({
