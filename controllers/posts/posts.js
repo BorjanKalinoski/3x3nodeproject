@@ -31,9 +31,14 @@ const uploadPOST = (req, res, db, moment) => {
     const {title, sdesc, descr, post_date} = req.body;
     const {mainimg, images} = req.files;
 
-    console.log('SLIKA E ', images);
-    console.log(title, sdesc, descr, mainimg.name, images, post_date);
-
+    // console.log('SLIKA E ', images);
+    // console.log(title, sdesc, descr, mainimg.name, images, post_date);
+    if (!moment(post_date).isValid()) {
+        console.log('dateerror');
+        res.status(400).json('Bad request');
+        return;
+    }
+    console.log('pdate', post_date);
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
         return res.status(400).json('Bad Request');
@@ -92,10 +97,11 @@ const uploadPOST = (req, res, db, moment) => {
             })
             .then(trx.commit)
             .catch(trx.rollback);
-    }).catch(err =>{
-        console.log('errror e', err);
+    }).catch(err => {
+        console.log('greska', err);
         return res.status(400).json(err);
     });
+
     // console.log(req.files);
     return res.json(req.body).end();
 };
