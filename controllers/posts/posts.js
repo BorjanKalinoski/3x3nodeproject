@@ -30,7 +30,7 @@ const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr, post_date} = req.body;
     const {mainimg, images} = req.files;
-    console.log('slikite', images);
+    console.log('slikite', req.files);
     console.log(title, sdesc, descr, mainimg.name, images, post_date);
 
     if (!title || !sdesc || !descr || !mainimg.name) {
