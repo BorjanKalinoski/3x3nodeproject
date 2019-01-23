@@ -27,13 +27,46 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 const uploadPOST = (req, res, db, moment) => {
-    console.log('da');
-    // console.log(req.body);
+    const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr, post_date} = req.body;
     const {mainimg, images} = req.files;
     console.log(title, sdesc, descr, mainimg, images, post_date);
-    console.log('FILES', req.files);
 
+    if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
+        console.log('enter all fields');
+        return res.status(400).json('Bad Request');
+    }
+    if (types.every(type => mainimg.type !== type)) {
+        console.log('Not a valid image');
+        return res.status(400).json('Bad Request');
+    }
+    let ext = getFileExtension(mainimg.name);
+    if (ext === false) {
+        console.log('Not a valid image');
+        return false;
+    }
+    let allow = 0;
+    for (let i of Object.keys(images)) {
+        if (types.every(type => images[i].type !== type)) {
+            console.log('Image not valid');
+            continue;
+        }
+        ext = getFileExtension(images[i].name);
+        if (ext === false) {
+            console.log('Image not valid lul');
+            continue;
+        }
+        allow = 1;
+    }
+    if (!allow) {
+        console.log('tuka');
+        return res.status(400).json('toa');
+    }
+    console.log('Da znaes boki raboti ova');
+
+    db.transaction(trx => {
+
+    });
     // console.log(req.files);
     return res.json(req.body).end();
 };
