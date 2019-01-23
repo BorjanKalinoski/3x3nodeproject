@@ -30,7 +30,7 @@ const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr, post_date} = req.body;
     const {mainimg, images} = req.files;
-    console.log(title, sdesc, descr, mainimg, images, post_date);
+    console.log(title, sdesc, descr, mainimg.name, images, post_date);
 
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
@@ -59,13 +59,40 @@ const uploadPOST = (req, res, db, moment) => {
         allow = 1;
     }
     if (!allow) {
-        console.log('tuka');
         return res.status(400).json('toa');
     }
     console.log('Da znaes boki raboti ova');
 
     db.transaction(trx => {
-
+        trx.insert({
+            title: title,
+            descr: descr,
+            sdesc: sdesc,
+            post_date: post_date,
+            mainimg: mainimg.name
+        })
+            .into('posts')
+            .returning('id')
+            .then(post_id => {
+                console.log('POSTOT E VNESEN');
+                images.map(image => {
+                    trx.insert({
+                        image: image.name,
+                        post_id: post_id
+                    })
+                        .into('post_images')
+                        .then(response => {
+                            console.log('SLIKA POST E VNESEN', response);
+                        })
+                        .then(trx.commit)
+                        .catch(trx.rollback);
+                });
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+    }).catch(err =>{
+        console.log('errror e', err);
+        return res.status(400).json(err);
     });
     // console.log(req.files);
     return res.json(req.body).end();
