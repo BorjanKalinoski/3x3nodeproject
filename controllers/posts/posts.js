@@ -34,7 +34,7 @@ const uploadPOST = (req, res, db, moment) => {
     console.log('SLIKA E ', images);
     console.log(title, sdesc, descr, mainimg.name, images, post_date);
 
-    if (!title || !sdesc || !descr || !mainimg.name) {
+    if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
         return res.status(400).json('Bad Request');
     }
@@ -48,6 +48,7 @@ const uploadPOST = (req, res, db, moment) => {
         return false;
     }
     let allow = 0;
+    let acceptedFiles = [];
     for (let i of Object.keys(images)) {
         if (types.every(type => images[i].type !== type)) {
             console.log('Image not valid');
@@ -59,14 +60,11 @@ const uploadPOST = (req, res, db, moment) => {
             continue;
         }
         allow = 1;
+        acceptedFiles.push(images[i]);
     }
-    console.log('mine');
     if (!allow) {
         return res.status(400).json('toa');
     }
-    console.log('mine');
-    return false;
-
     db.transaction(trx => {
         trx.insert({
             title: title,
