@@ -33,12 +33,12 @@ const uploadPOST = (req, res, db, moment) => {
 
     // console.log('SLIKA E ', images);
     // console.log(title, sdesc, descr, mainimg.name, images, post_date);
-    if (!moment(post_date).isValid()) {
-        console.log('dateerror');
-        res.status(400).json('Bad request');
-        return;
-    }
-    console.log('pdate', post_date);
+    // if (!moment(post_date).isValid()) {
+    //     console.log('dateerror');
+    //     res.status(400).json('Bad request');
+    //     return;
+    // }
+    // console.log('pdate', post_date);
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
         return res.status(400).json('Bad Request');
@@ -100,11 +100,15 @@ const uploadPOST = (req, res, db, moment) => {
                         });
                 });
                 console.log('PROMISES E:', a);
-                Promise.all(a).then(trx.commit);
+                Promise.all(a).then(()=>{
+                    console.log('da');
+                })
+                    .catch(err=>{
+                        console.log('failed', err);});
             }).catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
-        console.log(data);
+        console.log('dita', data);
         return res.json(data).end();
     })
         .catch(err => {
