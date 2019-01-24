@@ -96,6 +96,7 @@ const uploadPOST = (req, res, db, moment) => {
                     .then(trx.rollback);
                 console.log('mine', d);
                 // Promise.all(a).then();
+                return d;
             }).catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
