@@ -88,9 +88,10 @@ const uploadPOST = (req, res, db, moment) => {
                         .into('post_images')
                         .returning('id')
                         .then(image_id=>{
+                            console.log('IID', image_id);
                             db('post_images')
                                 .update({
-                                    image: `post_image${image_id}.${ext}`
+                                    image: `post_image${image_id[0]}.${ext}`
                                 }).where({id: image_id})
                                 .catch(err => console.log('kur', err))
                                 .then(response => {
