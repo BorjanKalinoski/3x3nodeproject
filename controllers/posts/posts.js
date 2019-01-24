@@ -86,7 +86,10 @@ const uploadPOST = (req, res, db, moment) => {
                         image: image.name,
                         post_id: post_id[0]
                     })
-                        .into('post_images');
+                        .into('post_images')
+                        .then(response => response.json())
+                        .catch(err=>{console.log(err,'greskAKURVo');
+                            return err;})
                 });
                 console.log('promises;', a);
                 var d = Promise.all(a).then(trx.commit)
