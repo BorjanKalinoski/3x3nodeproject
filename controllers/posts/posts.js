@@ -99,7 +99,7 @@ const uploadPOST = (req, res, db, moment) => {
                                     return response;
                                 });
                         })
-                        .then(response => res.json(response[0]))
+                        .then(response => res.json(response))
                         .catch(err => {
                             console.log(err, 'greskAKURVo');
                             return err;
