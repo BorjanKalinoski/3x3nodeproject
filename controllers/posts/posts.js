@@ -75,41 +75,35 @@ const uploadPOST = (req, res, db, moment) => {
             title: title,
             descr: descr,
             sdesc: sdesc,
-            // post_date: post_date,
             mainimg: mainimg.name
         })
             .into('posts')
             .returning('id')
             .then(post_id => {
                 let a = images.map(image => {
-                    console.log('POST ID', post_id);
-                    // console.log('image', image);
-                    //DO TUKA BOKICAAAAAAAA!
+                    console.log('POST ID', post_id[0]);
                     return trx.insert({
                         image: image.name,
                         post_id: post_id[0]
                     })
                         .into('post_images')
-                        .then(response => {
-                            console.log('response', response, 'json', response.json);
-                            return response.json();
-                            // response.json()
-                        })
                         .catch(err => {
-                            console.log('da', err);
+                            console.log('GRESKA PRI VNESUVANJE NA POST', err);
                         });
                 });
-                console.log('PROMISES E:', a);
-                Promise.all(a).then(()=>{
-                    console.log('da');
-                })
-                    .catch(err=>{
-                        console.log('failed', err);});
+                Promise.all(a).then((val) => {
+                    console.log('da', val);
+                    return trx.commit;
+                }, err => {
+                    console.log('failed', err);
+                    return trx.rollback();
+                });
             }).catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
         console.log('dita', data);
-        return res.json(data).end();
+        return res.json('GOOD').end();
+
     })
         .catch(err => {
             console.log('greska', err);
