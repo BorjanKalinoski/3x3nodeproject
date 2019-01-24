@@ -86,26 +86,18 @@ const uploadPOST = (req, res, db, moment) => {
                         image: image.name,
                         post_id: post_id[0]
                     })
-                        .into('post_images')
-                        .then(response=>{
-                            console.log('POST', response);
-                            console.log(response.json());
-                            return response.json();
-                        });
+                        .into('post_images');
                 });
-                Promise.all(a).then((val) => {
-                    console.log('da', val);
-                    return trx.commit;
-                }, err => {
-                    console.log('failed', err);
-                    return trx.rollback();
-                });
+                console.log('promises;', a);
+                var d = Promise.all(a).then(trx.commit)
+                    .then(trx.rollback);
+                console.log('mine', d);
+                // Promise.all(a).then();
             }).catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
         console.log('dita', data);
         return res.json('GOOD').end();
-
     })
         .catch(err => {
             console.log('greska', err);
