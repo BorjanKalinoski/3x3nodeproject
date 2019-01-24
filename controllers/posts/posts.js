@@ -87,9 +87,11 @@ const uploadPOST = (req, res, db, moment) => {
                         post_id: post_id[0]
                     })
                         .into('post_images')
-                        .then(response => response.json())
-                        .catch(err=>{console.log(err,'greskAKURVo');
-                            return err;})
+                        .then(response => res.json(response[0]))
+                        .catch(err => {
+                            console.log(err, 'greskAKURVo');
+                            return err;
+                        });
                 });
                 console.log('promises;', a);
                 var d = Promise.all(a).then(trx.commit)
@@ -108,6 +110,36 @@ const uploadPOST = (req, res, db, moment) => {
             return res.status(400).json(err);
         });
 };
+// db.transaction(trx => {
+//         const queries = [];
+//         const main = trx.insert({
+//             title: title,
+//             sdesc: sdesc,
+//             descr: descr,
+//             mainimg: mainimg.name,
+//             post_date: post_date
+//         })
+//             .into('posts')
+//             .returning('id')
+//             .then(post_id => {
+//                 postimages.forEach(image => {
+//                     trx('post_images')
+//                         .insert({
+//                             post_id: post_id[0],
+//                             image: image
+//                         }).then(response => {
+//                         res.json(response[0]);
+//                     });
+//                 });
+//             });
+//         queries.push(main);
+//         Promise.all(queries).then(trx.commit)
+//             .catch(trx.rollback)
+//     }).catch(err => {
+//         console.log(err);
+//         res.status(400).json('Bad Request');
+//     });
+//     res.status(200).json('Post Submitted');
 module.exports = {
     uploadPOST: uploadPOST,
     getPosts: getPosts
