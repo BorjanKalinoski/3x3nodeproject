@@ -90,12 +90,11 @@ const uploadPOST = (req, res, db, moment) => {
                         post_id: post_id[0]
                     })
                         .into('post_images')
+                        .transacting(trx)
                         .returning('*')
                         .then(response => {
                             console.log('SLIKA POST E VNESEN', response);
-                        })
-                        // .then(trx.commit)
-                        .catch(trx.rollback);
+                        });
                 });
             })
             .then(trx.commit)
