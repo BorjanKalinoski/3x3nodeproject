@@ -81,11 +81,11 @@ const uploadPOST = (req, res, db, moment) => {
             .into('posts')
             .returning('id')
             .then(post_id => {
-                images.map(image => {
+                var a = images.map(image => {
                     console.log('POST ID', post_id);
                     // console.log('image', image);
                     //DO TUKA BOKICAAAAAAAA!
-                    trx.insert({
+                    return trx.insert({
                         image: image.name,
                         post_id: post_id[0]
                     })
@@ -93,7 +93,7 @@ const uploadPOST = (req, res, db, moment) => {
                         .then(trx.commit)
                         .catch(trx.rollback);
                 });
-                console.log('da');
+                console.log('A:', a);
             })
             .then(trx.commit)
             .catch(trx.rollback);
