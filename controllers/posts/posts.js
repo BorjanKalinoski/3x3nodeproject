@@ -93,17 +93,17 @@ const uploadPOST = (req, res, db, moment) => {
                             return err;
                         });
                 });
-                console.log('promises;', a);
+                // console.log('promises;', a);
                 var d = Promise.all(a).then(trx.commit)
                     .then(trx.rollback);
-                console.log('mine', d);
+                // console.log('mine', d);
                 // Promise.all(a).then();
                 return d;
             }).catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
-        console.log('dita', data);
-        return res.json('GOOD').end();
+        console.log('DATA:', data);
+        return res.json(data).end();
     })
         .catch(err => {
             console.log('greska', err);
