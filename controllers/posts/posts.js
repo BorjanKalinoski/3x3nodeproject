@@ -83,30 +83,32 @@ const uploadPOST = (req, res, db, moment) => {
             .then(post_id => {
                 images.map(image => {
                     console.log('POST ID', post_id);
-                    console.log('image', image);
+                    // console.log('image', image);
                     //DO TUKA BOKICAAAAAAAA!
-                   trx.insert({
+                    trx.insert({
                         image: image.name,
                         post_id: post_id[0]
                     })
                         .into('post_images')
-                        .transacting(trx)
                         .returning('*')
-                        .then(response => {
-                            console.log('SLIKA POST E VNESEN', response);
+                        .then(trx.commit)
+                        .catch(err => {
+                            console.log('greska kaj post', err);
+                            trx.rollback();
                         });
                 });
-
+                console.log('da');
             })
             .then(trx.commit)
             .catch(trx.rollback);
-    }).catch(err => {
-        console.log('greska', err);
-        return res.status(400).json(err);
-    });
-
-    // console.log(req.files);
-    return res.json(req.body).end();
+    }).then(data => {
+        console.log(data);
+        return res.json(data).end();
+    })
+        .catch(err => {
+            console.log('greska', err);
+            return res.status(400).json(err);
+        });
 };
 module.exports = {
     uploadPOST: uploadPOST,
