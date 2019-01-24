@@ -87,8 +87,10 @@ const uploadPOST = (req, res, db, moment) => {
                         post_id: post_id[0]
                     })
                         .into('post_images')
-                        .catch(err => {
-                            console.log('GRESKA PRI VNESUVANJE NA POST', err);
+                        .then(response=>{
+                            console.log('POST', response);
+                            console.log(response.json());
+                            return response.json();
                         });
                 });
                 Promise.all(a).then((val) => {
