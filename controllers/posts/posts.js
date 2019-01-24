@@ -88,7 +88,8 @@ const uploadPOST = (req, res, db, moment) => {
                         .into('post_images')
                         .returning('id')
                         .then(image_id=>{
-                            console.log('IID', image_id);
+                            let ext = image.slice((image.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                            console.log('ext', ext);
                             db('post_images')
                                 .update({
                                     image: `post_image${image_id[0]}.${ext}`
@@ -108,14 +109,12 @@ const uploadPOST = (req, res, db, moment) => {
                 // console.log('promises;', a);
                 var d = Promise.all(a).then(trx.commit)
                     .catch(trx.rollback);
-                // console.log('mine', d);
-                // Promise.all(a).then();
                 return d;
             }).catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
         console.log('DATA:', data);
-        return res.json(data).end();
+        return res.json('Uploaded').end();
     })
         .catch(err => {
             console.log('greska', err);
@@ -157,6 +156,6 @@ module.exports = {
     getPosts: getPosts
 };
 function getFileExtension(filename) {
-    let ext= filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+    let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
     return !(ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'tif' && ext !== 'gif');
 }
