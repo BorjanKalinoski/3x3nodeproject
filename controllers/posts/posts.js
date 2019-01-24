@@ -81,7 +81,7 @@ const uploadPOST = (req, res, db, moment) => {
             .into('posts')
             .returning('id')
             .then(post_id => {
-                return images.map(image => {
+                let a = images.map(image => {
                     console.log('POST ID', post_id);
                     // console.log('image', image);
                     //DO TUKA BOKICAAAAAAAA!
@@ -90,12 +90,19 @@ const uploadPOST = (req, res, db, moment) => {
                         post_id: post_id[0]
                     })
                         .into('post_images')
-                        .then(trx.commit)
-                        .catch(trx.rollback);
+                        .then(response => {
+                            console.log('response', response, 'json', response.json);
+                            return response.json();
+                            // response.json()
+                        })
+                        .catch(err => {
+                            console.log('da', err);
+                        });
                 });
-            })
-            .then(trx.commit)
-            .catch(trx.rollback);
+                console.log('PROMISES E:', a);
+                Promise.all(a).then(trx.commit);
+            }).catch(err=>{
+                console.log('tuke', err);});
     }).then(data => {
         console.log(data);
         return res.json(data).end();
