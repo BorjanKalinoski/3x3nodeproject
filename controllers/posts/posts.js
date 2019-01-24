@@ -85,16 +85,16 @@ const uploadPOST = (req, res, db, moment) => {
                     console.log('POST ID', post_id);
                     console.log('image', image);
                     //DO TUKA BOKICAAAAAAAA!
-                    console.log('image.name', image.name, 'image.filename', image.originalFilename);
-                    trx.insert({
+                    return trx.insert({
                         image: image.name,
-                        post_id: post_id
+                        post_id: post_id[0]
                     })
                         .into('post_images')
                         .returning('*')
                         .then(response => {
                             console.log('SLIKA POST E VNESEN', response);
                         })
+                        // .then(trx.commit)
                         .catch(trx.rollback);
                 });
             })
