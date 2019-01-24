@@ -71,7 +71,7 @@ const uploadPOST = (req, res, db, moment) => {
         return res.status(400).json('toa');
     }
     db.transaction(trx => {
-        trx.insert({
+        return trx.insert({
             title: title,
             descr: descr,
             sdesc: sdesc,
