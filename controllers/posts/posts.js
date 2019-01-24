@@ -90,12 +90,8 @@ const uploadPOST = (req, res, db, moment) => {
                         post_id: post_id[0]
                     })
                         .into('post_images')
-                        .returning('*')
                         .then(trx.commit)
-                        .catch(err => {
-                            console.log('greska kaj post', err);
-                            trx.rollback();
-                        });
+                        .catch(trx.rollback);
                 });
                 console.log('da');
             })
