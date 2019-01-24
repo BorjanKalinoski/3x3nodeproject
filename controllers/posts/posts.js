@@ -30,7 +30,6 @@ const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr, post_date} = req.body;
     const {mainimg, images} = req.files;
-
     // console.log('SLIKA E ', images);
     // console.log(title, sdesc, descr, mainimg.name, images, post_date);
     // if (!moment(post_date).isValid()) {
@@ -87,6 +86,18 @@ const uploadPOST = (req, res, db, moment) => {
                         post_id: post_id[0]
                     })
                         .into('post_images')
+                        .returning('id')
+                        .then(image_id=>{
+                            db('post_images')
+                                .update({
+                                    image: `post_image${image_id}.${ext}`
+                                }).where({id: image_id})
+                                .catch(err => console.log('kur', err))
+                                .then(response => {
+                                    console.log('response from update is ', response);
+                                    return response;
+                                });
+                        })
                         .then(response => res.json(response[0]))
                         .catch(err => {
                             console.log(err, 'greskAKURVo');
@@ -95,7 +106,7 @@ const uploadPOST = (req, res, db, moment) => {
                 });
                 // console.log('promises;', a);
                 var d = Promise.all(a).then(trx.commit)
-                    .then(trx.rollback);
+                    .catch(trx.rollback);
                 // console.log('mine', d);
                 // Promise.all(a).then();
                 return d;
