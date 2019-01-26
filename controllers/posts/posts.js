@@ -77,8 +77,9 @@ const uploadPOST = (req, res, db, moment) => {
             mainimg: mainimg.name
         })
             .into('posts')
-            .returning('id')
+            .returning('*')
             .then(post_id => {
+                console.log(post_id);
                 let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                 let postmain = `postmain${post_id}.${ext}`;
                 db('posts')
@@ -125,10 +126,6 @@ const uploadPOST = (req, res, db, moment) => {
                 var promises = Promise.all(queries).then(trx.commit)
                     .catch(trx.rollback);
                 return promises;
-            })
-            .then(response=>{
-                console.log('tuka treba da e response od samiot post', response);
-                return response;
             })
             .catch(err=>{
                 console.log('tuke', err);});
