@@ -125,7 +125,12 @@ const uploadPOST = (req, res, db, moment) => {
                 var promises = Promise.all(queries).then(trx.commit)
                     .catch(trx.rollback);
                 return promises;
-            }).catch(err=>{
+            })
+            .then(response=>{
+                console.log('tuka treba da e response od samiot post', response);
+                return response;
+            })
+            .catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
         console.log('DATA:', data);
