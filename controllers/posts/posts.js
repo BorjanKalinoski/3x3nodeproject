@@ -108,7 +108,7 @@ const uploadPOST = (req, res, db, moment) => {
                                 });
                         })
                         .then(response=>{
-                            console.log('response:', response, response.json());
+                            console.log('response:', response);
                             return res.json('200');
                         })
                         .catch(err => {
