@@ -70,7 +70,10 @@ const uploadPOST = (req, res, db, moment) => {
         return res.status(400).json('toa');
     }
     db.transaction(trx => {
-        let maxid = db('posts').max('id');
+        let maxid = db('posts').max('id').then(response=>{
+            console.log('response for iD ', response);
+            return response;
+        });
         console.log('max ID ', maxid);
         return trx.insert({
             title: title,
