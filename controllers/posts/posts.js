@@ -30,11 +30,7 @@ const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr, post_date} = req.body;
     const {mainimg, images} = req.files;
-    // console.log('SLIKA E ', images);
-    // console.log(title, sdesc, descr, mainimg.name, images, post_date);
-
-    var localdate = moment(post_date, 'DD-MM-YYYY');
-
+    var localdate = moment(new Date(), 'DD-MM-YYYY');
     console.log('LOCALDATE ', localdate, 'VS ', localdate.toDate());
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
