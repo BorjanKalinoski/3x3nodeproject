@@ -81,17 +81,12 @@ const uploadPOST = (req, res, db, moment) => {
             .then(post_id => {
                 let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                 let postmain = `postmain${post_id}.${ext}`;
-                console.log('imgname', postmain);
                 db('posts')
                     .update({mainimg: `${postmain}`})
                     .where({id: post_id[0]})
                     .catch(err => {
-                        console.log('error updating post');
-                        // return res.status(400).json(err);
-                    })
-                    .then(response => {
-                        console.log('Updated post :', response);
-                        // return res.json(response);
+                        console.log('error updating post', err);
+                        return res.status(500).json('Error uploading post').end();
                     });
                 let a = images.map(image => {
                     console.log('POST ID', post_id[0]);
@@ -101,7 +96,7 @@ const uploadPOST = (req, res, db, moment) => {
                     })
                         .into('post_images')
                         .returning('id')
-                        .then(image_id=>{
+                        .then(image_id => {
                             console.log('img', image);
                             let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                             console.log('ext', ext);
@@ -109,13 +104,15 @@ const uploadPOST = (req, res, db, moment) => {
                                 .update({
                                     image: `post_image${image_id[0]}.${ext}`
                                 }).where({id: image_id[0]})
-                                .catch(err => console.log('kur', err))
-                                .then(response => {
-                                    console.log('response from update is ', response);
-                                    return response;
+                                .catch(err => {
+                                    console.log('kur', err);
+                                    return res.status(500).json('Error uploading post').end();
                                 });
                         })
-                        .then(response => res.json(response))
+                        .then(response => {
+                            console.log('After uploading images: response', response);
+                            res.json(response);
+                        })
                         .catch(err => {
                             console.log(err, 'greskAKURVo');
                             return err;
