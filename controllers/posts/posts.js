@@ -106,6 +106,7 @@ const uploadPOST = (req, res, db, moment) => {
                                     console.log('kur', err);
                                     return res.status(500).json('Error uploading post').end();
                                 });
+                            return 1;
                         })
                         .then(response=>{
                             console.log('response:', response);
