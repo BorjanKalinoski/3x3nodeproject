@@ -70,95 +70,77 @@ const uploadPOST = (req, res, db, moment) => {
         return res.status(400).json('toa');
     }
     db.transaction(trx => {
-        let maxid = db('posts').max('id').then(response=>{
-            console.log('response for iD ', response);
-            return response;
-        });
-        console.log('max ID ', maxid);
-        return trx.insert({
-            title: title,
-            descr: descr,
-            sdesc: sdesc,
-            mainimg: mainimg.name
-        })
-            .into('posts')
-            .returning('id')
-            .then(post_id => {
-                let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-                let postmain = `postmain${post_id[0]}.${ext}`;
-                // db('posts')
-                //     .update({mainimg: `${postmain}`})
-                //     .where({id: post_id[0]})
-                //     .catch(err => {
-                //         console.log('error updating post', err);
-                //         return res.status(500).json('Error uploading post').end();
-                //     });
-                let queries = images.map((image, ctr) => {
-
-                    let pext =image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-                    let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
-                    console.log('post_image', pimage);
-                    return trx.insert({
-                        image: pimage,
-                        post_id: post_id[0]
-                    })
-                        .into('post_images')
-                        .returning('id')
-                        .then(image_id => {
-                            console.time('pimageupload');
-                            let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-
-                            // db('post_images')
-                            //     .update({
-                            //         image: `post_image${image_id[0]}.${ext}`
-                            //     }).where({id: image_id[0]})
-                            //     .catch(err => {
-                            //         console.log('kur', err);
-                            //         return res.status(500).json('Error uploading post').end();
-                            //     });
-                            console.log('la');
-                            return {
-                                id: image_id[0],
-                                image: `post_image${image_id[0]}.${ext}`,
-                                post_id: post_id[0]
-                            };
-                        })
-                        .then(response => {
-                            console.timeEnd('pimageupload');
-                            console.log('response:', response);
-                            return response;
-                        })
-                        .catch(err => {
-                            console.log(err, 'greskAKURVo');
-                            return res.status(500).json('Error uploading post').end();
-                        });
-                });
-                var promises = Promise.all(queries)
-                    .then(trx.commit)
-                    .catch(trx.rollback);
-                return promises;
-            })
-            .catch(err => {
-                console.log('tuke', err);
-            });
-    })
-        .then(data => {
-            const post = {
-                id: data[0].post_id,
-                post_date: post_date,
+        return db('posts').max('id').then(response => {
+            console.log('vlaga lul');
+            let maxid = response[0];
+            ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+            let mainimgname = `post_main${maxid}.${ext}`;
+            console.log('name is', mainimgname);
+            return trx.insert({
                 title: title,
                 descr: descr,
                 sdesc: sdesc,
-                mainimg: mainimg.name,//imeto treba da bide postm....
-                post_images: data
-            };
-            console.log('DATA', post);//ova e celosniot post, samo treba da se dodade i post_date
-            return res.json(post).end();//samo da se dodade vo response
+                mainimg: mainimgname
+            })
+                .into('posts')
+                .returning('id')
+                .then(post_id => {
+                    let queries = images.map((image, ctr) => {
+                        let pext =image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                        let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
+                        console.log('post_image', pimage, 'for id', post_id[0]);
+                        return trx.insert({
+                            image: pimage,
+                            post_id: post_id[0]
+                        })
+                            .into('post_images')
+                            .returning('id')
+                            .then(image_id => {
+                                let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                                return {
+                                    id: image_id[0],
+                                    image: `post_image${image_id[0]}.${ext}`,
+                                    post_id: post_id[0]
+                                };
+                            })
+                            .then(response => {
+                                console.timeEnd('pimageupload');
+                                console.log('response:', response);
+                                return response;
+                            })
+                            .catch(err => {
+                                console.log(err, 'greskAKURVo');
+                                return res.status(500).json('Error uploading post').end();
+                            });
+                    });
+                    var promises = Promise.all(queries)
+                        .then(trx.commit)
+                        .catch(trx.rollback);
+                    return promises;
+                })
+                .catch(err => {
+                    console.log('tuke', err);
+                });
         })
-        .catch(err => {
-            console.log('greska', err);
-            return res.status(400).json(err);
+            .then(data => {
+                const post = {
+                    id: data[0].post_id,
+                    post_date: post_date,
+                    title: title,
+                    descr: descr,
+                    sdesc: sdesc,
+                    mainimg: mainimg.name,//imeto treba da bide postm....
+                    post_images: data
+                };
+                console.log('DATA', post);//ova e celosniot post, samo treba da se dodade i post_date
+                return res.json(post).end();//samo da se dodade vo response
+            })
+            .catch(err => {
+                console.log('greska', err);
+                return res.status(400).json(err);
+            });
         });
+
 };
 // db.transaction(trx => {
 //         const queries = [];
