@@ -122,14 +122,29 @@ const uploadPOST = (req, res, db, moment) => {
                             return res.status(500).json('Error uploading post').end();
                         });
                 });
-                var promises = Promise.all(queries).then(trx.commit)
+                var promises = Promise.all(queries)
+                    .then(trx.commit)
                     .catch(trx.rollback);
                 return promises;
             })
             .catch(err=>{
                 console.log('tuke', err);});
-    }).then(data => {
-        console.log('DATA:', data);
+    })
+        .then(data => {
+            const post = {
+                id: data[0].id,
+                title: title,
+                descr: descr,
+                sdesc: sdesc,
+                mainimg: mainimg.name
+            };
+            const responseData = {
+                post,
+                post_images: {
+                    data
+                }
+            };
+            console.log('DATA', responseData);
         return res.json('Uploaded').end();
     })
         .catch(err => {
