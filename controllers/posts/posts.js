@@ -77,7 +77,7 @@ const uploadPOST = (req, res, db, moment) => {
             mainimg: mainimg.name
         })
             .into('posts')
-            .returning('*')
+            .returning('id')
             .then(post_id => {
                 let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                 let postmain = `postmain${post_id[0]}.${ext}`;
