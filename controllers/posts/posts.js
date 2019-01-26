@@ -74,9 +74,9 @@ const uploadPOST = (req, res, db, moment) => {
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
             let maxid = response[0].max;
-            console.log('max id is', maxid, 'resp', response);
             maxid++;
             post.id = maxid;
+            console.log('id is', post.id);
             ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             let mainimgname = `post_main${maxid}.${ext}`;
             post.mainimage = mainimgname;
@@ -91,6 +91,8 @@ const uploadPOST = (req, res, db, moment) => {
                 .into('posts')
                 .returning('id')
                 .then(post_id => {
+                    post.id = post_id[0];
+                    console.log('id is', post.id);
                     let queries = images.map((image, ctr) => {
                         let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                         let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
