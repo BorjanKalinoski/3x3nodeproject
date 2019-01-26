@@ -98,17 +98,20 @@ const uploadPOST = (req, res, db, moment) => {
                         .returning('id')
                         .then(image_id => {
                             let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+
                             db('post_images')
                                 .update({
                                     image: `post_image${image_id[0]}.${ext}`
                                 }).where({id: image_id[0]})
+                                .then(response=>{
+                                    console.log('this response is', response);
+                                })
                                 .catch(err => {
                                     console.log('kur', err);
                                     return res.status(500).json('Error uploading post').end();
                                 });
-                            return 1;
                         })
-                        .then(response=>{
+                        .then(response => {
                             console.log('response:', response);
                             return res.json('200');
                         })
