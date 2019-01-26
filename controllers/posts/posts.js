@@ -85,9 +85,8 @@ const uploadPOST = (req, res, db, moment) => {
                 .into('posts')
                 .returning('id')
                 .then(post_id => {
-                    console.log('post id is', post_id);
                     let queries = images.map((image, ctr) => {
-                        let pext =image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                        let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                         let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
                         console.log('post_image', pimage, 'for id', post_id[0]);
                         return trx.insert({
@@ -96,17 +95,9 @@ const uploadPOST = (req, res, db, moment) => {
                         })
                             .into('post_images')
                             .returning('*')
-                            // .then(image_id => {
-                            //     let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-                            //     return {
-                            //         id: image_id[0],
-                            //         image: `post_image${image_id[0]}.${ext}`,
-                            //         post_id: post_id[0]
-                            //     };
-                            // })
                             .then(response => {
                                 console.log('response: AUYY', response);
-                                return response;
+                                return response[0];
                             })
                             .catch(err => {
                                 console.log(err, 'greskAKURVo');
@@ -117,6 +108,10 @@ const uploadPOST = (req, res, db, moment) => {
                         .then(trx.commit)
                         .catch(trx.rollback);
                     return promises;
+                })
+                .then(response => {
+                    console.log('response is !IMPORTANT', response);
+                   return response[0];
                 })
                 .catch(err => {
                     console.log('tuke', err);
