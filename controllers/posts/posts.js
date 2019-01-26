@@ -99,7 +99,7 @@ const uploadPOST = (req, res, db, moment) => {
                             .into('post_images')
                             .returning('*')
                             .then(response => {
-                                post.images.push(response[0]);
+                                post.post_images.push(response[0]);
                                 return response[0];
                             })
                             .catch(err => {
