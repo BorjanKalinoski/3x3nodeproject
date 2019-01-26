@@ -28,10 +28,9 @@ const getPosts = (req, res, db) => {
 };
 const uploadPOST = (req, res, db, moment) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-    const {title, sdesc, descr, post_date} = req.body;
+    const {title, sdesc, descr} = req.body;
     const {mainimg, images} = req.files;
-    var localdate = moment(new Date(), 'DD-MM-YYYY');
-    console.log('LOCALDATE ', localdate, 'VS ', localdate.toDate());
+    const post_date = moment(new Date(), 'DD-MM-YYYY').toDate();
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
         return res.status(400).json('Bad Request');
@@ -112,7 +111,6 @@ const uploadPOST = (req, res, db, moment) => {
                     return promises;
                 })
                 .then(response => {
-                    console.log('response is !IMPORTANT', response);
                    return response;
                 })
                 .catch(err => {
@@ -120,7 +118,7 @@ const uploadPOST = (req, res, db, moment) => {
                 });
         })
             .then(data => {
-                console.log('DATA:', data);
+                cosole.log('data is', data);
                 post.date = post_date;
                 console.log('data koj ja ebe,', post);
                 return res.json(post).end();//samo da se dodade vo response
