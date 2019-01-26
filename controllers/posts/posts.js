@@ -75,6 +75,7 @@ const uploadPOST = (req, res, db, moment) => {
         return db('posts').max('id').then(response => {
             let maxid = response[0].max;
             maxid++;
+            post.id = maxid;
             ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             let mainimgname = `post_main${maxid}.${ext}`;
             post.mainimage = mainimgname;
@@ -122,16 +123,8 @@ const uploadPOST = (req, res, db, moment) => {
         })
             .then(data => {
                 console.log('DATA:', data);
-
-                const post = {
-                    id: data[0].post_id,
-                    post_date: post_date,
-                    title: title,
-                    descr: descr,
-                    sdesc: sdesc,
-                    mainimg: mainimg.name,//imeto treba da bide postm....
-                    post_images: data
-                };
+                post.date = post_date;
+                console.log('data koj ja ebe,', post);
                 return res.json(post).end();//samo da se dodade vo response
             })
             .catch(err => {
