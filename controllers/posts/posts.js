@@ -33,8 +33,9 @@ const uploadPOST = (req, res, db, moment) => {
     // console.log('SLIKA E ', images);
     // console.log(title, sdesc, descr, mainimg.name, images, post_date);
 
-    var localdate = moment();
-    console.log('LOCALDATE ', localdate, 'VS ', post_date);
+    var localdate = moment(post_date, 'DD-MM-YYYY');
+
+    console.log('LOCALDATE ', localdate, 'VS ', localdate.toDate());
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
         return res.status(400).json('Bad Request');
