@@ -27,6 +27,8 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 const uploadPOST = (req, res, db, moment) => {
+    console.time('pocetok');
+    console.time('pocetok1');
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr} = req.body;
     const {mainimg, images} = req.files;
@@ -44,6 +46,7 @@ const uploadPOST = (req, res, db, moment) => {
         console.log('Not a valid image');
         return false;
     }
+    console.timeEnd('pocetok');
     let allow = 0;
     let acceptedFiles = [];
     for (let i of Object.keys(images)) {
@@ -71,6 +74,7 @@ const uploadPOST = (req, res, db, moment) => {
         post_date: post_date,
         post_images: []
     };
+    console.timeEnd('pocetok1');
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
             let maxid = response[0].max;
@@ -92,7 +96,8 @@ const uploadPOST = (req, res, db, moment) => {
                 .returning('id')
                 .then(post_id => {
                     post.id = post_id[0];
-                    console.log('id is', post.id);
+                    //if postid[0] != staroto togas update na imeto na slikata?
+                    
                     let queries = images.map((image, ctr) => {
                         let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                         let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
@@ -117,7 +122,7 @@ const uploadPOST = (req, res, db, moment) => {
                     return promises;
                 })
                 .then(response => {
-                   return response;
+                    return response;
                 })
                 .catch(err => {
                     console.log('tuke', err);
