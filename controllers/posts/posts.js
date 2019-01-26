@@ -32,11 +32,7 @@ const uploadPOST = (req, res, db, moment) => {
     const {mainimg, images} = req.files;
     // console.log('SLIKA E ', images);
     // console.log(title, sdesc, descr, mainimg.name, images, post_date);
-    if (!moment(post_date).isValid()) {
-        console.log('dateerror');
-        res.status(400).json('Bad request');
-        return;
-    }
+
 
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
@@ -69,12 +65,19 @@ const uploadPOST = (req, res, db, moment) => {
     if (!allow) {
         return res.status(400).json('toa');
     }
+    let post = {
+        title:title,
+        description:descr,
+        shortdescription: sdesc,
+    };
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
             let maxid = response[0].max;
             maxid++;
             ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             let mainimgname = `post_main${maxid}.${ext}`;
+            post.mainimage = mainimgname;
+            console.log('this is the name of the post', post.mainimage);
             console.log('name is', mainimgname);
             return trx.insert({
                 title: title,
@@ -88,7 +91,6 @@ const uploadPOST = (req, res, db, moment) => {
                     let queries = images.map((image, ctr) => {
                         let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                         let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
-                        console.log('post_image', pimage, 'for id', post_id[0]);
                         return trx.insert({
                             image: pimage,
                             post_id: post_id[0]
@@ -118,6 +120,8 @@ const uploadPOST = (req, res, db, moment) => {
                 });
         })
             .then(data => {
+                console.log('DATA:', data);
+
                 const post = {
                     id: data[0].post_id,
                     post_date: post_date,
@@ -127,7 +131,6 @@ const uploadPOST = (req, res, db, moment) => {
                     mainimg: mainimg.name,//imeto treba da bide postm....
                     post_images: data
                 };
-                console.log('DATA', post);//ova e celosniot post, samo treba da se dodade i post_date
                 return res.json(post).end();//samo da se dodade vo response
             })
             .catch(err => {
