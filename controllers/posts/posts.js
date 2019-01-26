@@ -136,15 +136,11 @@ const uploadPOST = (req, res, db, moment) => {
                 title: title,
                 descr: descr,
                 sdesc: sdesc,
-                mainimg: mainimg.name
+                mainimg: mainimg.name,
+                post_images: data
             };
-            const responseData = {
-                post,
-                post_images: {
-                    data
-                }
-            };
-            console.log('DATA', responseData);
+            console.log('DATA', post);
+
         return res.json('Uploaded').end();
     })
         .catch(err => {
