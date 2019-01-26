@@ -87,13 +87,12 @@ const uploadPOST = (req, res, db, moment) => {
                     .where({id: post_id[0]})
                     .catch(err => {
                         console.log('error updating post');
-                        return res.status(400).json(err);
+                        // return res.status(400).json(err);
                     })
                     .then(response => {
                         console.log('Updated post :', response);
-                        return res.json(response);
+                        // return res.json(response);
                     });
-                console.log('minuva');
                 let a = images.map(image => {
                     console.log('POST ID', post_id[0]);
                     return trx.insert({
@@ -103,7 +102,7 @@ const uploadPOST = (req, res, db, moment) => {
                         .into('post_images')
                         .returning('id')
                         .then(image_id=>{
-                            console.log('img',image)
+                            console.log('img', image);
                             let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                             console.log('ext', ext);
                             db('post_images')
