@@ -37,6 +37,7 @@ const uploadPOST = (req, res, db, moment) => {
         res.status(400).json('Bad request');
         return;
     }
+
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
         return res.status(400).json('Bad Request');
@@ -69,6 +70,8 @@ const uploadPOST = (req, res, db, moment) => {
         return res.status(400).json('toa');
     }
     db.transaction(trx => {
+        let maxid = db('posts').max('id');
+        console.log('max ID ', maxid);
         return trx.insert({
             title: title,
             descr: descr,
@@ -87,10 +90,13 @@ const uploadPOST = (req, res, db, moment) => {
                 //         console.log('error updating post', err);
                 //         return res.status(500).json('Error uploading post').end();
                 //     });
-                let queries = images.map(image => {
-                    console.log('POST ID', post_id[0]);
+                let queries = images.map((image, ctr) => {
+
+                    let pext =image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                    let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
+                    console.log('post_image', pimage);
                     return trx.insert({
-                        image: image.name,
+                        image: pimage,
                         post_id: post_id[0]
                     })
                         .into('post_images')
