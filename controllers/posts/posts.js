@@ -32,7 +32,6 @@ const uploadPOST = (req, res, db, moment) => {
     const {mainimg, images} = req.files;
     // console.log('SLIKA E ', images);
     // console.log(title, sdesc, descr, mainimg.name, images, post_date);
-    console.log('postdate=', post_date);
     if (!moment(post_date).isValid()) {
         console.log('dateerror');
         res.status(400).json('Bad request');
@@ -54,7 +53,6 @@ const uploadPOST = (req, res, db, moment) => {
     let allow = 0;
     let acceptedFiles = [];
     for (let i of Object.keys(images)) {
-        console.time('filteringimg');
         if (types.every(type => images[i].type !== type)) {
             console.log('Image not valid');
             continue;
@@ -66,7 +64,6 @@ const uploadPOST = (req, res, db, moment) => {
         }
         allow = 1;
         acceptedFiles.push(images[i]);
-        console.timeEnd('filteringimg');
     }
     if (!allow) {
         return res.status(400).json('toa');
@@ -83,13 +80,13 @@ const uploadPOST = (req, res, db, moment) => {
             .then(post_id => {
                 let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                 let postmain = `postmain${post_id[0]}.${ext}`;
-                db('posts')
-                    .update({mainimg: `${postmain}`})
-                    .where({id: post_id[0]})
-                    .catch(err => {
-                        console.log('error updating post', err);
-                        return res.status(500).json('Error uploading post').end();
-                    });
+                // db('posts')
+                //     .update({mainimg: `${postmain}`})
+                //     .where({id: post_id[0]})
+                //     .catch(err => {
+                //         console.log('error updating post', err);
+                //         return res.status(500).json('Error uploading post').end();
+                //     });
                 let queries = images.map(image => {
                     console.log('POST ID', post_id[0]);
                     return trx.insert({
@@ -102,14 +99,14 @@ const uploadPOST = (req, res, db, moment) => {
                             console.time('pimageupload');
                             let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
 
-                            db('post_images')
-                                .update({
-                                    image: `post_image${image_id[0]}.${ext}`
-                                }).where({id: image_id[0]})
-                                .catch(err => {
-                                    console.log('kur', err);
-                                    return res.status(500).json('Error uploading post').end();
-                                });
+                            // db('post_images')
+                            //     .update({
+                            //         image: `post_image${image_id[0]}.${ext}`
+                            //     }).where({id: image_id[0]})
+                            //     .catch(err => {
+                            //         console.log('kur', err);
+                            //         return res.status(500).json('Error uploading post').end();
+                            //     });
                             console.log('la');
                             return {
                                 id: image_id[0],
