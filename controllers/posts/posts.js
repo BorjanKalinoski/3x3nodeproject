@@ -71,9 +71,10 @@ const uploadPOST = (req, res, db, moment) => {
     }
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
-            console.log('vlaga lul');
             let maxid = response[0];
+            console.log('MAX ID is ', maxid,'resp:',response);
             ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+            console.log('ext is ', ext);
             let mainimgname = `post_main${maxid}.${ext}`;
             console.log('name is', mainimgname);
             return trx.insert({
