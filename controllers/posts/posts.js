@@ -82,10 +82,9 @@ const uploadPOST = (req, res, db, moment) => {
                 const post_id = post[0].id;
                 const imgname = post[0].mainimg;
                 const date = post[0].post_date;
-                console.log(post_id);
+
                 let ext = imgname.slice((imgname.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                 let postmain = `postmain${post_id}.${ext}`;
-
                 db('posts')
                     .update({mainimg: `${postmain}`})
                     .where({id: post_id})
@@ -117,10 +116,6 @@ const uploadPOST = (req, res, db, moment) => {
                                 post_id: post_id[0]
                             };
                         })
-                        .then(response => {
-                            console.log('response:', response);
-                            return response;
-                        })
                         .catch(err => {
                             console.log(err, 'greskAKURVo');
                             return res.status(500).json('Error uploading post').end();
@@ -128,6 +123,7 @@ const uploadPOST = (req, res, db, moment) => {
                 });
                 var promises = Promise.all(queries).then(trx.commit)
                     .catch(trx.rollback);
+                console.log('promises', promises);
                 return {
                     id: post_id,
                     sdesc: sdesc,
