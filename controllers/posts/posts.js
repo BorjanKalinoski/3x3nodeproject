@@ -74,6 +74,7 @@ const uploadPOST = (req, res, db, moment) => {
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
             let maxid = response[0].max;
+            console.log('max id is', maxid, 'resp', response);
             maxid++;
             post.id = maxid;
             ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
