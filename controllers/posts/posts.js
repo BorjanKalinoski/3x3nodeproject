@@ -118,7 +118,7 @@ const uploadPOST = (req, res, db, moment) => {
                 });
         })
             .then(data => {
-                cosole.log('data is', data);
+                console.log('data is', data);
                 post.date = post_date;
                 console.log('data koj ja ebe,', post);
                 return res.json(post).end();//samo da se dodade vo response
