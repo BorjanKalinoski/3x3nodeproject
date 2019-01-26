@@ -32,12 +32,12 @@ const uploadPOST = (req, res, db, moment) => {
     const {mainimg, images} = req.files;
     // console.log('SLIKA E ', images);
     // console.log(title, sdesc, descr, mainimg.name, images, post_date);
-    // if (!moment(post_date).isValid()) {
-    //     console.log('dateerror');
-    //     res.status(400).json('Bad request');
-    //     return;
-    // }
-    // console.log('pdate', post_date);
+    console.log('postdate=', post_date);
+    if (!moment(post_date).isValid()) {
+        console.log('dateerror');
+        res.status(400).json('Bad request');
+        return;
+    }
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
         console.log('enter all fields');
         return res.status(400).json('Bad Request');
@@ -54,6 +54,7 @@ const uploadPOST = (req, res, db, moment) => {
     let allow = 0;
     let acceptedFiles = [];
     for (let i of Object.keys(images)) {
+        console.time('filteringimg');
         if (types.every(type => images[i].type !== type)) {
             console.log('Image not valid');
             continue;
@@ -65,6 +66,7 @@ const uploadPOST = (req, res, db, moment) => {
         }
         allow = 1;
         acceptedFiles.push(images[i]);
+        console.timeEnd('filteringimg');
     }
     if (!allow) {
         return res.status(400).json('toa');
@@ -88,7 +90,7 @@ const uploadPOST = (req, res, db, moment) => {
                         console.log('error updating post', err);
                         return res.status(500).json('Error uploading post').end();
                     });
-                let queries= images.map(image => {
+                let queries = images.map(image => {
                     console.log('POST ID', post_id[0]);
                     return trx.insert({
                         image: image.name,
@@ -97,6 +99,7 @@ const uploadPOST = (req, res, db, moment) => {
                         .into('post_images')
                         .returning('id')
                         .then(image_id => {
+                            console.time('pimageupload');
                             let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
 
                             db('post_images')
@@ -107,6 +110,7 @@ const uploadPOST = (req, res, db, moment) => {
                                     console.log('kur', err);
                                     return res.status(500).json('Error uploading post').end();
                                 });
+                            console.log('la');
                             return {
                                 id: image_id[0],
                                 image: `post_image${image_id[0]}.${ext}`,
@@ -114,6 +118,7 @@ const uploadPOST = (req, res, db, moment) => {
                             };
                         })
                         .then(response => {
+                            console.timeEnd('pimageupload');
                             console.log('response:', response);
                             return response;
                         })
@@ -127,22 +132,23 @@ const uploadPOST = (req, res, db, moment) => {
                     .catch(trx.rollback);
                 return promises;
             })
-            .catch(err=>{
-                console.log('tuke', err);});
+            .catch(err => {
+                console.log('tuke', err);
+            });
     })
         .then(data => {
             const post = {
-                id: data[0].id,
+                id: data[0].post_id,
+                post_date: post_date,
                 title: title,
                 descr: descr,
                 sdesc: sdesc,
-                mainimg: mainimg.name,
+                mainimg: mainimg.name,//imeto treba da bide postm....
                 post_images: data
             };
-            console.log('DATA', post);
-
-        return res.json('Uploaded').end();
-    })
+            console.log('DATA', post);//ova e celosniot post, samo treba da se dodade i post_date
+            return res.json(post).end();//samo da se dodade vo response
+        })
         .catch(err => {
             console.log('greska', err);
             return res.status(400).json(err);
