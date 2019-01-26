@@ -88,7 +88,7 @@ const uploadPOST = (req, res, db, moment) => {
                         console.log('error updating post', err);
                         return res.status(500).json('Error uploading post').end();
                     });
-                let a = images.map(image => {
+                let queries= images.map(image => {
                     console.log('POST ID', post_id[0]);
                     return trx.insert({
                         image: image.name,
@@ -97,9 +97,7 @@ const uploadPOST = (req, res, db, moment) => {
                         .into('post_images')
                         .returning('id')
                         .then(image_id => {
-                            console.log('img', image);
                             let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-                            console.log('ext', ext);
                             db('post_images')
                                 .update({
                                     image: `post_image${image_id[0]}.${ext}`
@@ -109,19 +107,18 @@ const uploadPOST = (req, res, db, moment) => {
                                     return res.status(500).json('Error uploading post').end();
                                 });
                         })
-                        .then(response => {
-                            console.log('After uploading images: response', response);
-                            res.json(response);
+                        .then(response=>{
+                            console.log('response:', response, response.json());
+                            return res.json('200');
                         })
                         .catch(err => {
                             console.log(err, 'greskAKURVo');
-                            return err;
+                            return res.status(500).json('Error uploading post').end();
                         });
                 });
-                // console.log('promises;', a);
-                var d = Promise.all(a).then(trx.commit)
+                var promises = Promise.all(queries).then(trx.commit)
                     .catch(trx.rollback);
-                return d;
+                return promises;
             }).catch(err=>{
                 console.log('tuke', err);});
     }).then(data => {
