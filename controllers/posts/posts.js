@@ -63,9 +63,12 @@ const uploadPOST = (req, res, db, moment) => {
         return res.status(400).json('toa');
     }
     let post = {
+        id: '',
         title:title,
         description:descr,
         shortdescription: sdesc,
+        mainimage: '',
+        post_date: post_date,
         post_images: []
     };
     db.transaction(trx => {
@@ -118,48 +121,14 @@ const uploadPOST = (req, res, db, moment) => {
                 });
         })
             .then(data => {
-                console.log('data is', data);
-                post.date = post_date;
-                console.log('data koj ja ebe,', post);
-                return res.json(post).end();//samo da se dodade vo response
+                return res.json(post).end();
             })
             .catch(err => {
                 console.log('greska', err);
                 return res.status(400).json(err);
             });
         });
-
 };
-// db.transaction(trx => {
-//         const queries = [];
-//         const main = trx.insert({
-//             title: title,
-//             sdesc: sdesc,
-//             descr: descr,
-//             mainimg: mainimg.name,
-//             post_date: post_date
-//         })
-//             .into('posts')
-//             .returning('id')
-//             .then(post_id => {
-//                 postimages.forEach(image => {
-//                     trx('post_images')
-//                         .insert({
-//                             post_id: post_id[0],
-//                             image: image
-//                         }).then(response => {
-//                         res.json(response[0]);
-//                     });
-//                 });
-//             });
-//         queries.push(main);
-//         Promise.all(queries).then(trx.commit)
-//             .catch(trx.rollback)
-//     }).catch(err => {
-//         console.log(err);
-//         res.status(400).json('Bad Request');
-//     });
-//     res.status(200).json('Post Submitted');
 module.exports = {
     uploadPOST: uploadPOST,
     getPosts: getPosts
