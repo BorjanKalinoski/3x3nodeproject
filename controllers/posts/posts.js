@@ -78,28 +78,31 @@ const uploadPOST = (req, res, db, moment) => {
         })
             .into('posts')
             .returning('*')
-            .then(post_id => {
+            .then(post => {
+                const post_id = post[0].id;
+                const imgname = post[0].mainimg;
+                const date = post[0].post_date;
                 console.log(post_id);
-                let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                let ext = imgname.slice((imgname.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                 let postmain = `postmain${post_id}.${ext}`;
+
                 db('posts')
                     .update({mainimg: `${postmain}`})
-                    .where({id: post_id[0]})
+                    .where({id: post_id})
                     .catch(err => {
                         console.log('error updating post', err);
                         return res.status(500).json('Error uploading post').end();
                     });
-                let queries= images.map(image => {
-                    console.log('POST ID', post_id[0]);
+                let queries = images.map(image => {
+                    console.log('POST ID', post_id);
                     return trx.insert({
                         image: image.name,
-                        post_id: post_id[0]
+                        post_id: post_id
                     })
                         .into('post_images')
                         .returning('id')
                         .then(image_id => {
                             let ext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-
                             db('post_images')
                                 .update({
                                     image: `post_image${image_id[0]}.${ext}`
@@ -125,10 +128,18 @@ const uploadPOST = (req, res, db, moment) => {
                 });
                 var promises = Promise.all(queries).then(trx.commit)
                     .catch(trx.rollback);
-                return promises;
+                return {
+                    id: post_id,
+                    sdesc: sdesc,
+                    descr: descr,
+                    mainimg: imgname,
+                    post_date: date,
+                    title: title
+                };
             })
-            .catch(err=>{
-                console.log('tuke', err);});
+            .catch(err => {
+                console.log('tuke', err);
+            });
     }).then(data => {
         console.log('DATA:', data);
         return res.json('Uploaded').end();
