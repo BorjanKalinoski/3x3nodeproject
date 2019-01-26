@@ -69,6 +69,7 @@ const uploadPOST = (req, res, db, moment) => {
         title:title,
         description:descr,
         shortdescription: sdesc,
+        post_images: []
     };
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
@@ -98,7 +99,7 @@ const uploadPOST = (req, res, db, moment) => {
                             .into('post_images')
                             .returning('*')
                             .then(response => {
-                                console.log('response: AUYY', response);
+                                post.images.push(response[0]);
                                 return response[0];
                             })
                             .catch(err => {
@@ -113,7 +114,7 @@ const uploadPOST = (req, res, db, moment) => {
                 })
                 .then(response => {
                     console.log('response is !IMPORTANT', response);
-                   return response[0];
+                   return response;
                 })
                 .catch(err => {
                     console.log('tuke', err);
