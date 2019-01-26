@@ -115,7 +115,7 @@ const uploadPOST = (req, res, db, moment) => {
                         })
                         .then(response => {
                             console.log('response:', response);
-                            return res.json('200');
+                            return response;
                         })
                         .catch(err => {
                             console.log(err, 'greskAKURVo');
