@@ -162,6 +162,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                     return;
                                 });
                                 imgWriter.on('error', (err) => {
+                                    console.log('UPLOADING PIMAGE ERROR', err);
                                     db('post_images')
                                         .del()
                                         .where({id:response[0].id}).catch(err=>{
@@ -174,7 +175,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                     return;
                                 });
                                 imgWriter.on('finish',()=>{
-                                    console.log('dd');
+                                    console.log('VLAGA TUKA FINISHIRA SLIKA');
                                     post.post_images.push(response[0]);
                                     return response[0];
                                 });
@@ -188,11 +189,11 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                     var promises = Promise.all(queries)
                         .then(trx.commit)
                         .catch(trx.rollback);
-                    writer.on('finish', () => {
+                     writer.on('finish', () => {
                         console.log('writing finished');
                         return promises;
                     });
-
+                    console.log('mine tuka a ne e finished');
                 })
                 .then(response => {
                     return response;
