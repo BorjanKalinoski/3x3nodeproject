@@ -44,7 +44,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let piFlag = 0;
         for (let i of Object.keys(images)) {
             console.log('image[i]', images[i]);
-            if (types.every(type => type !== images[i].type) || getFileExtension(images[i].name)) {
+            if (types.every(type => type !== images[i].type)) {
                 console.log('image ', images[i].name, ' bad type');
                 continue;
             }
@@ -63,18 +63,18 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         };
         let maxid = await db('posts').max('id');
         console.log('Max id is: ', maxid);
-        maxid++;
-        post.id = maxid;
+        maxid[0]++;
+        post.id = maxid[0];
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${maxid}.${ext}`;
         post.mainimage = mainimgname;
         console.log('Post is : ', post);
-        let postDB = await db('posts').insert({post}).returning('*');
+        let postDB = await db('posts').insert(post).returning('*');
         console.log('postdb is', postDB);
 
 
     } catch (err) {
-        console.log(err);
+        console.log('gres', err);
         return err;
     }
     };
