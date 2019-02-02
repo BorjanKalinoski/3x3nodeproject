@@ -29,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="192" column="53" selection-start-line="192" selection-start-column="53" selection-end-line="192" selection-end-column="53" />
+            <state relative-caret-position="266">
+              <caret line="199" column="20" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -58,8 +58,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>date</find>
-      <find>.all</find>
       <find>updat</find>
       <find>ext</find>
       <find>let a</find>
@@ -88,6 +86,8 @@
       <find>finish</find>
       <find>poststream</find>
       <find>writer</find>
+      <find>db('posts')</find>
+      <find>tuke</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -155,7 +155,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549120361976" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549120541996" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.12.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -242,12 +242,12 @@
       <workItem from="1548509318583" duration="312000" />
       <workItem from="1548542934879" duration="1204000" />
       <workItem from="1548722264346" duration="759000" />
-      <workItem from="1549114582346" duration="5633000" />
+      <workItem from="1549114582346" duration="5761000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204869000" />
+    <option name="totallyTimeSpent" value="204997000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -452,8 +452,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="192" column="53" selection-start-line="192" selection-start-column="53" selection-end-line="192" selection-end-column="53" />
+        <state relative-caret-position="266">
+          <caret line="199" column="20" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="20" />
         </state>
       </provider>
     </entry>

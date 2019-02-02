@@ -190,7 +190,13 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 })
                 .catch(err => {
                     console.log('tuke', err);
-                    return res.status(500).json(err);
+                    db('posts')
+                        .del()
+                        .where({id: post.id})
+                        .catch(err => {
+                            console.log('greska pri brisenje post od baza', err);
+                        });
+                    return res.status(500).json(err).end();
                 });
         })
             .then(data => {
