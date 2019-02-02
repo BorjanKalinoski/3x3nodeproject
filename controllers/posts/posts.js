@@ -26,6 +26,58 @@ const getPosts = (req, res, db) => {
         })
         .catch(err => console.log('er', err));
 };
+const uploadASYNC = async (req, res, db, fs, S3FSImplementation) => {
+    try {
+        const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
+        const {title, sdesc, descr} = req.body;
+        const {mainimg, images} = req.files;
+        const post_date = moment(new Date(), 'DD-MM-YYYY').toDate();
+        if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
+            console.log('Bad request');
+            return res.status(400).json('Bad Request').end();
+        }
+        if(types.every((type) => type !== mainimg.type) || getFileExtension(mainimg.name)){
+            console.log('Not a valid image type or extension');
+            return res.status(400).json('Bad Request').end();
+        }
+        let postImages = [];
+        let piFlag = 0;
+        for (let i of Object.keys(images)) {
+            console.log('image[i]', images[i]);
+            if (types.every(type => type !== images[i].type) || getFileExtension(images[i].name)) {
+                console.log('image ', images[i].name, ' bad type');
+                continue;
+            }
+            piFlag = 1;
+            postImages.push(images[i]);
+        }
+        if (!piFlag) {
+            console.log('No images were uploaded');
+        }
+        let post = {
+            title:title,
+            description:descr,
+            shortdescription: sdesc,
+            post_date: post_date,
+            // post_images: []
+        };
+        let maxid = await db('posts').max('id');
+        console.log('Max id is: ', maxid);
+        maxid++;
+        post.id = maxid;
+        let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+        let mainimgname = `post_main${maxid}.${ext}`;
+        post.mainimage = mainimgname;
+        console.log('Post is : ', post);
+        let postDB = await db('posts').insert({post}).returning('*');
+        console.log('postdb is', postDB);
+
+
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+    };
 const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr} = req.body;
@@ -221,13 +273,15 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
             })
             .catch(err => {
                 console.log('greska2', err);
-                return res.status(400).json(err);
+                return res.status(400).json(err).end();
+
             });
         });
 };
 module.exports = {
     uploadPOST: uploadPOST,
-    getPosts: getPosts
+    getPosts: getPosts,
+    uploadASYNC: uploadASYNC
 };
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
