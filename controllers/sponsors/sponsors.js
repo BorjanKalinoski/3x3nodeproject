@@ -78,6 +78,7 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let img = data[0].image;
                     let url = data[0].url;
                     let writer;
+                    console.log('image is ', img, 'path is ', sponsor.path);
                     const stream = fs.createReadStream(sponsor.path).pipe(writer = S3FSImplementation.createWriteStream(img));
                     stream.on('error', (err) => {
                         if (err) {

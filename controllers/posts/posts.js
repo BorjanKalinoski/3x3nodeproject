@@ -106,7 +106,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                     post.id = post_id[0];
                     console.log('path', mainimg.path);
                     let writer;
-                    console.log('postmainimg', post.mainimage);
+                    console.log('postmainimg', post.mainimage, 'path is ',mainimg.path);
                     const postStream = fs.createWriteStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
                     postStream.on('error', (err) => {
                         console.log('Greska pri upload ', err);
