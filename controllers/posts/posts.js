@@ -48,7 +48,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
     let acceptedFiles = [];
     for (let i of Object.keys(images)) {
         if (types.every(type => images[i].type !== type)) {
-            console.log('Image not valid');
+            console.log('Image not valid',images[i]);
             continue;
         }
         ext = getFileExtension(images[i].name);
