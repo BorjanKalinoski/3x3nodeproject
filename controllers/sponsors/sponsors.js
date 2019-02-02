@@ -80,7 +80,13 @@ const uploadSponsor = (req, res, db, urlExists, fs, S3FSImplementation) => {
                     let writer;
                     const stream = fs.createReadStream(sponsor.path).pipe(writer = S3FSImplementation.createWriteStream(img));
                     stream.on('error', (err) => {
-                        return res.status(500).json('stream error', err);
+                        if (err) {
+                            console.log('da', err);
+                            db('sponsors').where({id: id[0]}).del().catch(err => {
+                                console.log('Greska pri brisenje od baza', err);
+                            });
+                            return res.status(500).json('stream error', err);
+                        }
                     });
                     writer.on('finish', () => {
                         return res.status(200).json({

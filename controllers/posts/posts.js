@@ -97,6 +97,9 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                             .then(data => {
                                 post.mainimage = data[0];
                                 console.log('UPDATED POST FOR WRONG ID, the data is ', data);
+                            })
+                            .catch(err=>{
+                                console.log('tuka ne treba', err);
                             });
                     }
                     post.id = post_id[0];
@@ -105,10 +108,26 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                     console.log('postmainimg', post.mainimage);
                     const postStream = fs.createWriteStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
                     postStream.on('error', (err) => {
-                        if(err)
+                        if (err)
                             throw err;
                         console.log('Greska pri upload ', err);
+                        db('posts')
+                            .del()
+                            .where({id: post.id})
+                            .catch(err => {
+                                console.log('greska pri brisenje post od baza', err);
+                            });
                         return res.status(500).json('Error uploading post').end();
+                    });
+                    writer.on('error', (err) => {
+                        db('posts')
+                            .del()
+                            .where({id: post.id})
+                            .catch(err => {
+                                console.log('greska pri brisenje post od baza', err);
+                            });
+                        console.log('greskaa', err);
+                        return res.status(500).json('Error uploading post',err).end();
                     });
                     let queries = images.map((image, ctr) => {
                         let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
@@ -125,6 +144,16 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                 console.log('image path is ', image.path, 'name is', pimage);
                                 const imageStream = fs.createWriteStream(image.path).pipe(imgWriter = S3FSImplementation.createWriteStream(pimage));
                                 imageStream.on('error', (err) => {
+                                    console.log('pimageStream error', err);
+                                    db('post_image').del()
+                                        .where({id: response[0].id})
+                                        .catch(err => {
+                                                console.log('greska', err);
+                                            }
+                                        );
+                                    return;
+                                });
+                                imgWriter.on('error', (err) => {
                                     db('post_images')
                                         .del()
                                         .where({id:response[0].id}).catch(err=>{
@@ -134,9 +163,9 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                         console.log('errror is', err);
                                         throw err;
                                     }
-                                    return 0;
+                                    return;
                                 });
-                                imageStream.on('finish',()=>{
+                                imgWriter.on('finish',()=>{
                                     post.post_images.push(response[0]);
                                     return response[0];
                                 });
@@ -149,7 +178,11 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                     var promises = Promise.all(queries)
                         .then(trx.commit)
                         .catch(trx.rollback);
-                    return promises;
+                    writer.on('finish', () => {
+                        console.log('writing finished');
+                        return promises;
+                    });
+
                 })
                 .then(response => {
                     return response;
@@ -159,7 +192,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 });
         })
             .then(data => {
-                postStream.on('finish', () => {
+                writer.on('finish', () => {
                     console.log('finishira');
                     return res.json(post).end();
                 });
