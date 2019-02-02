@@ -36,8 +36,8 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             console.log('Bad request');
             return res.status(400).json('Bad Request').end();
         }
-        if(types.every((type) => type !== mainimg.type)){
-            console.log('Not a valid image type or extension HERE2',mainimg);
+        if (types.every((type) => type !== mainimg.type)) {
+            console.log('Not a valid image type or extension HERE2', mainimg);
             return res.status(400).json('Bad Request').end();
         }
         let postImages = [];
@@ -55,8 +55,8 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             console.log('No images were uploaded');
         }
         let post = {
-            title:title,
-            description:descr,
+            title: title,
+            description: descr,
             shortdescription: sdesc,
             post_date: post_date,
             // post_images: []
@@ -67,7 +67,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let mainimgname = `post_main${maxid[0].max}.${ext}`;
         post.mainimage = mainimgname;
         console.log('Post is : ', post);
-        let postDB = await db('posts').insert(post).returning('*');
+        let postDB = await db('posts').insert(post);
         console.log('postdb is', postDB);
 
 
@@ -75,7 +75,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         console.log('gres', err);
         return err;
     }
-    };
+};
 const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr} = req.body;
