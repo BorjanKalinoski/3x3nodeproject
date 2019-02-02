@@ -63,10 +63,8 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         };
         let maxid = await db('posts').max('id');
         console.log('Max id is: ', maxid);
-        maxid[0]++;
-        post.id = maxid[0];
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-        let mainimgname = `post_main${maxid}.${ext}`;
+        let mainimgname = `post_main${maxid[0].max}.${ext}`;
         post.mainimage = mainimgname;
         console.log('Post is : ', post);
         let postDB = await db('posts').insert(post).returning('*');
