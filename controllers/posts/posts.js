@@ -27,8 +27,6 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 const uploadPOST = (req, res, db, moment) => {
-    console.time('pocetok');
-    console.time('pocetok1');
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr} = req.body;
     const {mainimg, images} = req.files;
@@ -46,7 +44,6 @@ const uploadPOST = (req, res, db, moment) => {
         console.log('Not a valid image');
         return false;
     }
-    console.timeEnd('pocetok');
     let allow = 0;
     let acceptedFiles = [];
     for (let i of Object.keys(images)) {
@@ -74,18 +71,14 @@ const uploadPOST = (req, res, db, moment) => {
         post_date: post_date,
         post_images: []
     };
-    console.timeEnd('pocetok1');
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
-            console.log('maxid', response);
             let maxid = response[0].max;
             maxid++;
             post.id = maxid;
             ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             let mainimgname = `post_main${maxid}.${ext}`;
             post.mainimage = mainimgname;
-            console.log('this is the name of the post', post.mainimage);
-            console.log('name is', mainimgname);
             return trx.insert({
                 title: title,
                 descr: descr,
@@ -137,7 +130,6 @@ const uploadPOST = (req, res, db, moment) => {
                 });
         })
             .then(data => {
-                console.log('dada', data);
                 return res.json(post).end();
             })
             .catch(err => {
