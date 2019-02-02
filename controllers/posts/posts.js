@@ -77,10 +77,10 @@ const uploadPOST = (req, res, db, moment) => {
     console.timeEnd('pocetok1');
     db.transaction(trx => {
         return db('posts').max('id').then(response => {
+            console.log('maxid', response);
             let maxid = response[0].max;
             maxid++;
             post.id = maxid;
-            console.log('id is', post.id);
             ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             let mainimgname = `post_main${maxid}.${ext}`;
             post.mainimage = mainimgname;
@@ -95,9 +95,17 @@ const uploadPOST = (req, res, db, moment) => {
                 .into('posts')
                 .returning('id')
                 .then(post_id => {
+                    if (post.id !== post_id[0]) {
+                        db('posts').update({
+                            id: post_id[0],
+                            mainimg: `post_main${post_id[0]}.${ext}`
+                        }).where({id: post.id})
+                            .returning('*')
+                            .then(data => {
+                                console.log('UPDATED POST FOR WRONG ID, the data is ', data);
+                            });
+                    }
                     post.id = post_id[0];
-                    //if postid[0] != staroto togas update na imeto na slikata?
-                    
                     let queries = images.map((image, ctr) => {
                         let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                         let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
@@ -129,6 +137,7 @@ const uploadPOST = (req, res, db, moment) => {
                 });
         })
             .then(data => {
+                console.log('dada', data);
                 return res.json(post).end();
             })
             .catch(err => {
