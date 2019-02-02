@@ -187,8 +187,14 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                             });
                     });
                     var promises = Promise.all(queries)
-                        .then(trx.commit)
-                        .catch(trx.rollback);
+                        .then(((values) => {
+                            console.log('aaa',values);// return values;
+                            return trx.commit;
+                            // return trx.commit();
+                        }).catch(error => {
+                            console.log(error);
+                            return trx.rollback;
+                        }));
 
                     return writer.on('finish', () => {
                         console.log('writing finished',promises);
