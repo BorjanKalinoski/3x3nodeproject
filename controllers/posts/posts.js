@@ -192,7 +192,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 });
         })
             .then(data => {
-                    return res.json(post).end();});
+                return res.json(post).end();
             })
             .catch(err => {
                 console.log('greska', err);
