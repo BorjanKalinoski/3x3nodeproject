@@ -190,6 +190,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 })
                 .catch(err => {
                     console.log('tuke', err);
+                    return res.status(500).json(err);
                 });
         })
             .then(data => {
