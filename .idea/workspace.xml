@@ -29,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="199" column="20" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="20" />
+            <state relative-caret-position="156">
+              <caret line="198" column="47" selection-start-line="198" selection-start-column="41" selection-end-line="198" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -58,14 +58,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>updat</find>
       <find>ext</find>
       <find>let a</find>
       <find>postdate=</find>
       <find>la'</find>
       <find>select</find>
       <find>RESPONSE:</find>
-      <find>greska</find>
       <find>post_im</find>
       <find>.push</find>
       <find>.id</find>
@@ -88,6 +86,8 @@
       <find>writer</find>
       <find>db('posts')</find>
       <find>tuke</find>
+      <find>postStre</find>
+      <find>greska</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -155,7 +155,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549120541996" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549120786195" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.12.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -242,12 +242,12 @@
       <workItem from="1548509318583" duration="312000" />
       <workItem from="1548542934879" duration="1204000" />
       <workItem from="1548722264346" duration="759000" />
-      <workItem from="1549114582346" duration="5761000" />
+      <workItem from="1549114582346" duration="6053000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204997000" />
+    <option name="totallyTimeSpent" value="205289000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -281,7 +281,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.33235294" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.17352942" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5033557" side_tool="true" weight="0.4970588" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -452,8 +452,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="199" column="20" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="20" />
+        <state relative-caret-position="156">
+          <caret line="198" column="47" selection-start-line="198" selection-start-column="41" selection-end-line="198" selection-end-column="47" />
         </state>
       </provider>
     </entry>

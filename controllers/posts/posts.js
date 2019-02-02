@@ -109,9 +109,9 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                     console.log('postmainimg', post.mainimage);
                     const postStream = fs.createWriteStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
                     postStream.on('error', (err) => {
+                        console.log('Greska pri upload ', err);
                         if (err)
                             throw err;
-                        console.log('Greska pri upload ', err);
                         db('posts')
                             .del()
                             .where({id: post.id})
@@ -131,6 +131,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                         return res.status(500).json('Error uploading post',err).end();
                     });
                     let queries = images.map((image, ctr) => {
+                        console.log('vlage;');
                         let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                         let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
                         return trx.insert({
@@ -140,6 +141,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                             .into('post_images')
                             .returning('*')
                             .then(response => {
+                                console.log('vlage2;');
                                 let imgWriter;
                                 console.log('postimage id :', response[0].id);
                                 console.log('image path is ', image.path, 'name is', pimage);
@@ -149,7 +151,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                     db('post_image').del()
                                         .where({id: response[0].id})
                                         .catch(err => {
-                                                console.log('greska', err);
+                                                console.log('greska1', err);
                                             }
                                         );
                                     return;
@@ -203,7 +205,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 return res.json(post).end();
             })
             .catch(err => {
-                console.log('greska', err);
+                console.log('greska2', err);
                 return res.status(400).json(err);
             });
         });
