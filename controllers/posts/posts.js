@@ -26,7 +26,7 @@ const getPosts = (req, res, db) => {
         })
         .catch(err => console.log('er', err));
 };
-const uploadASYNC = async (req, res, db, fs, S3FSImplementation) => {
+const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         const {title, sdesc, descr} = req.body;
