@@ -37,7 +37,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             return res.status(400).json('Bad Request').end();
         }
         if(types.every((type) => type !== mainimg.type) || getFileExtension(mainimg.name)){
-            console.log('Not a valid image type or extension');
+            console.log('Not a valid image type or extension HERE2',mainimg.name);
             return res.status(400).json('Bad Request').end();
         }
         let postImages = [];
