@@ -26,7 +26,7 @@ const getPosts = (req, res, db) => {
         })
         .catch(err => console.log('er', err));
 };
-const uploadPOST = (req, res, db, moment) => {
+const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
     const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
     const {title, sdesc, descr} = req.body;
     const {mainimg, images} = req.files;
@@ -95,10 +95,21 @@ const uploadPOST = (req, res, db, moment) => {
                         }).where({id: post.id})
                             .returning('*')
                             .then(data => {
+                                post.mainimage = data[0];
                                 console.log('UPDATED POST FOR WRONG ID, the data is ', data);
                             });
                     }
                     post.id = post_id[0];
+                    console.log('path', mainimg.path);
+                    let writer;
+                    console.log('postmainimg', post.mainimage);
+                    const postStream = fs.createWriteStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
+                    postStream.on('error', (err) => {
+                        if(err)
+                            throw err;
+                        console.log('Greska pri upload ', err);
+                        return res.status(500).json('Error uploading post').end();
+                    });
                     let queries = images.map((image, ctr) => {
                         let pext = image.name.slice((image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                         let pimage = `post_${post_id[0]}_img${ctr}.${pext}`;
@@ -109,8 +120,26 @@ const uploadPOST = (req, res, db, moment) => {
                             .into('post_images')
                             .returning('*')
                             .then(response => {
-                                post.post_images.push(response[0]);
-                                return response[0];
+                                let imgWriter;
+                                console.log('postimage id :', response[0].id);
+                                console.log('image path is ', image.path, 'name is', pimage);
+                                const imageStream = fs.createWriteStream(image.path).pipe(imgWriter = S3FSImplementation.createWriteStream(pimage));
+                                imageStream.on('error', (err) => {
+                                    db('post_images')
+                                        .del()
+                                        .where({id:response[0].id}).catch(err=>{
+                                        console.log('error deleting img',err);
+                                    });
+                                    if (err) {
+                                        console.log('errror is', err);
+                                        throw err;
+                                    }
+                                    return 0;
+                                });
+                                imageStream.on('finish',()=>{
+                                    post.post_images.push(response[0]);
+                                    return response[0];
+                                });
                             })
                             .catch(err => {
                                 console.log(err, 'greskAKURVo');
@@ -130,7 +159,10 @@ const uploadPOST = (req, res, db, moment) => {
                 });
         })
             .then(data => {
-                return res.json(post).end();
+                postStream.on('finish', () => {
+                    console.log('finishira');
+                    return res.json(post).end();
+                });
             })
             .catch(err => {
                 console.log('greska', err);
