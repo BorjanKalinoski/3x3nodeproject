@@ -120,6 +120,9 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                             throw err;
                         return res.status(500).json('Error uploading post').end();
                     });
+                    writer.on('finish', () => {
+                        console.log('writing finished');
+                    });
                     writer.on('error', (err) => {
                         console.log('greskaa', err);
                         db('posts')
@@ -189,10 +192,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                     var promises = Promise.all(queries)
                         .then(trx.commit)
                         .catch(trx.rollback);
-                     writer.on('finish', () => {
-                        console.log('writing finished');
-                        return promises;
-                    });
+                    return promises;
                     console.log('mine tuka a ne e finished');
                 })
                 .then(response => {
@@ -210,6 +210,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 });
         })
             .then(data => {
+                console.log('dejta', data);
                 return res.json(post).end();
             })
             .catch(err => {
