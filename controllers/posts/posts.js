@@ -74,7 +74,8 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             descr: post.description,
             mainimg: post.mainimage,
             post_date: post.post_date
-        });
+        }).returning('*');
+
         console.log('postdb is', postDB);
 
 
