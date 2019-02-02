@@ -88,12 +88,13 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 .into('posts')
                 .returning('id')
                 .then(post_id => {
-                    console.log('vlaga', post_id);
+                    console.log('postid=', post_id[0], 'vs', post.id);
                     if (post.id !== post_id[0]) {
+                        console.log('tuka ?');
                         db('posts').update({
                             id: post_id[0],
                             mainimg: `post_main${post_id[0]}.${ext}`
-                        }).where({id: post.id})
+                        }).where({id: post_id[0]})
                             .returning('*')
                             .then(data => {
                                 post.mainimage = `post_main${post_id[0]}.${ext}`;
@@ -178,7 +179,6 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                     return;
                                 });
                                 imgWriter.on('finish',()=>{
-                                    console.log('VLAGA TUKA FINISHIRA SLIKA');
                                     post.post_images.push(response[0]);
                                     return response[0];
                                 });
