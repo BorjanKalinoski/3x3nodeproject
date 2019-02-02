@@ -121,13 +121,13 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                         return res.status(500).json('Error uploading post').end();
                     });
                     writer.on('error', (err) => {
+                        console.log('greskaa', err);
                         db('posts')
                             .del()
                             .where({id: post.id})
                             .catch(err => {
                                 console.log('greska pri brisenje post od baza', err);
                             });
-                        console.log('greskaa', err);
                         return res.status(500).json('Error uploading post',err).end();
                     });
                     let queries = images.map((image, ctr) => {
@@ -169,9 +169,11 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                     return;
                                 });
                                 imgWriter.on('finish',()=>{
+                                    console.log('dd');
                                     post.post_images.push(response[0]);
                                     return response[0];
                                 });
+                                console.log('da');
                             })
                             .catch(err => {
                                 console.log(err, 'greskAKURVo');

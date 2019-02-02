@@ -29,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="98" column="80" selection-start-line="98" selection-start-column="80" selection-end-line="98" selection-end-column="80" />
+            <state relative-caret-position="205">
+              <caret line="175" column="50" selection-start-line="175" selection-start-column="50" selection-end-line="175" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -38,7 +38,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
+            <state relative-caret-position="38">
               <caret line="87" column="77" selection-start-line="87" selection-start-column="77" selection-end-line="87" selection-end-column="77" />
               <folding>
                 <element signature="e#2525#2596#0" />
@@ -58,8 +58,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ext</find>
-      <find>let a</find>
       <find>postdate=</find>
       <find>la'</find>
       <find>select</find>
@@ -75,19 +73,21 @@
       <find>upload</find>
       <find>sponsor</find>
       <find>sponsor.p</find>
-      <find>UPLOADP</find>
       <find>post.id</find>
       <find>img</find>
       <find>images</find>
       <find>images.</find>
       <find>deleteSp</find>
-      <find>finish</find>
       <find>poststream</find>
-      <find>writer</find>
       <find>db('posts')</find>
       <find>tuke</find>
       <find>postStre</find>
       <find>greska</find>
+      <find>the data is</find>
+      <find>UPLOADP</find>
+      <find>finish</find>
+      <find>writer</find>
+      <find>writer.on</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -155,7 +155,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549122388437" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549122622797" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.12.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -242,12 +242,12 @@
       <workItem from="1548509318583" duration="312000" />
       <workItem from="1548542934879" duration="1204000" />
       <workItem from="1548722264346" duration="759000" />
-      <workItem from="1549114582346" duration="6315000" />
+      <workItem from="1549114582346" duration="6611000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="205551000" />
+    <option name="totallyTimeSpent" value="205847000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -281,7 +281,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.4779412" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.46470588" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5033557" side_tool="true" weight="0.4970588" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -442,7 +442,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
+        <state relative-caret-position="38">
           <caret line="87" column="77" selection-start-line="87" selection-start-column="77" selection-end-line="87" selection-end-column="77" />
           <folding>
             <element signature="e#2525#2596#0" />
@@ -452,8 +452,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="98" column="80" selection-start-line="98" selection-start-column="80" selection-end-line="98" selection-end-column="80" />
+        <state relative-caret-position="205">
+          <caret line="175" column="50" selection-start-line="175" selection-start-column="50" selection-end-line="175" selection-end-column="50" />
         </state>
       </provider>
     </entry>
