@@ -191,10 +191,9 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                         .catch(trx.rollback);
 
                     return writer.on('finish', () => {
-                        console.log('writing finished');
+                        console.log('writing finished',promises);
                         return promises;
                     });
-                    console.log('mine tuka a ne e finished');
                 })
                 .then(response => {
                     return response;
