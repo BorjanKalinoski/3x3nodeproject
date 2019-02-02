@@ -178,11 +178,11 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                     }
                                     return;
                                 });
-                                imgWriter.on('finish',()=>{
+                                return imgWriter.on('finish',()=>{
+                                    console.log('se finishira slika 0');
                                     post.post_images.push(response[0]);
                                     return response[0];
                                 });
-                                console.log('da');
                             })
                             .catch(err => {
                                 console.log(err, 'greskAKURVo');
@@ -210,7 +210,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 });
         })
             .then(data => {
-                console.log('dejta', data);
+                console.log('se finishira prakjanje na post');
                 return res.json(post).end();
             })
             .catch(err => {
