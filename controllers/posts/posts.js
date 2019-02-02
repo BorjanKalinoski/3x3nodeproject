@@ -96,8 +96,8 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                         }).where({id: post.id})
                             .returning('*')
                             .then(data => {
-                                post.mainimage = data[0];
-                                console.log('UPDATED POST FOR WRONG ID, the data is ', data);
+                                post.mainimage = `post_main${post_id[0]}.${ext}`
+                                console.log('UPDATED POST FOR WRONG ID, the data is ', `post_main${post_id[0]}.${ext}`);
                             })
                             .catch(err=>{
                                 console.log('tuka ne treba', err);
