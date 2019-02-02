@@ -68,6 +68,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
         console.log('Post is : ', post);
+        //no need to wait for this insert
         let postDB = await db('posts').insert({
             title: title,
             sdesc: post.shortdescription,
@@ -75,12 +76,25 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             mainimg: post.mainimage,
             post_date: post.post_date
         }).returning('*');
+        console.log(postDB[0].id, ' vs', post.id);
+        if (postDB[0].id !== post.id) {
+            db('posts').update({id: post.id}).where({id: post.id}).catch(err => throw err);
+        }
+        let imageStream = fs.createReadStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
+        console.log('imageuploading is ', imageStream);
 
+        for await(let i of postImages) {
+            ext = postImages[i].name.slice((postImages[i].name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+            postImages[i].name = `post_${post.id}_img${i}.${ext}`;
+            console.log('postimage is', postImages[i].name);
+            let pimageStream = fs.createReadStream(postImages[i].path).pipe(S3FSImplementation.createWriteStream(postImages[i].name));
+            console.log('pipestream is ', pimageStream);
+        }
         console.log('postdb is', postDB);
 
 
     } catch (err) {
-        console.log('gres', err);
+        console.log('greskata e:', err);
         return err;
     }
 };
