@@ -46,7 +46,6 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
     }
     let allow = 0;
     let acceptedFiles = [];
-    console.log('images are', images);
     for (let i of Object.keys(images)) {
         if (types.every(type => images[i].type !== type)) {
             console.log('Image not valid',images[i]);
@@ -89,6 +88,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                 .into('posts')
                 .returning('id')
                 .then(post_id => {
+                    console.log('vlaga', post_id);
                     if (post.id !== post_id[0]) {
                         db('posts').update({
                             id: post_id[0],
@@ -96,7 +96,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                         }).where({id: post.id})
                             .returning('*')
                             .then(data => {
-                                post.mainimage = `post_main${post_id[0]}.${ext}`
+                                post.mainimage = `post_main${post_id[0]}.${ext}`;
                                 console.log('UPDATED POST FOR WRONG ID, the data is ', `post_main${post_id[0]}.${ext}`);
                             })
                             .catch(err=>{
@@ -110,14 +110,14 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                     const postStream = fs.createWriteStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
                     postStream.on('error', (err) => {
                         console.log('Greska pri upload ', err);
-                        if (err)
-                            throw err;
                         db('posts')
                             .del()
                             .where({id: post.id})
                             .catch(err => {
                                 console.log('greska pri brisenje post od baza', err);
                             });
+                        if (err)
+                            throw err;
                         return res.status(500).json('Error uploading post').end();
                     });
                     writer.on('error', (err) => {
@@ -128,6 +128,9 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                             .catch(err => {
                                 console.log('greska pri brisenje post od baza', err);
                             });
+                        if (err) {
+                            throw err;
+                        }
                         return res.status(500).json('Error uploading post',err).end();
                     });
                     let queries = images.map((image, ctr) => {
@@ -154,6 +157,8 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
                                                 console.log('greska1', err);
                                             }
                                         );
+                                    if (err)
+                                        throw err;
                                     return;
                                 });
                                 imgWriter.on('error', (err) => {
