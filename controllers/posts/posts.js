@@ -135,6 +135,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         // let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
         let ctr = 0;
         console.log('UPLOAD MAIN IS ', uploadmain, ' yaayy');
+        post.post_images = [];
         for await(let post_image of images) {
             let pimagewriter;
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
@@ -143,14 +144,12 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             // let pimageStream = await fs.createReadStream(post_image.path).pipe(pimagewriter = S3FSImplementation.createWriteStream(post_image.name));
             let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
             console.log('minuva i tuka;', uploadpostimg);
-            // await pimageStream.on('finish', () => {
-            //     post.post_images = [];
-            //     console.log('FINISHED ', post_image.name);
-            //     post.post_images.push(post_image.name);
-            // });
-            // await pimagewriter.on('finish', () => {
-            //     console.log('here first');
-            // });
+            if (!uploadpostimg) {
+                console.log('IMAGE QUERY IS', imgquery);
+                db('post_images').del().where({id: imgquery[0].id});
+                continue;
+            }
+            post.post_images.push(post_image.name);
             ctr++;
         }
         console.log('Final post is ', post);
