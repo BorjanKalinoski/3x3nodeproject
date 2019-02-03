@@ -32,9 +32,9 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
         let imagewriter;
         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
         console.log('waiting here');
-        let a = await onHandler(imagewriter);
-        console.log('mine');
         let b = await onHandler(imageStream);
+        console.log('mine',b);
+        let a = await onHandler(imagewriter);
         console.log('A IS ', a, 'B IS ', b);
         if (!a || !b) {
             reject(0);
