@@ -121,7 +121,6 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         }).returning('*').catch((err) => {
             throw err;
         });
-
         console.log(postDB[0].id, ' vs', post.id);
         if (postDB[0].id !== post.id) {
             db('posts').update({id: post.id}).where({id: post.id}).catch(err => {
@@ -130,10 +129,14 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         console.log('waiting');
         let uploadmain = await uploadMain(mainimg.path, post.mainimage, fs, S3FSImplementation);
-        // let imagewriter;
-        // let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
         let ctr = 0;
         console.log('UPLOAD MAIN IS ', uploadmain, ' yaayy');
+        if (!uploadmain) {
+            db('posts').del().where({id: post.id}).catch(err => {
+                throw err;
+            });
+            return res.status(500).json('Error uploading post').end();
+        }
         post.post_images = [];
         for await(let post_image of images) {
             let pimagewriter;
@@ -143,14 +146,18 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             console.log('imagequery is ', imgquery);
             let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
             if (!uploadpostimg) {
-                console.log('IMAGE QUERY IS', imgquery);
                 db('post_images').del().where({id: imgquery[0].id});
                 continue;
             }
-            post.post_images.push(post_image.name);
+            post.post_images.push({
+                post_image: imgquery[0].image,
+                id: imgquery[0].id,
+                post_id: imgquery[0].post_id
+            });
             ctr++;
         }
         console.log('Final post is ', post);
+        return res.status(200).json(post);
 
     } catch (err) {
         console.log('greskata e:', err);
