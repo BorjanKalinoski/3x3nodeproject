@@ -30,11 +30,12 @@ const getPosts = (req, res, db) => {
 async function uploadMain(A, B, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
-        let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainsimage));
+        let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
+        console.log('iwriter', imagewriter, 'istream', imageStream);
         console.log('waiting here');
-        let b = await onHandler(imageStream).catch(err=>{
+        let b = await onHandler(imageStream).catch(err => {
             console.log('error is fetched', err);
-
+            return 0;
         });
         console.log('mine',b);
         let a = await onHandler(imagewriter);
@@ -48,7 +49,7 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
-        console.log('ulazi');
+        console.log('ulazi', stream);
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
