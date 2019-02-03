@@ -63,9 +63,6 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let maxid = await db('posts').max('id');
         maxid[0].max++;
         post.id = maxid[0].max;
-        // if (post.id !== maxid[0].max) {
-        //     db('posts').update({id: post.id});
-        // }
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
@@ -77,6 +74,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             mainimg: post.mainimage,
             post_date: post.post_date
         }).returning('*');
+
         console.log(postDB[0].id, ' vs', post.id);
         if (postDB[0].id !== post.id) {
             db('posts').update({id: post.id}).where({id: post.id}).catch(err => {
@@ -84,22 +82,25 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             });
         }
         let imageStream = fs.createReadStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
-        // console.log('imageuploading is ', imageStream);
+
         let ctr = 0;
         for await(let post_image of images) {
-            console.log('here post is ', post);
+
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
-            ctr++;
-            let imgquery0 = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*');
-            console.log('waiting', imgquery0);
             let imgquery = db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*');
-            console.log('query is', imgquery);
             let pimageStream = fs.createReadStream(post_image.path).pipe(S3FSImplementation.createWriteStream(post_image.name));
-            console.log('pipestream is ', pimageStream);
+            pimageStream.on('error',(err)=>{
+                throw err;
+            });
+            pimageStream.on('finish', () => {
+                post.post_images = [];
+                console.log('FINISHED ', post_image.name);
+                post.post_images.push(post_image.name);
+            });
+            ctr++;
         }
-        console.log('postdb is', postDB);
-
+        console.log('Final post is ', post);
 
     } catch (err) {
         console.log('greskata e:', err);
