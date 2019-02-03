@@ -33,21 +33,26 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
         console.log('waiting here');
         let a = await onHandler(imagewriter);
+        console.log('mine');
         let b = await onHandler(imageStream);
         console.log('A IS ', a, 'B IS ', b);
         if (!a || !b) {
-            resolve(0);
+            reject(0);
+        }else{
+            resolve(1);
         }
-        resolve(1);
     });
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
         console.log('ulazi');
         stream.on('error', (err) => {
-            resolve(0);
+            console.log('vlaga vo error');
+            let reason = new Error(err);
+            reject(reason);
         });
         stream.on('finish', () => {
+            console.log('vlaga vo finish');
             resolve(1);
         });
     });
