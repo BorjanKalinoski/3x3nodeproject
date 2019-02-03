@@ -57,21 +57,7 @@ function onHandler(stream){
         });
     });
 }
-//
-// function onHandlerB(stream) {
-//     return new Promise((resolve, reject) => {
-//         console.log('ulazi');
-//         stream.on('error', (err) => {
-//             console.log('vlaga vo error');
-//             let reason = new Error(err);
-//             reject(reason);
-//         });
-//         stream.on('finish', () => {
-//             console.log('vlaga vo finish');
-//             resolve(1);
-//         });
-//     });
-// }
+
 const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
@@ -104,7 +90,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             description: descr,
             shortdescription: sdesc,
             post_date: post_date,
-            post_images: postImages
+            // post_images: postImages
         };
         let maxid = await db('posts').max('id');
         maxid[0].max++;
@@ -139,7 +125,6 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         post.post_images = [];
         for await(let post_image of images) {
-            let pimagewriter;
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
             let imgquery = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
@@ -161,7 +146,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
 
     } catch (err) {
         console.log('greskata e:', err);
-        return err;
+        return res.status(400).json('Bad Requst');
     }
 };
 const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
