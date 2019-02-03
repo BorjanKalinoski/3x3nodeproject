@@ -26,19 +26,22 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 const getposts = async (req, res, db) => {
-    let posts = await db('posts').select('*').catch(err=>{
+    let posts = await db('posts').select('*').catch(err => {
         console.log('greska ', err);
     });
     console.log('posts are', posts);
     // posts = posts[0];
+    let data = [{},[{}]];
     for (let post of posts) {
         console.log('POST IS ', post);
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
             console.log('greska kaj postslii');
         });
         console.log('postimages are', post_images);
+        data.push(post, post_images);
     }
-    return res.json(posts[0]);
+    console.log('FULL DATA IS ', data);
+    return res.json(data);
 };
 async function uploadMain(path, name, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
