@@ -69,7 +69,6 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
-        console.log('Post is : ', post);
         //no need to wait for this insert
         let postDB = await db('posts').insert({
             title: title,
@@ -92,9 +91,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
             ctr++;
-            let imgquery0 = await db('post_images').insert({image: post_image.name, id: post.id}).returning('*');
+            let imgquery0 = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*');
             console.log('waiting', imgquery0);
-            let imgquery = db('post_images').insert({image: post_image.name, id: post.id}).returning('*');
+            let imgquery = db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*');
             console.log('query is', imgquery);
             let pimageStream = fs.createReadStream(post_image.path).pipe(S3FSImplementation.createWriteStream(post_image.name));
             console.log('pipestream is ', pimageStream);
