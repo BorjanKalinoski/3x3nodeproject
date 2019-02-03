@@ -37,8 +37,11 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
             console.log('error is fetched', err);
             return 0;
         });
-        console.log('mine',b);
-        let a = await onHandler(imagewriter);
+        console.log('mine', b);
+        let a = await onHandlerB(imagewriter).catch(err => {
+            console.log('error is fetched', err);
+            return 0;
+        });
         console.log('A IS ', a, 'B IS ', b);
         if (!a || !b) {
             reject(0);
@@ -49,7 +52,7 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
-        console.log('ulazi', stream);
+        console.log('ulazi');
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
@@ -60,6 +63,23 @@ function onHandler(stream){
             resolve(1);
         });
     });
+}
+
+function onHandlerB(stream) {
+    return new Promise((resolve, reject) => {
+        console.log('ulazi');
+        stream.on('error', (err) => {
+            console.log('vlaga vo error');
+            let reason = new Error(err);
+            reject(reason);
+        });
+        stream.on('finish', () => {
+            console.log('vlaga vo finish');
+            resolve(1);
+        });
+    });
+
+
 }
 const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
