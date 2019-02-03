@@ -86,15 +86,15 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             });
         }
         let imageStream = fs.createReadStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
-        console.log('imageuploading is ', imageStream);
+        // console.log('imageuploading is ', imageStream);
 
-        for await(let i of postImages) {
-            console.log('postimage is ', postImages[i]);
-            ext = postImages[i].name.slice((postImages[i].name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-            postImages[i].name = `post_${post.id}_img${i}.${ext}`;
-            console.log('postimage is', postImages[i].name);
-            let pimageStream = fs.createReadStream(postImages[i].path).pipe(S3FSImplementation.createWriteStream(postImages[i].name));
-            console.log('pipestream is ', pimageStream);
+        for await(let i of post.post_images) {
+            console.log('postimage is ', i, post.post_images[i]);
+            // ext = postImages[i].name.slice((postImages[i].name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+            // postImages[i].name = `post_${post.id}_img${i}.${ext}`;
+            // console.log('postimage is', postImages[i].name);
+            // let pimageStream = fs.createReadStream(postImages[i].path).pipe(S3FSImplementation.createWriteStream(postImages[i].name));
+            // console.log('pipestream is ', pimageStream);
         }
         console.log('postdb is', postDB);
 
