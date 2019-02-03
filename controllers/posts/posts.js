@@ -30,7 +30,7 @@ const getPosts = (req, res, db) => {
 async function uploadMain(A, B, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
-        let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
+        let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainsimage));
         console.log('waiting here');
         let b = await onHandler(imageStream);
         console.log('mine',b);
