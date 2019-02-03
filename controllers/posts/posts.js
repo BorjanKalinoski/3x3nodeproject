@@ -81,19 +81,24 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
                 throw err
             });
         }
-        let imageStream = fs.createReadStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
+        let imagewriter;
+        let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
 
         let ctr = 0;
         for await(let post_image of images) {
+            let pimagewriter;
 
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
-            let imgquery = db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*');
-            let pimageStream = fs.createReadStream(post_image.path).pipe(S3FSImplementation.createWriteStream(post_image.name));
+            let imgquery = db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
+            let pimageStream = await fs.createReadStream(post_image.path).pipe(pimagewriter = S3FSImplementation.createWriteStream(post_image.name));
             pimageStream.on('error',(err)=>{
                 throw err;
             });
-            pimageStream.on('finish', () => {
+            pimagewriter.on('error', (err) => {
+                throw err;
+            });
+            await pimageStream.on('finish', () => {
                 post.post_images = [];
                 console.log('FINISHED ', post_image.name);
                 post.post_images.push(post_image.name);
