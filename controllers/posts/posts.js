@@ -27,10 +27,10 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 
-async function uploadMain(A, B, fs, S3FSImplementation) {
+async function uploadMain(path, name, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
-        let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
+        let imageStream = fs.createReadStream(path).pipe(imagewriter = S3FSImplementation.createWriteStream(name));
         console.log('waiting here');
         let a = await onHandler(imagewriter).catch(err => {
             console.log('error is fetched', err);
@@ -130,7 +130,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             });
         }
         console.log('waiting');
-        let uploadmain = await uploadMain(mainimg, post, fs, S3FSImplementation);
+        let uploadmain = await uploadMain(mainimg.path, post.mainimage, fs, S3FSImplementation);
         // let imagewriter;
         // let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
         let ctr = 0;
@@ -141,8 +141,8 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
             let imgquery = db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
             // let pimageStream = await fs.createReadStream(post_image.path).pipe(pimagewriter = S3FSImplementation.createWriteStream(post_image.name));
-            let uploadmain = await uploadMain(post_image, post_image, fs, S3FSImplementation);
-            console.log('minuva i tuka;', uploadmain);
+            let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
+            console.log('minuva i tuka;', uploadpostimg);
             // await pimageStream.on('finish', () => {
             //     post.post_images = [];
             //     console.log('FINISHED ', post_image.name);
