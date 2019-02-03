@@ -26,6 +26,30 @@ const getPosts = (req, res, db) => {
         })
         .catch(err => console.log('er', err));
 };
+
+ async function uploadMain(A,B) {
+     return new Promise(async (resolve, reject) => {
+         let imagewriter;
+         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
+         let a = await onHandler(imagewriter);
+         let b = await onHandler(imageStream);
+         console.log('A IS ', a, 'B IS ', b);
+         if (!a || !b) {
+             resolve(0);
+         }
+         resolve(1);
+     });
+}
+function onHandler(stream){
+    return new Promise((resolve, reject) => {
+        stream.on('error', (err) => {
+            resolve(0);
+        });
+        stream.on('finish', () => {
+            resolve(1);
+        });
+    });
+}
 const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
@@ -73,7 +97,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             descr: post.description,
             mainimg: post.mainimage,
             post_date: post.post_date
-        }).returning('*');
+        }).returning('*').catch((err) => {
+            throw err;
+        });
 
         console.log(postDB[0].id, ' vs', post.id);
         if (postDB[0].id !== post.id) {
@@ -81,10 +107,12 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
                 throw err
             });
         }
-        let imagewriter;
-        let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
-
+        console.log('waiting');
+        let uploadmain = await uploadMain(mainimg, post);
+        // let imagewriter;
+        // let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
         let ctr = 0;
+        console.log('UPLOAD MAIN IS ', uploadmain);
         for await(let post_image of images) {
             let pimagewriter;
 
