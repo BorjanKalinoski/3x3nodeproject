@@ -29,7 +29,8 @@
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="71">
-              <caret line="35" column="59" selection-start-line="35" selection-start-column="59" selection-end-line="35" selection-end-column="59" />
+              <caret line="145" column="18" lean-forward="true" selection-start-line="145" selection-start-column="18" selection-end-line="145" selection-end-column="18" />
+              <caret line="144" column="18" selection-start-line="144" selection-start-column="18" selection-end-line="144" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -57,7 +58,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>UPLOADP</find>
       <find>poststream</find>
       <find>on('fi</find>
       <find>finish</find>
@@ -87,6 +87,7 @@
       <find>post is</find>
       <find>uploadmai</find>
       <find>here</find>
+      <find>pi</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -243,12 +244,12 @@
       <workItem from="1548722264346" duration="759000" />
       <workItem from="1549114582346" duration="11638000" />
       <workItem from="1549147940311" duration="7948000" />
-      <workItem from="1549215054219" duration="4396000" />
+      <workItem from="1549215054219" duration="4900000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="223218000" />
+    <option name="totallyTimeSpent" value="223722000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -454,7 +455,8 @@
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="71">
-          <caret line="35" column="59" selection-start-line="35" selection-start-column="59" selection-end-line="35" selection-end-column="59" />
+          <caret line="145" column="18" lean-forward="true" selection-start-line="145" selection-start-column="18" selection-end-line="145" selection-end-column="18" />
+          <caret line="144" column="18" selection-start-line="144" selection-start-column="18" selection-end-line="144" selection-end-column="18" />
         </state>
       </provider>
     </entry>

@@ -31,19 +31,13 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
-        console.log('iwriter', imagewriter, 'istream', imageStream);
         console.log('waiting here');
-        let b = await onHandler(imagewriter).catch(err => {
+        let a = await onHandler(imagewriter).catch(err => {
             console.log('error is fetched', err);
             return 0;
         });
-        console.log('mine', b);
-        let a = await onHandlerB(imageStream).catch(err => {
-            console.log('error is fetched', err);
-            return 0;
-        });
-        console.log('A IS ', a, 'B IS ', b);
-        if (!a || !b) {
+        console.log('B IS ', a);
+        if (!a) {
             reject(0);
         }else{
             resolve(1);
@@ -52,7 +46,7 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
-        console.log('ulazi');
+        // console.log('ulazi');
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
@@ -62,25 +56,24 @@ function onHandler(stream){
             console.log('vlaga vo finish');
             resolve(1);
         });
+        stream.on('')
     });
 }
-
-function onHandlerB(stream) {
-    return new Promise((resolve, reject) => {
-        console.log('ulazi');
-        stream.on('error', (err) => {
-            console.log('vlaga vo error');
-            let reason = new Error(err);
-            reject(reason);
-        });
-        stream.on('finish', () => {
-            console.log('vlaga vo finish');
-            resolve(1);
-        });
-    });
-
-
-}
+//
+// function onHandlerB(stream) {
+//     return new Promise((resolve, reject) => {
+//         console.log('ulazi');
+//         stream.on('error', (err) => {
+//             console.log('vlaga vo error');
+//             let reason = new Error(err);
+//             reject(reason);
+//         });
+//         stream.on('finish', () => {
+//             console.log('vlaga vo finish');
+//             resolve(1);
+//         });
+//     });
+// }
 const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
@@ -143,28 +136,23 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         // let imagewriter;
         // let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
         let ctr = 0;
-        console.log('UPLOAD MAIN IS ', uploadmain);
+        console.log('UPLOAD MAIN IS ', uploadmain, ' yaayy');
         for await(let post_image of images) {
             let pimagewriter;
-
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
             let imgquery = db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
-            let pimageStream = await fs.createReadStream(post_image.path).pipe(pimagewriter = S3FSImplementation.createWriteStream(post_image.name));
-            pimageStream.on('error',(err)=>{
-                throw err;
-            });
-            pimagewriter.on('error', (err) => {
-                throw err;
-            });
-            await pimageStream.on('finish', () => {
-                post.post_images = [];
-                console.log('FINISHED ', post_image.name);
-                post.post_images.push(post_image.name);
-            });
-            await pimagewriter.on('finish', () => {
-                console.log('here first');
-            });
+            // let pimageStream = await fs.createReadStream(post_image.path).pipe(pimagewriter = S3FSImplementation.createWriteStream(post_image.name));
+            let uploadmain = await uploadMain(post_image, post_image, fs, S3FSImplementation);
+            console.log('minuva i tuka;', uploadmain);
+            // await pimageStream.on('finish', () => {
+            //     post.post_images = [];
+            //     console.log('FINISHED ', post_image.name);
+            //     post.post_images.push(post_image.name);
+            // });
+            // await pimagewriter.on('finish', () => {
+            //     console.log('here first');
+            // });
             ctr++;
         }
         console.log('Final post is ', post);
