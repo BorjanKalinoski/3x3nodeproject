@@ -1,5 +1,4 @@
 const getPosts = (req, res, db) => {
-
     db('posts')
         .select('*')
         .then(posts => {
@@ -57,7 +56,6 @@ function onHandler(stream){
         });
     });
 }
-
 const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
@@ -69,14 +67,14 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             return res.status(400).json('Bad Request').end();
         }
         if (types.every((type) => type !== mainimg.type)) {
-            console.log('Not a valid image type or extension HERE2', mainimg);
+            console.log('Not a valid image type', mainimg);
             return res.status(400).json('Bad Request').end();
         }
         let postImages = [];
         let piFlag = 0;
         for (let i of Object.keys(images)) {
             if (types.every(type => type !== images[i].type)) {
-                console.log('image ', images[i].name, ' bad type');
+                console.log('Not a valid image type', images[i].name);
                 continue;
             }
             piFlag = 1;
@@ -90,7 +88,6 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             description: descr,
             shortdescription: sdesc,
             post_date: post_date,
-            // post_images: postImages
         };
         let maxid = await db('posts').max('id');
         maxid[0].max++;
@@ -113,16 +110,14 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
                 throw err
             });
         }
-        console.log('waiting');
         let uploadmain = await uploadMain(mainimg.path, post.mainimage, fs, S3FSImplementation);
-        let ctr = 0;
-        console.log('UPLOAD MAIN IS ', uploadmain, ' yaayy');
         if (!uploadmain) {
             db('posts').del().where({id: post.id}).catch(err => {
                 throw err;
             });
             return res.status(500).json('Error uploading post').end();
         }
+        let ctr = 0;
         post.post_images = [];
         for await(let post_image of images) {
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
@@ -131,27 +126,28 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             console.log('imagequery is ', imgquery);
             let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
             if (!uploadpostimg) {
-                db('post_images').del().where({id: imgquery[0].id});
+                db('post_images').del().where({id: imgquery[0].id}).catch(err => {
+                    throw err;
+                });
                 continue;
             }
             post.post_images.push({
-                post_image: imgquery[0].image,
                 id: imgquery[0].id,
+                post_image: imgquery[0].image,
                 post_id: imgquery[0].post_id
             });
             ctr++;
         }
         console.log('Final post is ', post);
         return res.status(200).json(post);
-
     } catch (err) {
         console.log('greskata e:', err);
         return res.status(400).json('Bad Requst');
     }
 };
 const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
-    const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-    const {title, sdesc, descr} = req.body;
+        const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
+        const {title, sdesc, descr} = req.body;
     const {mainimg, images} = req.files;
     const post_date = moment(new Date(), 'DD-MM-YYYY').toDate();
     if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
