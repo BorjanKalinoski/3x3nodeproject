@@ -32,10 +32,7 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
         let imagewriter;
         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
         console.log('waiting here');
-        let a = await onHandler(imagewriter).catch(err => {
-            console.log('error is fetched', err);
-            return 0;
-        });
+        let a = await onHandler(imagewriter);
         console.log('B IS ', a);
         if (!a) {
             reject(0);
@@ -46,7 +43,7 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
-        // console.log('ulazi');
+        console.log('ulazi');
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
@@ -114,7 +111,6 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
-        //no need to wait for this insert
         let postDB = await db('posts').insert({
             title: title,
             sdesc: post.shortdescription,
