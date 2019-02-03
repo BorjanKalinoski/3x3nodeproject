@@ -103,6 +103,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
                 console.log('FINISHED ', post_image.name);
                 post.post_images.push(post_image.name);
             });
+            await pimagewriter.on('finish', () => {
+                console.log('here first');
+            });
             ctr++;
         }
         console.log('Final post is ', post);
