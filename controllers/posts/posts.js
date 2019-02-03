@@ -78,7 +78,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         }).returning('*');
         console.log(postDB[0].id, ' vs', post.id);
         if (postDB[0].id !== post.id) {
-            db('posts').update({id: post.id}).where({id: post.id}).catch(err => throw err);
+            db('posts').update({id: post.id}).where({id: post.id}).catch(err => {
+                throw err
+            });
         }
         let imageStream = fs.createReadStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
         console.log('imageuploading is ', imageStream);
