@@ -49,6 +49,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
                 continue;
             }
             piFlag = 1;
+            console.log('imagei', images[i]);
             postImages.push(images[i]);
         }
         if (!piFlag) {
@@ -59,8 +60,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             description: descr,
             shortdescription: sdesc,
             post_date: post_date,
-            // post_images: []
+            post_images: postImages
         };
+        console.log('post sliki se ', post.post_images);
         let maxid = await db('posts').max('id');
         maxid[0].max++;
         post.id = maxid[0].max;
