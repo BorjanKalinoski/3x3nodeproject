@@ -66,6 +66,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         maxid[0].max++;
         post.id = maxid[0].max;
         console.log('Max id is: ', post.id, 'vs', maxid[0].max);
+        if (post.id !== maxid[0].max) {
+            db('posts').update({id: post.id});
+        }
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
@@ -86,11 +89,12 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         let imageStream = fs.createReadStream(mainimg.path).pipe(writer = S3FSImplementation.createWriteStream(post.mainimage));
         // console.log('imageuploading is ', imageStream);
-
+        let ctr = 0;
         for await(let post_image of images) {
             console.log('postimage is ', post_image);
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-            post_image.name = `post_${post.id}_img${i}.${ext}`;
+            post_image.name = `post_${post.id}_img${ctr}.${ext}`;
+            ctr++;
             console.log('postimage is', post_image.name);
             let pimageStream = fs.createReadStream(post_image.path).pipe(S3FSImplementation.createWriteStream(post_image.name));
             console.log('pipestream is ', pimageStream);
