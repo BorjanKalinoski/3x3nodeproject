@@ -27,18 +27,18 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 
- async function uploadMain(A,B) {
-     return new Promise(async (resolve, reject) => {
-         let imagewriter;
-         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
-         let a = await onHandler(imagewriter);
-         let b = await onHandler(imageStream);
-         console.log('A IS ', a, 'B IS ', b);
-         if (!a || !b) {
-             resolve(0);
-         }
-         resolve(1);
-     });
+async function uploadMain(A, B, fs, S3FSImplementation) {
+    return new Promise(async (resolve, reject) => {
+        let imagewriter;
+        let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
+        let a = await onHandler(imagewriter);
+        let b = await onHandler(imageStream);
+        console.log('A IS ', a, 'B IS ', b);
+        if (!a || !b) {
+            resolve(0);
+        }
+        resolve(1);
+    });
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
@@ -108,7 +108,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             });
         }
         console.log('waiting');
-        let uploadmain = await uploadMain(mainimg, post);
+        let uploadmain = await uploadMain(mainimg, post, fs, S3FSImplementation);
         // let imagewriter;
         // let imageStream = fs.createReadStream(mainimg.path).pipe(imagewriter = S3FSImplementation.createWriteStream(post.mainimage));
         let ctr = 0;
