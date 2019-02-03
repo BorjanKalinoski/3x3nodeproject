@@ -119,7 +119,8 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         let ctr = 0;
         post.post_images = [];
-        for await(let post_image of images) {
+        for await(let post_image of postImages) {
+            console.log('POST IMAGE IS', post_image);
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
             let imgquery = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
