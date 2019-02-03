@@ -31,7 +31,7 @@ const getposts = async (req, res, db) => {
     });
     console.log('posts are', posts);
     // posts = posts[0];
-    let data = [{},[{}]];
+    let data = [];
     for (let post of posts) {
         console.log('POST IS ', post);
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
