@@ -26,11 +26,15 @@ const getPosts = (req, res, db) => {
         .catch(err => console.log('er', err));
 };
 const getposts = async (req, res, db) => {
-    let posts = await db('posts').select('*');
-    console.log('posts are', posts[0]);
-    posts = posts[0];
+    let posts = await db('posts').select('*').catch(err=>{
+        console.log('greska ', err);
+    });
+    console.log('posts are', posts);
+    // posts = posts[0];
     for (let post of posts) {
-        let post_images = await db('post_images').select('*').where({id: post.id});
+        let post_images = await db('post_images').select('*').where({id: post.id}).catch(err => {
+            console.log('greska kaj postslii');
+        });
         console.log('postimages are', post_images);
     }
     return res.json(posts[0]);
