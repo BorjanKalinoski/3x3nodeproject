@@ -36,7 +36,6 @@ async function uploadMain(path, name, fs, S3FSImplementation) {
             console.log('error is fetched', err);
             return 0;
         });
-        console.log('B IS ', a);
         if (!a) {
             reject(0);
         }else{
@@ -140,10 +139,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             let pimagewriter;
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
-            let imgquery = db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
-            // let pimageStream = await fs.createReadStream(post_image.path).pipe(pimagewriter = S3FSImplementation.createWriteStream(post_image.name));
+            let imgquery = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
+            console.log('imagequery is ', imgquery);
             let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
-            console.log('minuva i tuka;', uploadpostimg);
             if (!uploadpostimg) {
                 console.log('IMAGE QUERY IS', imgquery);
                 db('post_images').del().where({id: imgquery[0].id});
