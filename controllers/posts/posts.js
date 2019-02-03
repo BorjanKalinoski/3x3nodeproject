@@ -32,7 +32,10 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
         let imagewriter;
         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainsimage));
         console.log('waiting here');
-        let b = await onHandler(imageStream);
+        let b = await onHandler(imageStream).catch(err=>{
+            console.log('error is fetched', err);
+
+        });
         console.log('mine',b);
         let a = await onHandler(imagewriter);
         console.log('A IS ', a, 'B IS ', b);
