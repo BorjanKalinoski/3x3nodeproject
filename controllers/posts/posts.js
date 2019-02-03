@@ -31,6 +31,7 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
+        console.log('waiting here');
         let a = await onHandler(imagewriter);
         let b = await onHandler(imageStream);
         console.log('A IS ', a, 'B IS ', b);
@@ -42,6 +43,7 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
+        console.log('ulazi');
         stream.on('error', (err) => {
             resolve(0);
         });
