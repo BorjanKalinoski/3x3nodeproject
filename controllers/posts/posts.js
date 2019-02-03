@@ -32,7 +32,8 @@ const getposts = async (req, res, db) => {
     console.log('posts are', posts);
     // posts = posts[0];
     for (let post of posts) {
-        let post_images = await db('post_images').select('*').where({id: post.id}).catch(err => {
+        console.log('POST IS ', post);
+        let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
             console.log('greska kaj postslii');
         });
         console.log('postimages are', post_images);
