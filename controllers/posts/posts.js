@@ -106,13 +106,18 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         });
         console.log(postDB[0].id, ' vs', post.id);
         if (postDB[0].id !== post.id) {
-            db('posts').update({id: post.id}).where({id: post.id}).catch(err => {
+            console.log('ulazi tue');
+            post.id = postDB[0].id;
+            let updatedpost = `post_main${post.id}.${ext}`;
+            await db('posts').update({mainimg: updatedpost}).where({id: post.id}).catch(err => {
+                console.log('gresi kaj update na post');
                 throw err
             });
         }
         let uploadmain = await uploadMain(mainimg.path, post.mainimage, fs, S3FSImplementation);
         if (!uploadmain) {
             db('posts').del().where({id: post.id}).catch(err => {
+                console.log('gresi pri delete na post');
                 throw err;
             });
             return res.status(500).json('Error uploading post').end();
@@ -128,6 +133,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
             if (!uploadpostimg) {
                 db('post_images').del().where({id: imgquery[0].id}).catch(err => {
+                    console.log('gresi pri delete na post_image');
                     throw err;
                 });
                 continue;
