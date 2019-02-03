@@ -30,7 +30,6 @@ async function uploadMain(path, name, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
         let imageStream = fs.createReadStream(path).pipe(imagewriter = S3FSImplementation.createWriteStream(name));
-        console.log('waiting here');
         let a = await onHandler(imagewriter).catch(err => {
             console.log('error is fetched', err);
             return 0;
@@ -44,7 +43,6 @@ async function uploadMain(path, name, fs, S3FSImplementation) {
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
-        console.log('ulazi');
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
@@ -113,6 +111,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
                 console.log('gresi kaj update na post');
                 throw err
             });
+            post.mainimage = updatedpost;
         }
         let uploadmain = await uploadMain(mainimg.path, post.mainimage, fs, S3FSImplementation);
         if (!uploadmain) {
@@ -125,11 +124,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let ctr = 0;
         post.post_images = [];
         for await(let post_image of postImages) {
-            console.log('POST IMAGE IS', post_image);
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
             let imgquery = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
-            console.log('imagequery is ', imgquery);
             let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
             if (!uploadpostimg) {
                 db('post_images').del().where({id: imgquery[0].id}).catch(err => {
