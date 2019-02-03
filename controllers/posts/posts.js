@@ -62,8 +62,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
             // post_images: []
         };
         let maxid = await db('posts').max('id');
-        post.id = maxid[0].max++;
-        console.log('Max id is: ', post.id);
+        maxid[0].max++;
+        post.id = maxid[0].max;
+        console.log('Max id is: ', post.id, 'vs', maxid[0].max);
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
@@ -86,6 +87,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         console.log('imageuploading is ', imageStream);
 
         for await(let i of postImages) {
+            console.log('postimage is ', postImages[i]);
             ext = postImages[i].name.slice((postImages[i].name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             postImages[i].name = `post_${post.id}_img${i}.${ext}`;
             console.log('postimage is', postImages[i].name);
