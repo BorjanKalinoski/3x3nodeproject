@@ -32,7 +32,10 @@ async function uploadMain(A, B, fs, S3FSImplementation) {
         let imagewriter;
         let imageStream = fs.createReadStream(A.path).pipe(imagewriter = S3FSImplementation.createWriteStream(B.mainimage));
         console.log('waiting here');
-        let a = await onHandler(imagewriter);
+        let a = await onHandler(imagewriter).catch(err => {
+            console.log('error is fetched', err);
+            return 0;
+        });
         console.log('B IS ', a);
         if (!a) {
             reject(0);
@@ -53,7 +56,6 @@ function onHandler(stream){
             console.log('vlaga vo finish');
             resolve(1);
         });
-        stream.on('')
     });
 }
 //
