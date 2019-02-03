@@ -43,13 +43,11 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let postImages = [];
         let piFlag = 0;
         for (let i of Object.keys(images)) {
-            console.log('image[i]', images[i]);
             if (types.every(type => type !== images[i].type)) {
                 console.log('image ', images[i].name, ' bad type');
                 continue;
             }
             piFlag = 1;
-            console.log('imagei', images[i]);
             postImages.push(images[i]);
         }
         if (!piFlag) {
@@ -65,10 +63,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         let maxid = await db('posts').max('id');
         maxid[0].max++;
         post.id = maxid[0].max;
-        console.log('Max id is: ', post.id, 'vs', maxid[0].max);
-        if (post.id !== maxid[0].max) {
-            db('posts').update({id: post.id});
-        }
+        // if (post.id !== maxid[0].max) {
+        //     db('posts').update({id: post.id});
+        // }
         let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
@@ -91,6 +88,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         // console.log('imageuploading is ', imageStream);
         let ctr = 0;
         for await(let post_image of images) {
+            console.log('here post is ', post);
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
             ctr++;
