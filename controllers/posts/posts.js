@@ -25,7 +25,16 @@ const getPosts = (req, res, db) => {
         })
         .catch(err => console.log('er', err));
 };
-
+const getposts = async (req, res, db) => {
+    let posts = await db('posts').select('*');
+    console.log('posts are', posts[0]);
+    posts = posts[0];
+    for (let post of posts) {
+        let post_images = await db('post_images').select('*').where({id: post.id});
+        console.log('postimages are', post_images);
+    }
+    return res.json(posts[0]);
+};
 async function uploadMain(path, name, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
@@ -126,8 +135,9 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         for await(let post_image of postImages) {
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
-            let imgquery = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*'), writer;
+            let imgquery = await db('post_images').insert({image: post_image.name, post_id: post.id}).returning('*');
             let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
+            console.log('finish is ', uploadpostimg);
             if (!uploadpostimg) {
                 db('post_images').del().where({id: imgquery[0].id}).catch(err => {
                     console.log('gresi pri delete na post_image');
@@ -146,7 +156,7 @@ const uploadASYNC = async (req, res, db, moment, fs, S3FSImplementation) => {
         return res.status(200).json(post);
     } catch (err) {
         console.log('greskata e:', err);
-        return res.status(400).json('Bad Requst');
+        return res.status(400).json('Bad Request');
     }
 };
 const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
@@ -351,7 +361,7 @@ const uploadPOST = (req, res, db, moment, fs, S3FSImplementation) => {
 };
 module.exports = {
     uploadPOST: uploadPOST,
-    getPosts: getPosts,
+    getPosts: getposts,
     uploadASYNC: uploadASYNC
 };
 function getFileExtension(filename) {
