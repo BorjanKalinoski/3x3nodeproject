@@ -1,6 +1,6 @@
 function onHandlerReturn(stream){
     return new Promise((resolve, reject) => {
-        console.log('vlaga?');
+        console.log('vlaga?', stream);
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
@@ -64,12 +64,13 @@ const getImage = async (req, res, db,S3FSImplementation) => {
         console.log('main ', m, 'id ', id);
         if (Number(m) === 1) {
             console.log('vlage');
-            const img = await db('posts').select('mainimg').where({id: id}).catch(err => {
+            let img = await db('posts').select('mainimg').where({id: id}).catch(err => {
                 throw err;
             });
+            img = img[0].mainimg;
             console.log('img', img);
             let a;
-            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0].mainimg, 'utf-8')).catch(err => {
+            const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img, 'utf-8')).catch(err => {
                 throw err;
             });
             console.log('readstream is', readStream);
