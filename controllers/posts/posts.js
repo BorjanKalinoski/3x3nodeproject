@@ -96,22 +96,22 @@ const getImage = (req, res, db,S3FSImplementation) => {
 const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-        const {title, sdesc, descr} = req.body;
-        const {mainimg, images} = req.files;
+        const {title, shortdescription, description} = req.body;
+        const {mainimage, post_images} = req.files;
         const post_date = moment(new Date(), 'DD-MM-YYYY').toDate();
-        if (!title || !sdesc || !descr || !mainimg.name || images.length === 0) {
+        if (!title || !sdesc || !descr || !mainimage.name || images.length === 0) {
             console.log('Bad request');
             return res.status(400).json('Bad Request').end();
         }
-        if (types.every((type) => type !== mainimg.type)) {
-            console.log('Not a valid image type', mainimg);
+        if (types.every((type) => type !== mainimage.type)) {
+            console.log('Not a valid image type', mainimage);
             return res.status(400).json('Bad Request').end();
         }
         let postImages = [];
         let piFlag = 0;
-        for (let i of Object.keys(images)) {
-            if (types.every(type => type !== images[i].type)) {
-                console.log('Not a valid image type', images[i].name);
+        for (let i of Object.keys(post_images)) {
+            if (types.every(type => type !== post_images[i].type)) {
+                console.log('Not a valid image type', post_images[i].name);
                 continue;
             }
             piFlag = 1;
@@ -122,14 +122,14 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         let post = {
             title: title,
-            description: descr,
-            shortdescription: sdesc,
+            description: description,
+            shortdescription: shortdescription,
             post_date: post_date,
         };
         let maxid = await db('posts').max('id');
         maxid[0].max++;
         post.id = maxid[0].max;
-        let ext = mainimg.name.slice((mainimg.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+        let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
         let mainimgname = `post_main${post.id}.${ext}`;
         post.mainimage = mainimgname;
         let postDB = await db('posts').insert({
@@ -152,7 +152,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             });
             post.mainimage = updatedpost;
         }
-        let uploadmain = await uploadMain(mainimg.path, post.mainimage, fs, S3FSImplementation);
+        let uploadmain = await uploadMain(mainimage.path, post.mainimage, fs, S3FSImplementation);
         if (!uploadmain) {
             db('posts').del().where({id: post.id}).catch(err => {
                 console.log('gresi pri delete na post');
@@ -161,7 +161,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             return res.status(500).json('Error uploading post').end();
         }
         let ctr = 0;
-        let post_images = [];
+        post.post_images = [];
         for await(let post_image of postImages) {
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
@@ -175,15 +175,15 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
                 });
                 continue;
             }
-            post_images.push({
+            post.post_images.push({
                 id: imgquery[0].id,
                 post_image: imgquery[0].image,
                 post_id: imgquery[0].post_id
             });
             ctr++;
         }
-        console.log('Final post is ', post, post_images);
-        return res.status(200).json([post, post_images]);
+        console.log('Final post is ', post, post.post_images);
+        return res.status(200).json([post, post.post_images]);
     } catch (err) {
         console.log('greskata e:', err);
         return res.status(400).json('Bad Request');
