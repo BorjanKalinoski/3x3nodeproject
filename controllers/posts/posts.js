@@ -16,16 +16,29 @@ const getPosts = async (req, res, db) => {
     return res.json(data);
 };
 const getImage = async (req, res, db,S3FSImplementation) => {
-    const id = req.params;
-    const img = await db('posts').select('mainimg').where({id: id});
-    console.log('img', img);
-    const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0], 'utf-8'));
-    console.log('readstream is', readStream);
-    if (!readStream) {
-        console.log('ulazi');
-        return false;
+    const {id, m} = req.params;
+    console.log('main ', m, 'id ', id);
+    if (m === 0) {
+        const img = await db('posts').select('mainimg').where({id: id});
+        console.log('img', img);
+        const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0], 'utf-8'));
+        console.log('readstream is', readStream);
+        if (!readStream) {
+            console.log('ulazi');
+            return false;
+        }
+        return readStream.pipe(res);
+    } else if (m === 1) {
+        const img = await db('post_images').select('*').where({id: id});
+        console.log('post_img', img);
+        const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0], 'utf-8'));
+        console.log('readstream is for PI', readStream);
+        if (!readStream) {
+            console.log('ulaziPI');
+            return false;
+        }
+        return readStream.pipe(res);
     }
-    return readStream.pipe(res);
 };
 async function uploadMain(path, name, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
