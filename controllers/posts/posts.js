@@ -63,10 +63,13 @@ const getImage = async (req, res, db,S3FSImplementation) => {
     const {id, m} = req.params;
     console.log('main ', m, 'id ', id);
     if (m === 1) {
+        console.log('vlage');
         const img = await db('posts').select('mainimg').where({id: id});
         console.log('img', img);
         let a;
-        const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0], 'utf-8'));
+        const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0], 'utf-8')).catch(err=>{
+            throw err;
+        });
         console.log('readstream is', readStream);
         if (!readStream) {
             console.log('ulazi');
