@@ -88,19 +88,7 @@ const getImage = (req, res, db,S3FSImplementation) => {
                     return res.status(500).json('Error getting image');
                 });
                 return readStream.pipe(res);
-
             });
-            console.log('post_img', img);
-            let a;
-            const readStream = onHandlerReturn(S3FSImplementation.createReadStream(img[0].image, 'utf-8')).catch(err => {
-                throw err;
-            });
-            console.log('readstream is for PI', readStream);
-            if (!readStream) {
-                console.log('ulaziPI');
-                return false;
-            }
-            return a.pipe(res);
         }
 
 };
