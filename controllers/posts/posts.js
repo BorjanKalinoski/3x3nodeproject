@@ -38,7 +38,7 @@ const getposts = async (req, res, db) => {
             console.log('greska kaj postslii');
         });
         console.log('postimages are', post_images);
-        data.push(post, post_images);
+        data.push([post, post_images]);
     }
     console.log('FULL DATA IS ', data);
     return res.json(data);
