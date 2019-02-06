@@ -116,6 +116,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             console.log('Bad request');
             return res.status(400).json('Bad Request').end();
         }
+        console.log('mainimg', mainimage);
         if (types.every((type) => type !== mainimage.type)) {
             console.log('Not a valid image type', mainimage);
             return res.status(400).json('Bad Request').end();
@@ -174,7 +175,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             return res.status(500).json('Error uploading post').end();
         }
         let ctr = 0;
-        post.post_images = [];
+        let pimages = [];
         for await(let post_image of postImages) {
             ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             post_image.name = `post_${post.id}_img${ctr}.${ext}`;
@@ -188,15 +189,15 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
                 });
                 continue;
             }
-            post.post_images.push({
+            pimages.push({
                 id: imgquery[0].id,
                 post_image: imgquery[0].image,
                 post_id: imgquery[0].post_id
             });
             ctr++;
         }
-        console.log('Final post is ', post, post.post_images);
-        return res.status(200).json([post, post.post_images]);
+        console.log('Final post is ', post, pimages);
+        return res.status(200).json([post, pimages]);
     } catch (err) {
         console.log('greskata e:', err);
         return res.status(400).json('Bad Request');
