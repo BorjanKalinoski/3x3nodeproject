@@ -50,47 +50,56 @@ const getPosts = async (req, res, db) => {
     // posts = posts[0];
     let data = [];
     for (let post of posts) {
+        let local = {
+            id: post.id,
+            mainimage: post.mainimg,
+            shortdescription: post.sdesc,
+            description:post.description,
+            post_date:post.post_date,
+            title:post.title,
+        };
         console.log('POST IS ', post);
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
             console.log('greska kaj postslii');
         });
-        data.push([post, post_images]);
+        data.push([local, post_images]);
     }
     console.log('FULL DATA IS ', data);
     return res.json(data);
 };
-const getImage = (req, res, db,S3FSImplementation) => {
-        const {id, m} = req.params;
-        console.log('main ', m, 'id ', id);
-        if (Number(m) === 1) {
-            db('posts').select('mainimg')
-                .where({id: id})
-                .then(img => {
-                    let image = img[0].mainimg;
-                    let readStream = S3FSImplementation.createReadStream(image, 'utf-8');
-                    readStream.on('error', (err) => {
-                        console.log('error postmains3', err);
-                        return res.status(500).json('Error getting image');
-                    });
-                    return readStream.pipe(res);
-                }).catch(err => {
-                    console.log('Error postMain', err);
-                    return res.status(500).json('Error getting image');
-                });
-            }
-            else {
-            console.log('vlage tuke');
-            db('post_images').select('*').where({id: id}).then(img => {
-                let image = img[0].image;
+const getImage = (req, res, db, S3FSImplementation) => {
+    const {id, m} = req.params;
+    console.log('main ', m, 'id ', id);
+    if (isNaN(id)) {
+        console.log('pagja');
+    }
+    if (Number(m) === 1) {
+        db('posts').select('mainimg')
+            .where({id: id})
+            .then(img => {
+                let image = img[0].mainimg;
                 let readStream = S3FSImplementation.createReadStream(image, 'utf-8');
                 readStream.on('error', (err) => {
                     console.log('error postmains3', err);
                     return res.status(500).json('Error getting image');
                 });
                 return readStream.pipe(res);
+            }).catch(err => {
+            console.log('Error postMain', err);
+            return res.status(500).json('Error getting image');
+        });
+    } else if (Number(m) === 0) {
+        console.log('vlage tuke');
+        db('post_images').select('*').where({id: id}).then(img => {
+            let image = img[0].image;
+            let readStream = S3FSImplementation.createReadStream(image, 'utf-8');
+            readStream.on('error', (err) => {
+                console.log('error postmains3', err);
+                return res.status(500).json('Error getting image');
             });
-        }
-
+            return readStream.pipe(res);
+        });
+    }
 };
 
 const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
