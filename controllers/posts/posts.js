@@ -64,7 +64,7 @@ const getImage = async (req, res, db,S3FSImplementation) => {
         console.log('main ', m, 'id ', id);
         if (Number(m) === 1) {
             console.log('vlage');
-            const img = await db('posts').select('*').where({id: id}).catch(err => {
+            const img = await db('posts').select('mainimg').where({id: id}).catch(err => {
                 throw err;
             });
             console.log('img', img);
