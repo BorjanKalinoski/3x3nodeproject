@@ -60,35 +60,36 @@ const getPosts = async (req, res, db) => {
 };
 const getImage = async (req, res, db,S3FSImplementation) => {
     try{
-    const {id, m} = req.params;
-    console.log('main ', m, 'id ', id);
-    if (m === 1) {
-        console.log('vlage');
-        const img = await db('posts').select('mainimg').where({id: id});
-        console.log('img', img);
-        let a;
-        const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0], 'utf-8')).catch(err=>{
-            throw err;
-        });
-        console.log('readstream is', readStream);
-        if (!readStream) {
-            console.log('ulazi');
-            return false;
+        const {id, m} = req.params;
+        console.log('main ', m, 'id ', id);
+        if (m === 1) {
+            console.log('vlage');
+            const img = await db('posts').select('mainimg').where({id: id});
+            console.log('img', img);
+            let a;
+            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0], 'utf-8')).catch(err=>{
+                throw err;
+            });
+            console.log('readstream is', readStream);
+            if (!readStream) {
+                console.log('ulazi');
+                return false;
+            }
+            return a.pipe(res);
+        } else if (m === 0) {
+            const img = await db('post_images').select('*').where({id: id});
+            console.log('post_img', img);
+            let a;
+            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0].image, 'utf-8')).catch(err => {
+                throw err;
+            });
+            console.log('readstream is for PI', readStream);
+            if (!readStream) {
+                console.log('ulaziPI');
+                return false;
+            }
+            return a.pipe(res);
         }
-        return a.pipe(res);
-    } else if (m === 0) {
-        const img = await db('post_images').select('*').where({id: id});
-        console.log('post_img', img);
-        const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0].image, 'utf-8')).catch(err => {
-            err;
-        });
-        console.log('readstream is for PI', readStream);
-        if (!readStream) {
-            console.log('ulaziPI');
-            return false;
-        }
-        return readStream.pipe(res);
-    }
     }
     catch (e) {
         console.log(e);
