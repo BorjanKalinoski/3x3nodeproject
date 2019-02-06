@@ -59,32 +59,30 @@ const getPosts = async (req, res, db) => {
     console.log('FULL DATA IS ', data);
     return res.json(data);
 };
-const getImage = async (req, res, db,S3FSImplementation) => {
-    try{
+const getImage = (req, res, db,S3FSImplementation) => {
         const {id, m} = req.params;
         console.log('main ', m, 'id ', id);
         if (Number(m) === 1) {
-            console.log('vlage');
-            let img = await db('posts').select('mainimg').where({id: id}).catch(err => {
-                throw err;
+            db('posts').select('mainimg')
+                .where({id: id}).catch(err => {
+                console.log('Error postMain', err);
+                return res.status(500).json('Error getting image');
+            }).then(img => {
+                let image = img[0].mainimg;
+                let readStream = S3FSImplementation.createReadStream(image, 'utf-8');
+                readStream.on('error',(err)=>{
+                    console.log('error postmains3', err);
+                    return res.status(500).json('Error getting image');
+                })
+                return readStream.pipe(res);
+
             });
-            img = img[0].mainimg;
-            console.log('img', img);
-            const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img, 'utf-8')).catch(err => {
-                throw err;
-            });
-            console.log('readstream is', readStream);
-            if (!readStream) {
-                console.log('ulazi');
-                return false;
-            }
-            return readStream.pipe(res);
         } else {
             console.log('vlage tuke');
             const img = await db('post_images').select('*').where({id: id});
             console.log('post_img', img);
             let a;
-            const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0].image, 'utf-8')).catch(err => {
+            const readStream =  onHandlerReturn(S3FSImplementation.createReadStream(img[0].image, 'utf-8')).catch(err => {
                 throw err;
             });
             console.log('readstream is for PI', readStream);
@@ -94,12 +92,7 @@ const getImage = async (req, res, db,S3FSImplementation) => {
             }
             return a.pipe(res);
         }
-    }
-    catch (e) {
-        console.log(e);
-        return res.status(500).json('error getting image', e);
 
-    }
 };
 
 const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
