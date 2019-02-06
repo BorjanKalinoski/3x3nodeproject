@@ -46,8 +46,6 @@ const getPosts = async (req, res, db) => {
     let posts = await db('posts').select('*').catch(err => {
         console.log('greska ', err);
     });
-    console.log('posts are', posts);
-    // posts = posts[0];
     let data = [];
     for (let post of posts) {
         let local = {
@@ -60,11 +58,10 @@ const getPosts = async (req, res, db) => {
         };
         console.log('POST IS ', post);
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
-            console.log('greska kaj postslii');
+            console.log('greska kaj postslii', err);
         });
         data.push([local, post_images]);
     }
-    console.log('FULL DATA IS ', data);
     return res.json(data);
 };
 const getImage = (req, res, db, S3FSImplementation) => {
@@ -129,7 +126,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
                 continue;
             }
             piFlag = 1;
-            postImages.push(images[i]);
+            postImages.push(post_images[i]);
         }
         if (!piFlag) {
             console.log('No images were uploaded');

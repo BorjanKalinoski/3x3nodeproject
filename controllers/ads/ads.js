@@ -8,16 +8,17 @@ const deleteAd = (req, res, db, fs, S3FSImplementation) => {
         .then(ad => {
             S3FSImplementation.unlink(ad[0].image, (err) => {
                 if (err) {
-                    console.log(err);
-                    return res.status(400).json('No such image in storage' + err).end();
+                    console.log('Cant delete ad not found', err);
+                    return res.status(400).json('Bad Request').end();
                 }
-                return res.status(200).json('Deleted !').end();
+                return res.status(200).end();
             });
         }).catch(err => {
+        console.log('Cant delete ad not found in db', err);
         return res.status(400).json('No such image in database').end();
     });
 };
-const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
+const getAd = (req, res, db, fs, S3FSImplementation) => {
     const {id} = req.params;
     db('ads')
         .select('*')
@@ -25,23 +26,17 @@ const getAd = (req, res, db, fs, S3FSImplementation, aws) => {
         .then(ad => {
             let readStream = S3FSImplementation.createReadStream(ad[0].image, 'utf-8');
             readStream.on('error', (err => {
-                res.status(400).json('Image not found');
+                console.log('Ad not found', err);
+                res.status(400).json('Bad Request');
                 return res.end();
             }));
             return readStream.pipe(res);
-            // let base64data = new Buffer(data).toString('base64');
-
-            //WORKS FOR READ FILE
-            //     return S3FSImplementation.readFile(ad[0].image ,(err, data) => {//istata data samo vo delcinja
-            //         if (err) {
-            //             console.log('erpr');
-            //             return res.json('Image Not Found in AWS');
-            //         }
-            //         let base64data = new Buffer(data).toString('base64');
-            //         return res.json(base64data);
-            // }).catch(err => console.log('error', err));
-            // return S3FSImplementation.getFile(ad[0].image,stream)
-        }).catch(err => res.status(400).json('Ad not found in database'));
+        })
+        .catch(err => {
+                console.log('Ad not found in db', err);
+                res.status(400).json('Bad Request');
+            }
+        );
 };
 const getAds = (req, res, db) => {
     db('ads')//so ova se zemaat site ADS

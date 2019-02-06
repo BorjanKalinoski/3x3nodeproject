@@ -75,7 +75,7 @@ app.get('/aboutus',(req,res)=>{
 });
 console.log('THE BUCKET IS', process.env.S3_BUCKET);
 
-app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db,fs,S3FSImplementation,aws)});
+app.get('/ad/:id',(req,res)=>{ads.getAd(req,res,db,fs,S3FSImplementation)});
 app.get('/ads',(req,res)=>{ads.getAds(req,res,db);});
 app.del('/ad/:id',(req,res)=>{ads.deleteAd(req, res, db, fs, S3FSImplementation);});
 app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplementation);});
