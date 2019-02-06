@@ -23,10 +23,12 @@ const getPosts = async (req, res, db) => {
 };
 const getImage = async (req, res, db,S3FSImplementation) => {
     const id = req.params;
-    const img = await db('post_images').select('*').where({id: id});
-    const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0].image, 'utf-8'));
+    const img = await db('posts').select('mainimg').where({id: id});
+    console.log('img', img);
+    const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0], 'utf-8'));
     console.log('readstream is', readStream);
-    if (readStream !== 1) {
+    if (!readStream) {
+        console.log('ulazi');
         return false;
     }
     return readStream.pipe(res);
@@ -51,7 +53,7 @@ function onHandlerReturn(stream){
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
-            reject(reason);
+            reject(0);
         });
         stream.on('finish', () => {
             console.log('vlaga vo finish');
