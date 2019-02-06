@@ -69,7 +69,7 @@ const getImage = async (req, res, db,S3FSImplementation) => {
             });
             console.log('img', img);
             let a;
-            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0], 'utf-8')).catch(err => {
+            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0].mainimg, 'utf-8')).catch(err => {
                 throw err;
             });
             console.log('readstream is', readStream);
