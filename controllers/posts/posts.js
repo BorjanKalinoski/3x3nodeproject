@@ -124,7 +124,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         let postImages = [];
         let piFlag = 0;
         console.log('post images are', post_images);
-        for (let i of Object.keys(post_images))
+        for (let i of Object.keys(post_images)) {
             if (types.every(type => type !== post_images[i].type)) {
                 console.log('Not a valid image type', post_images[i].name);
                 continue;
@@ -199,7 +199,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         console.log('Final post is ', post, pimages);
         return res.status(200).json([post, pimages]);
-    } catch (err) {
+    }catch (err) {
         console.log('greskata e:', err);
         return res.status(400).json('Bad Request');
     }
