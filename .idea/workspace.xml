@@ -4,7 +4,9 @@
     <bookmark url="file://$PROJECT_DIR$/controllers/posts/posts.js" line="167" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b689657-889c-4e1c-9f91-7052ed00cf81" name="Default Changelist" comment="" />
+    <list default="true" id="0b689657-889c-4e1c-9f91-7052ed00cf81" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/controllers/posts/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/posts/posts.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,29 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="49" selection-start-line="49" selection-end-line="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="29" column="16" lean-forward="true" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="21" column="18" lean-forward="true" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
-              <folding>
-                <element signature="e#2525#2596#0" />
-              </folding>
+            <state relative-caret-position="210">
+              <caret line="184" column="57" selection-start-line="184" selection-start-column="57" selection-end-line="184" selection-end-column="57" />
             </state>
           </provider>
         </entry>
@@ -97,7 +78,6 @@
       <find>del</find>
       <find>del`</find>
       <find>update</find>
-      <find>post_images</find>
       <find>ulazi</find>
       <find>updatedp</find>
       <find>vs</find>
@@ -111,6 +91,7 @@
       <find>img</find>
       <find>getAd</find>
       <find>getpos</find>
+      <find>post_images</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -126,8 +107,8 @@
         <option value="$PROJECT_DIR$/apiKeys.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/controllers/sponsors/sponsors.js" />
-        <option value="$PROJECT_DIR$/controllers/posts/posts.js" />
         <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/controllers/posts/posts.js" />
       </list>
     </option>
   </component>
@@ -269,12 +250,12 @@
       <workItem from="1549147940311" duration="7948000" />
       <workItem from="1549215054219" duration="11149000" />
       <workItem from="1549321592205" duration="504000" />
-      <workItem from="1549460632178" duration="11845000" />
+      <workItem from="1549460632178" duration="14855000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="242320000" />
+    <option name="totallyTimeSpent" value="245330000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -460,6 +441,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="29" column="16" lean-forward="true" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/sponsors/sponsors.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="69">
@@ -467,13 +455,6 @@
           <folding>
             <element signature="e#2525#2596#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/ads/ads.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="29" column="16" lean-forward="true" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -486,8 +467,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="49" selection-start-line="49" selection-end-line="50" />
+        <state relative-caret-position="210">
+          <caret line="184" column="57" selection-start-line="184" selection-start-column="57" selection-end-line="184" selection-end-column="57" />
         </state>
       </provider>
     </entry>
