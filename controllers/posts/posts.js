@@ -1,6 +1,6 @@
 function onHandlerReturn(stream){
     return new Promise((resolve, reject) => {
-        console.log('vlaga?', stream);
+        console.log('vlaga?');
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
@@ -8,8 +8,9 @@ function onHandlerReturn(stream){
         });
         stream.on('finish', () => {
             console.log('vlaga vo finish');
-            resolve(stream);
+             return resolve(stream);
         });
+        console.log('b');
     });
 }
 function onHandler(stream){
@@ -69,7 +70,6 @@ const getImage = async (req, res, db,S3FSImplementation) => {
             });
             img = img[0].mainimg;
             console.log('img', img);
-            let a;
             const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img, 'utf-8')).catch(err => {
                 throw err;
             });
@@ -78,13 +78,13 @@ const getImage = async (req, res, db,S3FSImplementation) => {
                 console.log('ulazi');
                 return false;
             }
-            return a.pipe(res);
+            return readStream.pipe(res);
         } else {
             console.log('vlage tuke');
             const img = await db('post_images').select('*').where({id: id});
             console.log('post_img', img);
             let a;
-            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0].image, 'utf-8')).catch(err => {
+            const readStream = await onHandlerReturn(S3FSImplementation.createReadStream(img[0].image, 'utf-8')).catch(err => {
                 throw err;
             });
             console.log('readstream is for PI', readStream);
