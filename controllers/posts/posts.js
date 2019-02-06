@@ -10,13 +10,7 @@ const getPosts = async (req, res, db) => {
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
             console.log('greska kaj postslii');
         });
-        console.log('postimages are', post_images);
-        let p = {
-            data: post,
-            images: post_images
-        };
-        console.log(p);
-        data.push(p);
+        data.push([post, post_images]);
     }
     console.log('FULL DATA IS ', data);
     return res.json(data);
