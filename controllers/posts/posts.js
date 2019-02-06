@@ -100,6 +100,8 @@ const getImage = (req, res, db, S3FSImplementation) => {
             return res.status(500).json('Error getting image');
         });
     }else{
+
+
         return res.status(400).json('Bad Request');
     }
 };
@@ -110,7 +112,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         const {title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
         const post_date = moment(new Date(), 'DD-MM-YYYY').toDate();
-        if (!title || !sdesc || !descr || !mainimage.name || images.length === 0) {
+        if (!title || !shortdescription || !description || !mainimage.name || post_images.length === 0) {
             console.log('Bad request');
             return res.status(400).json('Bad Request').end();
         }
