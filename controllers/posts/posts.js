@@ -64,10 +64,12 @@ const getImage = async (req, res, db,S3FSImplementation) => {
         console.log('main ', m, 'id ', id);
         if (m === 1) {
             console.log('vlage');
-            const img = await db('posts').select('mainimg').where({id: id});
+            const img = await db('posts').select('*').where({id: id}).catch(err => {
+                throw err;
+            });
             console.log('img', img);
             let a;
-            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0], 'utf-8')).catch(err=>{
+            const readStream = await onHandlerReturn(a = S3FSImplementation.createReadStream(img[0], 'utf-8')).catch(err => {
                 throw err;
             });
             console.log('readstream is', readStream);
@@ -76,7 +78,8 @@ const getImage = async (req, res, db,S3FSImplementation) => {
                 return false;
             }
             return a.pipe(res);
-        } else if (m === 0) {
+        } else {
+            console.log('vlage tuke');
             const img = await db('post_images').select('*').where({id: id});
             console.log('post_img', img);
             let a;
