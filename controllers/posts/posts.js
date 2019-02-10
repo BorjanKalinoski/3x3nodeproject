@@ -52,7 +52,7 @@ const getPosts = async (req, res, db) => {
             id: post.id,
             mainimage: post.mainimg,
             shortdescription: post.sdesc,
-            description:post.description,
+            description:post.descr,
             post_date:post.post_date,
             title:post.title,
         };
