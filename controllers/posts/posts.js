@@ -105,12 +105,39 @@ const getImage = (req, res, db, S3FSImplementation) => {
         return res.status(400).json('Bad Request');
     }
 };
-
+const editPost = async (req, res, db, fs, S3FSImplementation) => {
+    try {
+        const {id,title, shortdescription, description} = req.body;
+        const {mainimage, post_images} = req.files;
+        console.log('rb is', req.body, ' /rf is', req.files);
+        const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
+        if(title){
+            db('posts').update({title: title}).where({id: id}).catch(error => {
+                throw error;
+            });
+        }
+        if (shortdescription) {
+            db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
+                throw error;
+            });
+        }
+        if (description) {
+            db('posts').update({descr: description}).where({id: id}).catch(error => {
+                throw error;
+            });
+        }
+        return res.json('yay');
+    }catch (e) {
+        console.log(err);
+        return res.status(500).json(e);
+    }
+};
 const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
-        const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         const {title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
+        const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
+
         const post_date = moment(new Date(), 'DD-MM-YYYY').toDate();
         if (!title || !shortdescription || !description || !mainimage.name || post_images.length === 0) {
             console.log('Bad request');
@@ -206,7 +233,8 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
 module.exports = {
     getPosts: getPosts,
     uploadPost: uploadPost,
-    getImage: getImage
+    getImage: getImage,
+    editPost:editPost
 };
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
