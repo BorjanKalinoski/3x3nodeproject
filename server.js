@@ -60,7 +60,7 @@ app.post('/uploadad',(req,res)=>{ads.uploadAd(req,res,db,urlExists,fs,S3FSImplem
 app.get('/posts',(req,res)=>{posts.getPosts(req,res,db)});
 app.get('/post_image/:id/:m',(req,res)=>{posts.getImage(req,res,db,S3FSImplementation)});
 app.post('/post',(req,res)=>{posts.uploadPost(req,res,db,moment,fs,S3FSImplementation)});
-app.patch('/post/',(req,res)=>{posts.editPost(req,res,db,fs,S3)});
+app.patch('/post/',(req,res)=>{posts.editPost(req,res,db,fs,S3FSImplementation)});
 app.del('/post',(req,res)=>{post.deletePost(req,res,db,fs,S3FSImplementation)});
 
 app.get('/sponsors',(req,res)=>{sponsors.getSponsors(req, res, db);});
