@@ -56,7 +56,7 @@ const getPosts = async (req, res, db) => {
             post_date:post.post_date,
             title:post.title,
         };
-        console.log('POST IS ', post);
+        console.log('POST IS ', local);
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
             console.log('greska kaj postslii', err);
         });
@@ -123,7 +123,6 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         let postImages = [];
         let piFlag = 0;
-        console.log('post images are', post_images);
         for (let i of Object.keys(post_images)) {
             if (types.every(type => type !== post_images[i].type)) {
                 console.log('Not a valid image type', post_images[i].name);
