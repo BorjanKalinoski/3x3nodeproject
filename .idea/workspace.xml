@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b689657-889c-4e1c-9f91-7052ed00cf81" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/posts/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/posts/posts.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,20 +33,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="62" column="78" selection-start-line="62" selection-start-column="78" selection-end-line="62" selection-end-column="78" />
+            <state relative-caret-position="177">
+              <caret line="61" column="25" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="195" column="80" selection-start-line="195" selection-start-column="78" selection-end-line="195" selection-end-column="80" />
+            <state relative-caret-position="69">
+              <caret line="112" column="12" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -74,12 +74,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>aws</find>
-      <find>a</find>
-      <find>ad not foun</find>
-      <find>posts ar</find>
-      <find>error gett</find>
-      <find>data</find>
       <find>full data</find>
       <find>getpost</find>
       <find>se</find>
@@ -104,6 +98,12 @@
       <find>getPo</find>
       <find>edit</find>
       <find>s3</find>
+      <find>id</find>
+      <find>main'</find>
+      <find>main</find>
+      <find>main</find>
+      <find>console.log</find>
+      <find>POST IS</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -119,8 +119,8 @@
         <option value="$PROJECT_DIR$/controllers/ads/ads.js" />
         <option value="$PROJECT_DIR$/apiKeys.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/controllers/posts/posts.js" />
         <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/controllers/posts/posts.js" />
       </list>
     </option>
   </component>
@@ -272,12 +272,12 @@
       <workItem from="1549558432416" duration="559000" />
       <workItem from="1549560163752" duration="1506000" />
       <workItem from="1549706438720" duration="1727000" />
-      <workItem from="1549800259766" duration="8956000" />
+      <workItem from="1549800259766" duration="9616000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="265366000" />
+    <option name="totallyTimeSpent" value="266026000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -311,7 +311,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.4897059" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.475" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5033557" side_tool="true" weight="0.4970588" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -477,17 +477,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
+    <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="195" column="80" selection-start-line="195" selection-start-column="78" selection-end-line="195" selection-end-column="80" />
+        <state relative-caret-position="177">
+          <caret line="61" column="25" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
+    <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="62" column="78" selection-start-line="62" selection-start-column="78" selection-end-line="62" selection-end-column="78" />
+        <state relative-caret-position="69">
+          <caret line="112" column="12" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="12" />
         </state>
       </provider>
     </entry>

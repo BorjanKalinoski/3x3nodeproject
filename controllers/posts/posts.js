@@ -56,7 +56,6 @@ const getPosts = async (req, res, db) => {
             post_date:post.post_date,
             title:post.title,
         };
-        console.log('POST IS ', local);
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
             console.log('greska kaj postslii', err);
         });
@@ -66,7 +65,6 @@ const getPosts = async (req, res, db) => {
 };
 const getImage = (req, res, db, S3FSImplementation) => {
     const {id, m} = req.params;
-    console.log('main ', m, 'id ', id);
     if (isNaN(id)) {
         console.log('pagja');
     }
@@ -86,7 +84,6 @@ const getImage = (req, res, db, S3FSImplementation) => {
             return res.status(500).json('Error getting image');
         });
     } else if (Number(m) === 0) {
-        console.log('vlage tuke');
         db('post_images').select('*').where({id: id}).then(img => {
             let image = img[0].image;
             let readStream = S3FSImplementation.createReadStream(image, 'utf-8');
@@ -107,21 +104,24 @@ const getImage = (req, res, db, S3FSImplementation) => {
 };
 const editPost = async (req, res, db, fs, S3FSImplementation) => {
     try {
-        const {id,title, shortdescription, description} = req.body;
+        const {id, title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
         console.log('rb is', req.body, ' /rf is', req.files);
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-        if(title){
+        if (title) {
+            console.log('title', title);
             db('posts').update({title: title}).where({id: id}).catch(error => {
                 throw error;
             });
         }
         if (shortdescription) {
+            console.log('sdesc', shortdescription);
             db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
                 throw error;
             });
         }
         if (description) {
+            console.log('descr', description);
             db('posts').update({descr: description}).where({id: id}).catch(error => {
                 throw error;
             });
@@ -223,7 +223,6 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             });
             ctr++;
         }
-        console.log('Final post is ', post, pimages);
         return res.status(200).json([post, pimages]);
     }catch (err) {
         console.log('greskata e:', err);
