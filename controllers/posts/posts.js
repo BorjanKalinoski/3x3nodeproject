@@ -228,19 +228,22 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         let postImages = [];
         let piFlag = 0;
         console.log('POST IMAGES ARE', post_images.length);
-        return false;
-        for (let i of post_images) {
-            console.log('IIIII', i);
-            continue;
-            if (types.every(type => type !== post_images[i].type)) {
-                console.log('Not a valid image type', post_images[i].name);
-                continue;
+        if (post_images.length === undefined) {
+            if (types.every(type => type !== post_images.type)) {
+                postImages.push(post_images);
+                console.log('se dodava', postImages);
+                piFlag=1;
             }
-            piFlag = 1;
-            console.log('pimage se dodava');
-            postImages.push(post_images[i]);
+        } else {
+            for (let i of Object.keys(post_images)) {
+                if (types.every(type => type !== post_images[i].type)) {
+                    console.log('Not a valid image type', post_images[i].name);
+                    continue;
+                }
+                piFlag = 1;
+                postImages.push(post_images[i]);
+            }
         }
-        return false;
         if (!piFlag) {
             console.log('No images were uploaded');
         }
