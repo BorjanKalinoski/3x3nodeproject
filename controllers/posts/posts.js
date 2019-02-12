@@ -107,19 +107,23 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         const {mainimage, post_images} = req.files;
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         if (mainimage.name) {
+            if (types.every((type) => type !== mainimage.type)) {
+                console.log('type not valid');
+                throw new Error('Type of main img not valid');
+            }
             let mi = await db('posts').select('mainimg').where({id: id}).catch(err => {
                 throw err;
             });
             mi = mi[0].mainimg;
             let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-            console.log('main image is ', mi, 'path is', mainimage.path);
+            let nmi = `post_main${id}.${ext}`;
             S3FSImplementation.unlink(mi, async (err) => {
                 if (err) {
                     console.log('eeeeeetuka');
                     throw err;
                 }
                 let stream;
-                let a = fs.createReadStream(mainimage.path).pipe(stream = S3FSImplementation.createWriteStream(`post_main${id}.${ext}`));
+                let a = fs.createReadStream(mainimage.path).pipe(stream = S3FSImplementation.createWriteStream(nmi));
                 console.log('cekam');
                 let b = await onHandler(stream);
                 console.log('zdrbonbon2', b);
@@ -127,11 +131,21 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     console.log('error updating main image');
                     throw b;
                 }
+                db('posts').update({mainimg: nmi})
+                    .where({id: id})
+                    .catch(err => {
+                        console.log('error updating to db after sucessfull update on s3');
+                        throw err;
+                    });
                 console.log('main image uploaded');
             });
         }
         if (post_images.length !== 0) {
-
+            let pimages = await db('post_images').select('image').where({post_id: id}).catch(err => {
+                throw err;
+            });
+            console.log('post images are', pimages);
+            return false;
         }
         if (title) {
             console.log('title', title);
