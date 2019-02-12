@@ -211,24 +211,26 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
 };
 const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
+        //pravi problem ako uploadnuvas edna slika!!!
         const {title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-
         const post_date = moment(new Date(), 'DD-MM-YYYY').toDate();
         if (!title || !shortdescription || !description || !mainimage.name || post_images.length === 0) {
             console.log('Bad request');
             return res.status(400).json('Bad Request').end();
         }
-        console.log('mainimg', mainimage);
+        console.log('mainimg', mainimage, 'pimages', post_images);
         if (types.every((type) => type !== mainimage.type)) {
             console.log('Not a valid image type1', mainimage);
             return res.status(400).json('Bad Request').end();
         }
         let postImages = [];
         let piFlag = 0;
-        for (let i of Object.keys(post_images)) {
+        console.log('POST IMAGES ARE', post_images);
+        for (let i of post_images) {
             console.log('IIIII', i);
+            continue;
             if (types.every(type => type !== post_images[i].type)) {
                 console.log('Not a valid image type', post_images[i].name);
                 continue;
@@ -237,6 +239,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             console.log('pimage se dodava');
             postImages.push(post_images[i]);
         }
+        return false;
         if (!piFlag) {
             console.log('No images were uploaded');
         }
