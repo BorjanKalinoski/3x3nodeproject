@@ -190,7 +190,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         console.log('mainimg', mainimage);
         if (types.every((type) => type !== mainimage.type)) {
-            console.log('Not a valid image type', mainimage);
+            console.log('Not a valid image type1', mainimage);
             return res.status(400).json('Bad Request').end();
         }
         let postImages = [];
