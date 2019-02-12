@@ -157,8 +157,8 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                         .catch(err => {
                             throw err;
                         });
-                    console.log('post image is', post_image);
-                    let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
+                    console.log('post image is', post_image, 'IMG QUERY IS ', imgquery);
+                    let uploadpostimg = await uploadMain(post_image.path, `post_${id}_${ctr}.${ext}`, fs, S3FSImplementation);
                     console.log('finish is ', uploadpostimg);
                     if (!uploadpostimg) {
                         db('post_images').del().where({id: imgquery[0].id}).catch(err => {
@@ -225,6 +225,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         let postImages = [];
         let piFlag = 0;
         for (let i of Object.keys(post_images)) {
+            console.log('IIIII', i);
             if (types.every(type => type !== post_images[i].type)) {
                 console.log('Not a valid image type', post_images[i].name);
                 continue;
