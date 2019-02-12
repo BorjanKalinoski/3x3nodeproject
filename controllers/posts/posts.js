@@ -105,13 +105,13 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
     try {
         const {id, title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
-        // console.log('mi', mainimage, 'pi', post_images);
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         if (mainimage.name) {
             let mi = await db('posts').select('mainimg').where({id: id}).catch(err => {
                 throw err;
             });
             mi = mi[0].mainimg;
+            let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             console.log('main image is ', mi, 'path is', mainimage.path);
             S3FSImplementation.unlink(mi, (err => {
                 if(err){
@@ -119,11 +119,12 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     throw err;
                 }
                 console.log('jeje');
-                let a = fs.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream('imageeee.gif'));
+                let b;
+                let a = fs.createReadStream(mainimage.path).pipe(b = S3FSImplementation.createWriteStream(`post_main${id}.${ext}`));
+                // let t = await onHandler(b);
                 console.log('zdrbonbon2');
                 a.on('finish', () => {
                     console.log('yes');
-                    console.log('aaaaaaa', a);
                     return true;
                 });
                 a.on('error', (err) => {
@@ -133,6 +134,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     return err;
                 });
             }));
+            console.log('vs nono');
             // return;
             // let readstream = S3FSImplementation.createReadStream(mi);
             // let oldmain = await onHandler(readstream).catch(err => {
@@ -140,7 +142,6 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             // });
             // console.log('result of reading mi is ', oldmain);
             // return false;
-            // let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             // let pmain = `post_main${id}.${ext}`;
             // let uploadmain = await uploadMain(mainimage.path, post.mainimage, fs, S3FSImplementation);
             // let imageStream = fs.createReadStream(path).pipe(imagewriter = S3FSImplementation.createWriteStream(name));
