@@ -227,7 +227,8 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         }
         let postImages = [];
         let piFlag = 0;
-        console.log('POST IMAGES ARE', post_images);
+        console.log('POST IMAGES ARE', post_images.length);
+        return false;
         for (let i of post_images) {
             console.log('IIIII', i);
             continue;
