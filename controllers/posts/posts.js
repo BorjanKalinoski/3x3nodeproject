@@ -106,7 +106,8 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         const {id, title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
-        if (mainimage.name) {
+        console.log(mainimage, post_images);
+        if (mainimage!== undefined && mainimage.name) {
             if (types.every((type) => type !== mainimage.type)) {
                 console.log('type not valid');
                 throw new Error('Type of main img not valid');
