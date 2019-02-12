@@ -141,11 +141,11 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                 console.log('main image uploaded');
             });
         }
+        let pimages;
         if (post_images.length !== 0) {
-            let pimages = [];
+            pimages = [];
             let ctr=0;
             let ext;
-
             post_images.map(async (post_image) => {
                 if (!types.every((type) => type !== post_image.type)) {
                     ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
@@ -157,6 +157,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                         .catch(err => {
                             throw err;
                         });
+                    console.log('post image is', post_image);
                     let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
                     console.log('finish is ', uploadpostimg);
                     if (!uploadpostimg) {
@@ -165,6 +166,8 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                             throw err;
                         });
                     }
+                    console.log('vlaga i tuka');
+                    ctr++;
                     pimages.push(`post_${id}_${ctr}.${ext}`);
                 }
             });
