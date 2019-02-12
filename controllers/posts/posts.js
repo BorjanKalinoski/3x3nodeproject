@@ -113,39 +113,24 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             mi = mi[0].mainimg;
             let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             console.log('main image is ', mi, 'path is', mainimage.path);
-            S3FSImplementation.unlink(mi, (err => {
-                if(err){
+            S3FSImplementation.unlink(mi, async (err) => {
+                if (err) {
                     console.log('eeeeeetuka');
                     throw err;
                 }
-                console.log('jeje');
-                let b;
-                let a = fs.createReadStream(mainimage.path).pipe(b = S3FSImplementation.createWriteStream(`post_main${id}.${ext}`));
-                // let t = await onHandler(b);
-                console.log('zdrbonbon2');
-                a.on('finish', () => {
-                    console.log('yes');
-                    return true;
-                });
-                a.on('error', (err) => {
-                    console.log('vlaga tuka');
-                    if(err)
-                       throw err;
-                    return err;
-                });
-            }));
-            console.log('vs nono');
-            // return;
-            // let readstream = S3FSImplementation.createReadStream(mi);
-            // let oldmain = await onHandler(readstream).catch(err => {
-            //     throw err;
-            // });
-            // console.log('result of reading mi is ', oldmain);
-            // return false;
-            // let pmain = `post_main${id}.${ext}`;
-            // let uploadmain = await uploadMain(mainimage.path, post.mainimage, fs, S3FSImplementation);
-            // let imageStream = fs.createReadStream(path).pipe(imagewriter = S3FSImplementation.createWriteStream(name));
-            // let p = fs.createReadStream(mainimage.path).createWriteStream();
+                let stream;
+                let a = fs.createReadStream(mainimage.path).pipe(stream = S3FSImplementation.createWriteStream(`post_main${id}.${ext}`));
+                console.log('cekam');
+                let b = await onHandler(stream);
+                console.log('zdrbonbon2', b);
+                if (b !== 1) {
+                    console.log('error updating main image');
+                    throw b;
+                }
+                console.log('main image uploaded');
+            });
+        }
+        if (post_images.length !== 0) {
 
         }
         if (title) {
