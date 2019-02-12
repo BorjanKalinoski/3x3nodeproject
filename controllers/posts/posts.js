@@ -157,23 +157,26 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                         .catch(err => {
                             throw err;
                         });
-                    console.log('post image is', post_image, 'IMG QUERY IS ', imgquery);
+                    console.log('ctr is', ctr);
+                    ctr++;
+                    console.log('ctr is', ctr);
+                    // console.log('post image is', post_image, 'IMG QUERY IS ', imgquery);
                     let uploadpostimg = await uploadMain(post_image.path, `post_${id}_${ctr}.${ext}`, fs, S3FSImplementation);
-                    console.log('finish is ', uploadpostimg);
+                    // console.log('finish is ', uploadpostimg, 'image is', imgquery)/;
                     if (!uploadpostimg) {
                         db('post_images').del().where({id: imgquery[0].id}).catch(err => {
                             console.log('gresi pri delete na post_image');
                             throw err;
                         });
                     }
-                    console.log('vlaga i tuka');
-                    ctr++;
-                    pimages.push(`post_${id}_${ctr}.${ext}`);
+                    pimages.push({
+                        image: imgquery[0].image,
+                        post_id: imgquery[0].post_id,
+                        id: imgquery[0].id
+                    });
                 }
             });
             return res.json(pimages);
-
-            return false;
         }
         if (title) {
             console.log('title', title);
