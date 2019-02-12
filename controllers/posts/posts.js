@@ -30,7 +30,7 @@ function onHandler(stream){
 async function uploadMain(path, name, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
-        let imageStream = fs.createReadStream(path).pipe(imagewriter = S3FSImplementation.createWriteStream(name));
+        let imageStream = fs.createReadStream(path,'utf-8').pipe(imagewriter = S3FSImplementation.createWriteStream(name));
         let a = await onHandler(imagewriter).catch(err => {
             console.log('error is fetched', err);
             return 0;
@@ -115,18 +115,19 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             console.log('main image is ', mi, 'path is', mainimage.path);
             return S3FSImplementation.unlink(mi, (err => {
                 if(err){
+                    console.log('eeeeeetuka');
                     throw err;
                 }
-                let a = S3FSImplementation.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream('image.gif'));
+                let a = S3FSImplementation.createReadStream(mainimage.path, 'utf-8').pipe(S3FSImplementation.createWriteStream('image.gif'));
                 a.on('finish', () => {
                     console.log('yes');
                     console.log('aaaaaaa', a);
                     return true;
                 });
                 a.on('error', (err) => {
-                   if(err)
-                       throw err;
                     console.log('vlaga tuka');
+                    if(err)
+                       throw err;
                     return err;
                 });
                 console.log('jeje');
