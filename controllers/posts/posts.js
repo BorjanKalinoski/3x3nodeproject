@@ -142,10 +142,34 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             });
         }
         if (post_images.length !== 0) {
-            let pimages = await db('post_images').select('image').where({post_id: id}).catch(err => {
-                throw err;
+            let pimages = [];
+            let ctr=0;
+            let ext;
+
+            post_images.map(async (post_image) => {
+                if (!types.every((type) => type !== post_image.type)) {
+                    ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                    let imgquery = await db('post_images').insert({
+                        image: `post_${id}_${ctr}.${ext}`,
+                        post_id: id
+                    })
+                        .returning('*')
+                        .catch(err => {
+                            throw err;
+                        });
+                    let uploadpostimg = await uploadMain(post_image.path, post_image.name, fs, S3FSImplementation);
+                    console.log('finish is ', uploadpostimg);
+                    if (!uploadpostimg) {
+                        db('post_images').del().where({id: imgquery[0].id}).catch(err => {
+                            console.log('gresi pri delete na post_image');
+                            throw err;
+                        });
+                    }
+                    pimages.push(`post_${id}_${ctr}.${ext}`);
+                }
             });
-            console.log('post images are', pimages);
+            return res.json(pimages);
+
             return false;
         }
         if (title) {
