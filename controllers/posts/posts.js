@@ -230,7 +230,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         console.log('POST IMAGES ARE', post_images.length);
         if (post_images.length === undefined) {
             console.log('vlaga tuka', post_images);
-            if (types.every(type => type !== post_images.type)) {
+            if (!types.every(type => type !== post_images.type)) {
                 postImages.push(post_images);
                 console.log('se dodava', postImages);
                 piFlag = 1;
