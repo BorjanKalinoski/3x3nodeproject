@@ -121,12 +121,15 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                 a.on('finish', () => {
                     console.log('yes');
                     console.log('aaaaaaa', a);
+                    return true;
                 });
                 a.on('error', (err) => {
-                    throw err;
+                   if(err)
+                       throw err;
+                    console.log('vlaga tuka');
+                    return err;
                 });
                 console.log('jeje');
-                return false;
             }));
             // return;
             // let readstream = S3FSImplementation.createReadStream(mi);
