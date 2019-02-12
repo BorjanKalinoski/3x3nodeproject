@@ -108,20 +108,20 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         if (title) {
             console.log('title', title);
-            db('posts').update({title: title}).where({id: id}).catch(error => {
+            await db('posts').update({title: title}).where({id: id}).catch(error => {
                 throw error;
             });
         }
         if (shortdescription) {
             if (shortdescription !== undefined) {
-                db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
+                await db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
                     throw error;
                 });
             }
         }
         if (description) {
             if (description !== undefined) {
-                db('posts').update({descr: description}).where({id: id}).catch(error => {
+                await db('posts').update({descr: description}).where({id: id}).catch(error => {
                     throw error;
                 });
             }
@@ -131,7 +131,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                 throw err;
             });
         console.log('post is', post);
-        return res.json('yay');
+        return res.json(post);
     } catch (e) {
         console.log(err);
         return res.status(500).json(e);
