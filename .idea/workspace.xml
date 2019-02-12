@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/controllers/posts/posts.js" line="236" />
+    <bookmark url="file://$PROJECT_DIR$/controllers/posts/posts.js" line="234" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b689657-889c-4e1c-9f91-7052ed00cf81" name="Default Changelist" comment="">
@@ -45,8 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="158" column="21" selection-start-line="158" selection-start-column="21" selection-end-line="158" selection-end-column="21" />
+            <state relative-caret-position="168">
+              <caret line="115" column="69" selection-start-line="115" selection-start-column="69" selection-end-line="115" selection-end-column="69" />
             </state>
           </provider>
         </entry>
@@ -74,8 +74,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>post+o</find>
-      <find>not a valid image</find>
       <find>post_images</find>
       <find>not a vali</find>
       <find>mainimg</find>
@@ -87,7 +85,6 @@
       <find>multiparty</find>
       <find>Ova</find>
       <find>getPo</find>
-      <find>s3</find>
       <find>id</find>
       <find>main'</find>
       <find>main</find>
@@ -104,6 +101,9 @@
       <find>onhan</find>
       <find>req</find>
       <find>edit</find>
+      <find>.ca</find>
+      <find>s3</find>
+      <find>mi'</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -269,12 +269,12 @@
       <workItem from="1549800259766" duration="10857000" />
       <workItem from="1549892477762" duration="2907000" />
       <workItem from="1549917612845" duration="1674000" />
-      <workItem from="1549968940883" duration="2629000" />
+      <workItem from="1549968940883" duration="2719000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="274477000" />
+    <option name="totallyTimeSpent" value="274567000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -483,8 +483,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="158" column="21" selection-start-line="158" selection-start-column="21" selection-end-line="158" selection-end-column="21" />
+        <state relative-caret-position="168">
+          <caret line="115" column="69" selection-start-line="115" selection-start-column="69" selection-end-line="115" selection-end-column="69" />
         </state>
       </provider>
     </entry>
