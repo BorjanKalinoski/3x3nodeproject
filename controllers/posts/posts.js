@@ -97,8 +97,6 @@ const getImage = (req, res, db, S3FSImplementation) => {
             return res.status(500).json('Error getting image');
         });
     }else{
-
-
         return res.status(400).json('Bad Request');
     }
 };
@@ -115,19 +113,26 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             });
         }
         if (shortdescription) {
-            console.log('sdesc', shortdescription);
-            db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
-                throw error;
-            });
+            if (shortdescription !== undefined) {
+                db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
+                    throw error;
+                });
+            }
         }
         if (description) {
-            console.log('descr', description);
-            db('posts').update({descr: description}).where({id: id}).catch(error => {
-                throw error;
-            });
+            if (description !== undefined) {
+                db('posts').update({descr: description}).where({id: id}).catch(error => {
+                    throw error;
+                });
+            }
         }
+        const post = await db('posts').select('*').where({id: id})
+            .catch(err => {
+                throw err;
+            });
+        console.log('post is', post);
         return res.json('yay');
-    }catch (e) {
+    } catch (e) {
         console.log(err);
         return res.status(500).json(e);
     }
