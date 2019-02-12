@@ -113,7 +113,16 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             });
             mi = mi[0].mainimg;
             console.log('main image is ', mi);
-            let readstream = S3FSImplementation.createReadStream(mi);
+            let a= S3FSImplementation.createReadStream(mi);
+            a.on('finish',()=>{
+                console.log('yes');
+                console.log('aaaaaaa', a);
+            });
+            a.on('error', (err) => {
+                throw err;
+            });
+            return false;
+            // let readstream = S3FSImplementation.createReadStream(mi);
             let oldmain = await onHandler(readstream).catch(err => {
                 throw err;
             });
@@ -125,7 +134,6 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             let imageStream = fs.createReadStream(path).pipe(imagewriter = S3FSImplementation.createWriteStream(name));
             let p = fs.createReadStream(mainimage.path).createWriteStream();
 
-            S3FSImplementation.unlink()
         }
         if (title) {
             console.log('title', title);
