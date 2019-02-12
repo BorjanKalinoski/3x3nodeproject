@@ -229,12 +229,15 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         let piFlag = 0;
         console.log('POST IMAGES ARE', post_images.length);
         if (post_images.length === undefined) {
+            console.log('vlaga tuka', post_images);
             if (types.every(type => type !== post_images.type)) {
                 postImages.push(post_images);
                 console.log('se dodava', postImages);
-                piFlag=1;
+                piFlag = 1;
             }
         } else {
+            console.log('vlaga tuka2', post_images);
+
             for (let i of Object.keys(post_images)) {
                 if (types.every(type => type !== post_images[i].type)) {
                     console.log('Not a valid image type', post_images[i].name);
