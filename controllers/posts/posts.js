@@ -30,7 +30,7 @@ function onHandler(stream){
 async function uploadMain(path, name, fs, S3FSImplementation) {
     return new Promise(async (resolve, reject) => {
         let imagewriter;
-        let imageStream = fs.createReadStream(path,'utf-8').pipe(imagewriter = S3FSImplementation.createWriteStream(name));
+        let imageStream = fs.createReadStream(path).pipe(imagewriter = S3FSImplementation.createWriteStream(name));
         let a = await onHandler(imagewriter).catch(err => {
             console.log('error is fetched', err);
             return 0;
