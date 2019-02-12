@@ -156,7 +156,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         console.log('post is', post);
         return res.json(post);
     } catch (e) {
-        console.log(err);
+        console.log(e);
         return res.status(500).json(e);
     }
 };
