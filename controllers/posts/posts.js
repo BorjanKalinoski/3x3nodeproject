@@ -113,16 +113,22 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             });
             mi = mi[0].mainimg;
             console.log('main image is ', mi, 'path is', mainimage.path);
-            S3FSImplementation.unlinkSync(mi);
-            let a = S3FSImplementation.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream('image.gif'));
-            a.on('finish', () => {
-                console.log('yes');
-                console.log('aaaaaaa', a);
-            });
-            a.on('error', (err) => {
-                throw err;
-            });
-            return false;
+            return S3FSImplementation.unlink(mi, (err => {
+                if(err){
+                    throw err;
+                }
+                let a = S3FSImplementation.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream('image.gif'));
+                a.on('finish', () => {
+                    console.log('yes');
+                    console.log('aaaaaaa', a);
+                });
+                a.on('error', (err) => {
+                    throw err;
+                });
+                console.log('jeje');
+                return false;
+            }));
+            // return;
             // let readstream = S3FSImplementation.createReadStream(mi);
             let oldmain = await onHandler(readstream).catch(err => {
                 throw err;
