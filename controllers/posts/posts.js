@@ -15,6 +15,7 @@ function onHandlerReturn(stream){
 }
 function onHandler(stream){
     return new Promise((resolve, reject) => {
+        console.log('stream ulazi', stream);
         stream.on('error', (err) => {
             console.log('vlaga vo error');
             let reason = new Error(err);
@@ -104,16 +105,20 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
     try {
         const {id, title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
-        console.log('rb is', req.body, ' /rf is', req.files);
         console.log('mi', mainimage, 'pi', post_images);
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         if (mainimage.name) {
             let mi = await db('posts').select('mainimg').where({id: id}).catch(err => {
                 throw err;
             });
-            console.log('main image is ', mi);
             mi = mi[0].mainimg;
-            let oldmain = await onHandler(S3FSImplementation.createReadStream(mi));
+            console.log('main image is ', mi);
+            let readstream = S3FSImplementation.createReadStream(mi).catch(err => {
+                throw err;
+            });
+            let oldmain = await onHandler(readstream).catch(err => {
+                throw err;
+            });
             console.log('result of reading mi is ', oldmain);
             return false;
             let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
