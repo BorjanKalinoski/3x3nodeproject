@@ -105,7 +105,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
     try {
         const {id, title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
-        console.log('mi', mainimage, 'pi', post_images);
+        // console.log('mi', mainimage, 'pi', post_images);
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         if (mainimage.name) {
             let mi = await db('posts').select('mainimg').where({id: id}).catch(err => {
@@ -115,10 +115,11 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             console.log('main image is ', mi, 'path is', mainimage.path);
             S3FSImplementation.unlink(mi, (err) => {
                 if (err) {
+                    console.log('vlaga');
                     throw err;
                 }
             });
-
+            console.log('tuka');
             let a = S3FSImplementation.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream(mi));
             a.on('finish',()=>{
                 console.log('yes');
@@ -168,7 +169,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         console.log('post is', post);
         return res.json(post);
     } catch (e) {
-        console.log(e);
+        console.log('greskata e', e);
         return res.status(500).json(e);
     }
 };
