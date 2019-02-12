@@ -120,8 +120,8 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                 }
             });
             console.log('tuka');
-            let a = S3FSImplementation.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream(mi));
-            a.on('finish',()=>{
+            let a = S3FSImplementation.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream('image.gif'));
+            a.on('finish', () => {
                 console.log('yes');
                 console.log('aaaaaaa', a);
             });
