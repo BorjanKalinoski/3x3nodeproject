@@ -113,9 +113,10 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             });
             mi = mi[0].mainimg;
             console.log('main image is ', mi, 'path is', mainimage.path);
-            S3FSImplementation.unlink(mi, (err => {
+            S3FSImplementation.unlink(mi, (err) => {
                 throw err;
-            }));
+            });
+
             let a = S3FSImplementation.createReadStream(mainimage.path).pipe(S3FSImplementation.createWriteStream(mi));
             a.on('finish',()=>{
                 console.log('yes');
