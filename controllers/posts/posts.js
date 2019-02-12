@@ -94,7 +94,7 @@ const getImage = (req, res, db, S3FSImplementation) => {
             });
             return readStream.pipe(res);
         }).catch(err=>{
-            console.log(err);
+            console.log('aa', err);
             return res.status(500).json('Error getting image');
         });
     }else{
