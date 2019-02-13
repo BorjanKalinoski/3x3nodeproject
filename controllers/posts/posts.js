@@ -60,7 +60,8 @@ const getPosts = async (req, res, db) => {
         let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
             console.log('greska kaj postslii', err);
         });
-        data.push([local, post_images]);
+        local.post_images = post_images;
+        data.push(local);
     }
     return res.json(data);
 };
