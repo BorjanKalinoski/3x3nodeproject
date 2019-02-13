@@ -406,7 +406,51 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         return res.status(500).json('Error uploading post');
     }
 };
-const deletePostImage = async (req, res, db, fs, S3FSImplementation) => {
+const deletePost = async (req, res, db, fs, S3FSImplementation) => {
+
+    try {
+        const {post_id} = req.params;
+        let post = await db('posts').del().where({id: post_id}).returning('*').catch(err => {
+            console.log('Error deleting post', err);
+            throw new Error('Error deleting post' + err);
+        });
+        if (post.length === 0) {
+            return res.status(400).json('Error post not found!').end();
+        }
+        console.log('dpost is', post_id);
+        post = post[0];
+        S3FSImplementation.unlink(post.mainimg, async (err) => {
+            if (err) {
+                console.log('Error deleting post from S3' + err);
+                throw new Error('Error deleting post from S3' + err);
+            }
+            let post_images = await db('post_images').select('*').where({post_id: post_id})
+                .catch(err => {
+                    console.log('Error selecting post images from db', err);
+                    throw new Error('Error selecting post images from db' + err);
+                });
+            post_images.map(post_image => {
+                S3FSImplementation.unlink(post_image.image, (err) => {
+                    if (err) {
+                        console.log('Error deleting post image from S3', err);
+                        throw new Error('Error deleting post image from S3' + err);
+                    }
+                    db('post_images').del().where({id: post_image.id})
+                        .returning('*').catch(err => {
+
+                        console.log('Error deleting post image from db', err);
+                        throw new Error('Error deleting post image from db' + err);
+                    });
+                });
+            });
+            return res.status(200).json('Post deleted!');
+        });
+    } catch (e) {
+
+    }
+};
+
+const deletePostImage = async (req, res, db, S3FSImplementation) => {
     try {
         const {id} = req.params;
         let img = await db('post_images').del().where({id: id}).returning('*').catch(err => {
@@ -436,6 +480,7 @@ module.exports = {
     uploadPost: uploadPost,
     getImage: getImage,
     editPost:editPost,
+    deletePost:deletePost
     deletePostImage: deletePostImage
 };
 function getFileExtension(filename) {
