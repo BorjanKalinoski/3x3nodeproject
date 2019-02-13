@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/controllers/posts/posts.js" line="362" />
+    <bookmark url="file://$PROJECT_DIR$/controllers/posts/posts.js" line="370" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b689657-889c-4e1c-9f91-7052ed00cf81" name="Default Changelist" comment="">
@@ -36,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="63" column="91" selection-start-line="63" selection-start-column="91" selection-end-line="63" selection-end-column="91" />
+            <state relative-caret-position="156">
+              <caret line="63" column="46" lean-forward="true" selection-start-line="63" selection-start-column="46" selection-end-line="63" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -45,8 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="270" column="37" lean-forward="true" selection-start-line="270" selection-start-column="37" selection-end-line="270" selection-end-column="37" />
+            <state relative-caret-position="162">
+              <caret line="408" column="31" lean-forward="true" selection-start-line="408" selection-start-column="31" selection-end-line="408" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -74,8 +74,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>uploadpo</find>
-      <find>UPLOADP</find>
       <find>zdr</find>
       <find>let b</find>
       <find>types.</find>
@@ -104,6 +102,8 @@
       <find>`post_${id}_${ctr}.${ext}`,</find>
       <find>delete</find>
       <find>getP</find>
+      <find>editP</find>
+      <find>getPost</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -270,12 +270,12 @@
       <workItem from="1549892477762" duration="2907000" />
       <workItem from="1549917612845" duration="1674000" />
       <workItem from="1549968940883" duration="13534000" />
-      <workItem from="1550057814276" duration="11603000" />
+      <workItem from="1550057814276" duration="12935000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="296985000" />
+    <option name="totallyTimeSpent" value="298317000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -309,7 +309,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.5382353" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.22058824" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5033557" side_tool="true" weight="0.4970588" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -477,15 +477,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="63" column="91" selection-start-line="63" selection-start-column="91" selection-end-line="63" selection-end-column="91" />
+        <state relative-caret-position="156">
+          <caret line="63" column="46" lean-forward="true" selection-start-line="63" selection-start-column="46" selection-end-line="63" selection-end-column="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="270" column="37" lean-forward="true" selection-start-line="270" selection-start-column="37" selection-end-line="270" selection-end-column="37" />
+        <state relative-caret-position="162">
+          <caret line="408" column="31" lean-forward="true" selection-start-line="408" selection-start-column="31" selection-end-line="408" selection-end-column="31" />
         </state>
       </provider>
     </entry>

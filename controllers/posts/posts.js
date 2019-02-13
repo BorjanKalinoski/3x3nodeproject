@@ -264,9 +264,17 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                 throw new Error('Error getting post_images' + err);
             });
         console.log('post is', post, 'postimages', postimages);
-        post.post_images = postimages;
-        console.log('EDIT POST IS', post);
-        return res.status(200).json(post);
+        // post.post_images = postimages;
+        let lpost = {
+            id: post.id,
+            title: post.title,
+            shortdescription: post.sdesc,
+            description: post.descr,
+            mainimage: post.mainimg,
+            post_images: postimages,
+        };
+        console.log('EDIT POST IS');
+        return res.status(200).json(lpost);
     } catch (e) {
         console.log('greskata e', e);
         return res.status(500).json(e);
