@@ -198,7 +198,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                     console.log('ctr is', ctr, 'for ', post_image);//ctr not updating for some reason?
                     let imgquery = await db('post_images').insert({
-
+                        image: `post_${id}_${ctr}.${ext}`,
                         post_id: id
                     })
                         .returning('*')
