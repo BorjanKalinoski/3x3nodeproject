@@ -145,7 +145,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         let pimages;
         //da se proveri dali post_images.lengh === undefined
         let ext, flag = 0;
-        if (post_images.length === undefined) {
+        if (post_images !== undefined && post_images.length === undefined) {
             let ctr = await db('post_images').select('image').where({post_id: id})
                 .catch(err => {
                     console.log('Error selecting post_images for post ', id, err);
