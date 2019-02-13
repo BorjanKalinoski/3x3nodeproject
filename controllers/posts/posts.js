@@ -144,12 +144,46 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         }
         let pimages;
         //da se proveri dali post_images.lengh === undefined
-        if (post_images.length !== 0) {
+        let ext, flag = 0;
+        if (post_images.length === undefined) {
+            let ctr = await db('post_images').select('image').where({post_id: id})
+                .catch(err => {
+                    console.log('Error selecting post_images for post ', id, err);
+                    throw new Error('Error selecting post_images for post ' + id + err);
+                });
+            console.log('ctr is', ctr);
+            ctr = ctr[0].length;
+            ctr++;
+            console.log('ctr lenght is', ctr);
+            ext = post_images.name.slice((post_images.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+            if (!types.every(type => type !== post_images.type)) {
+                let imgquery = await db('post_images').insert({
+                    image: `post_${id}_${ctr}.${ext}`,
+                    post_id: id
+                }).returning('*')
+                    .catch(err => {
+                        console.log('Error inserting post_image', err);
+                        throw new Error('Error inserting post_image' + err);
+                    });
+            } else {
+                if (!flag) {
+                    console.log('No images were uploaded');
+                }
+            }
+        } else if (post_images.length !== 0) {
             pimages = [];
-            let ctr = 0;
-            let ext;
+            let ctr = await db('post_images').select('image').where({post_id: id})
+                .catch(err => {
+                    console.log('Error selecting post_images for post ', id, err);
+                    throw new Error('Error selecting post_images for post ' + id + err);
+                });
+            console.log('ctr is', ctr);
+            ctr = ctr[0].length;
+            ctr++;
+            console.log('ctr lenght is', ctr);
             post_images.map(async (post_image) => {
                 if (!types.every((type) => type !== post_image.type)) {//if its gucci
+                    flag = 1;
                     ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                     console.log('ctr is', ctr);//ctr not updating for some reason?
                     let imgquery = await db('post_images').insert({
@@ -179,6 +213,10 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                         post_id: imgquery[0].post_id,
                         id: imgquery[0].id
                     });
+                } else {
+                    if (!flag) {
+                        console.log('No images were uploaded');
+                    }
                 }
             });
         }
