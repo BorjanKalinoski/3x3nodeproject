@@ -125,7 +125,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     fs.createReadStream(mainimage.path).pipe(stream = S3FSImplementation.createWriteStream(nmi));
                     let b = await onHandler(stream);
                     if (b !== 1) {
-                        console.log('Error while editing main image !');
+                        console.log('Error while editing main image !,OVA NE SMEE!!');
                         throw new Error('Error while editing main image !' + b);
                     }
                     db('posts').update({mainimg: nmi})
@@ -152,9 +152,8 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     throw new Error('Error selecting post_images for post ' + id + err);
                 });
             console.log('ctr is', ctr);
-            ctr = ctr[0].length;
-            ctr++;
-            console.log('ctr lenght is', ctr);
+            ctr = ctr.length;
+            console.log('ctr length is', ctr);
             ext = post_images.name.slice((post_images.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             if (!types.every(type => type !== post_images.type)) {
                 let imgquery = await db('post_images').insert({
@@ -165,6 +164,19 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                         console.log('Error inserting post_image', err);
                         throw new Error('Error inserting post_image' + err);
                     });
+                console.log('imgquery is ', imgquery);
+                let stream,b;
+                fs.createReadStream(post_images.path).pipe(stream = S3FSImplementation.createWriteStream(imgquery[0].image));
+                b = await onHandler(stream);
+                if (b !== 1) {
+                    console.log('error uploading post_image');
+                    db('post_images').del().where({id: imgquery[0].id})
+                        .catch(err => {
+                            console.log('error deleteing post_image from db after error in S3', err);
+                            throw new Error('error deleteing post_image from db after error in S3' + err);
+                        });
+                    throw new Error('Error uploading post_image' + b);
+                }
             } else {
                 if (!flag) {
                     console.log('No images were uploaded');
@@ -178,8 +190,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     throw new Error('Error selecting post_images for post ' + id + err);
                 });
             console.log('ctr is', ctr);
-            ctr = ctr[0].length;
-            ctr++;
+            ctr = ctr.length;
             console.log('ctr lenght is', ctr);
             post_images.map(async (post_image) => {
                 if (!types.every((type) => type !== post_image.type)) {//if its gucci
