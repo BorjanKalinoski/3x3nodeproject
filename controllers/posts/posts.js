@@ -189,14 +189,13 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     console.log('Error selecting post_images for post ', id, err);
                     throw new Error('Error selecting post_images for post ' + id + err);
                 });
-            console.log('ctr is', ctr);
             ctr = ctr.length;
-            console.log('ctr lenght is', ctr);
+            console.log('ctr lenght is', ctr, 'POST IMAGES ARE', post_images, 'l', post_images.length);
             post_images.map(async (post_image) => {
                 if (!types.every((type) => type !== post_image.type)) {//if its gucci
                     flag = 1;
                     ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-                    console.log('ctr is', ctr);//ctr not updating for some reason?
+                    console.log('ctr is', ctr, 'for ', post_image);//ctr not updating for some reason?
                     let imgquery = await db('post_images').insert({
                         image: `post_${id}_img${ctr}.${ext}`,
                         post_id: id
