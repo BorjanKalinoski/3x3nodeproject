@@ -170,7 +170,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     console.log('No images were uploaded');
                 }
             }
-        } else if (post_images.length !== 0) {
+        } else if (post_images !== undefined && post_images.length !== 0) {
             pimages = [];
             let ctr = await db('post_images').select('image').where({post_id: id})
                 .catch(err => {
