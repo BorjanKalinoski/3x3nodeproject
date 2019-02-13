@@ -157,7 +157,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             ext = post_images.name.slice((post_images.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             if (!types.every(type => type !== post_images.type)) {
                 let imgquery = await db('post_images').insert({
-                    image: `post_${id}_${ctr}.${ext}`,
+                    image: `post_${id}img_${ctr}.${ext}`,
                     post_id: id
                 }).returning('*')
                     .catch(err => {
@@ -210,7 +210,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     console.log('ctr is', ctr);//ctr not updating for some reason?
                     ctr++;
                     console.log('ctr after ++ is', ctr);
-                    let uploadpostimg = await uploadMain(post_image.path, `post_${id}_${ctr}.${ext}`, fs, S3FSImplementation);
+                    let uploadpostimg = await uploadMain(post_image.path, imgquery[0].image, fs, S3FSImplementation);
                     // console.log('finish is ', uploadpostimg, 'image is', imgquery)/;
                     if (!uploadpostimg) {
                         //if it isnt updated delete it from the db
