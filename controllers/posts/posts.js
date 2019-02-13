@@ -107,66 +107,71 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         const {mainimage, post_images} = req.files;
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
         console.log(mainimage, post_images);
-        if (mainimage!== undefined && mainimage.name) {
-            if (types.every((type) => type !== mainimage.type)) {
-                console.log('type not valid');
+        if (mainimage !== undefined && mainimage.name) {
+            if (!types.every((type) => type !== mainimage.type)) {  //if everything is gucci
+                let mi = await db('posts').select('mainimg').where({id: id}).catch(err => {
+                    console.log('Post that is edited is not found');
+                    throw new Error('Post that is edited is not found' + err);
+                });
+                mi = mi[0].mainimg;//old main image
+                let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                let nmi = `post_main${id}.${ext}`;//new main image
+                S3FSImplementation.unlink(mi, async (err) => {
+                    if (err) {
+                        console.log('Main image not found during deleting of post!');
+                        throw new Error('Main image not found during deleting of post!' + err);
+                    }
+                    let stream;
+                    fs.createReadStream(mainimage.path).pipe(stream = S3FSImplementation.createWriteStream(nmi));
+                    let b = await onHandler(stream);
+                    if (b !== 1) {
+                        console.log('Error while editing main image !');
+                        throw new Error('Error while editing main image !' + b);
+                    }
+                    db('posts').update({mainimg: nmi})
+                        .where({id: id})
+                        .catch(err => {
+                            console.log('error updating to db after sucessfull update on s3');
+                            //shouldnt happen
+                            throw new Error('error updating to db after sucessfull update on s3' + err);
+                        });
+                    console.log('main image uploaded');
+                });
+            } else {
+                console.log('Mainimage type not valid');
                 throw new Error('Type of main img not valid');
             }
-            let mi = await db('posts').select('mainimg').where({id: id}).catch(err => {
-                throw err;
-            });
-            mi = mi[0].mainimg;
-            let ext = mainimage.name.slice((mainimage.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-            let nmi = `post_main${id}.${ext}`;
-            S3FSImplementation.unlink(mi, async (err) => {
-                if (err) {
-                    console.log('eeeeeetuka');
-                    throw err;
-                }
-                let stream;
-                let a = fs.createReadStream(mainimage.path).pipe(stream = S3FSImplementation.createWriteStream(nmi));
-                console.log('cekam');
-                let b = await onHandler(stream);
-                console.log('zdrbonbon2', b);
-                if (b !== 1) {
-                    console.log('error updating main image');
-                    throw b;
-                }
-                db('posts').update({mainimg: nmi})
-                    .where({id: id})
-                    .catch(err => {
-                        console.log('error updating to db after sucessfull update on s3');
-                        throw err;
-                    });
-                console.log('main image uploaded');
-            });
         }
         let pimages;
+        //da se proveri dali post_images.lengh === undefined
         if (post_images.length !== 0) {
             pimages = [];
-            let ctr=0;
+            let ctr = 0;
             let ext;
             post_images.map(async (post_image) => {
-                if (!types.every((type) => type !== post_image.type)) {
+                if (!types.every((type) => type !== post_image.type)) {//if its gucci
                     ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+                    console.log('ctr is', ctr);//ctr not updating for some reason?
                     let imgquery = await db('post_images').insert({
                         image: `post_${id}_${ctr}.${ext}`,
                         post_id: id
                     })
                         .returning('*')
                         .catch(err => {
-                            throw err;
+                            //shouldnt happen
+                            console.log('Error uploading post_image while edit', err);
+                            throw new Error('Error uploading post_image while edit' + err);
                         });
-                    console.log('ctr is', ctr);
+                    console.log('ctr is', ctr);//ctr not updating for some reason?
                     ctr++;
-                    console.log('ctr is', ctr);
-                    // console.log('post image is', post_image, 'IMG QUERY IS ', imgquery);
+                    console.log('ctr after ++ is', ctr);
                     let uploadpostimg = await uploadMain(post_image.path, `post_${id}_${ctr}.${ext}`, fs, S3FSImplementation);
                     // console.log('finish is ', uploadpostimg, 'image is', imgquery)/;
                     if (!uploadpostimg) {
+                        //if it isnt updated delete it from the db
                         db('post_images').del().where({id: imgquery[0].id}).catch(err => {
-                            console.log('gresi pri delete na post_image');
-                            throw err;
+                            console.log('Error while deleting from db after insert in db, (FAILED UPLOAD on s3_)', err);
+                            throw new Error('Error while deleting from db after insert in db, (FAILED UPLOAD on s3_)' + err);
                         });
                     }
                     pimages.push({
@@ -176,34 +181,33 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     });
                 }
             });
-            return res.json(pimages);
         }
-        if (title) {
+        if (title !== undefined && title) {
             console.log('title', title);
             await db('posts').update({title: title}).where({id: id}).catch(error => {
-                throw error;
+                console.log('Error updating title of post', error);
+                throw new Error('Error updating title of post' + error);
             });
         }
-        if (shortdescription) {
-            if (shortdescription !== undefined) {
-                await db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
-                    throw error;
-                });
-            }
+        if (shortdescription !== undefined && shortdescription) {
+            await db('posts').update({sdesc: shortdescription}).where({id: id}).catch(error => {
+                console.log('Error updating shortdescription of post', error);
+                throw new Error('Error updating shortdescription of post' + error);
+            });
         }
-        if (description) {
-            if (description !== undefined) {
-                await db('posts').update({descr: description}).where({id: id}).catch(error => {
-                    throw error;
-                });
-            }
+        if (description !== undefined && description) {
+            await db('posts').update({descr: description}).where({id: id}).catch(error => {
+                //shouldnt happen
+                console.log('Error updating description during update on post', error);
+                throw error;
+            });
         }
         const post = await db('posts').select('*').where({id: id})
             .catch(err => {
                 throw err;
             });
         console.log('post is', post);
-        return res.json(post);
+        return res.status(200).json(post);
     } catch (e) {
         console.log('greskata e', e);
         return res.status(500).json(e);
@@ -211,7 +215,6 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
 };
 const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
     try {
-        //pravi problem ako uploadnuvas edna slika!!!
         const {title, shortdescription, description} = req.body;
         const {mainimage, post_images} = req.files;
         const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
