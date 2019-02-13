@@ -44,26 +44,32 @@ async function uploadMain(path, name, fs, S3FSImplementation) {
 }
 
 const getPosts = async (req, res, db) => {
-    let posts = await db('posts').select('*').catch(err => {
-        console.log('greska ', err);
-    });
-    let data = [];
-    for (let post of posts) {
-        let local = {
-            id: post.id,
-            mainimage: post.mainimg,
-            shortdescription: post.sdesc,
-            description:post.descr,
-            post_date:post.post_date,
-            title:post.title,
-        };
-        let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
-            console.log('greska kaj postslii', err);
+    try {
+        let posts = await db('posts').select('*').catch(err => {
+            console.log('greska ', err);
         });
-        local.post_images = post_images;
-        data.push(local);
+        let data = [];
+        for (let post of posts) {
+            let local = {
+                id: post.id,
+                mainimage: post.mainimg,
+                shortdescription: post.sdesc,
+                description: post.descr,
+                post_date: post.post_date,
+                title: post.title,
+            };
+            let post_images = await db('post_images').select('*').where({post_id: post.id}).catch(err => {
+                console.log('greska kaj postslii', err);
+            });
+            local.post_images = post_images;
+            data.push(local);
+        }
+        return res.json(data);
+    } catch (e) {
+        console.log('Error getting posts', e);
+        return res.status(500).json('Error getting posts');
     }
-    return res.json(data);
+
 };
 const getImage = (req, res, db, S3FSImplementation) => {
     const {id, m} = req.params;
@@ -276,7 +282,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         console.log('EDIT POST IS');
         return res.status(200).json(lpost);
     } catch (e) {
-        console.log('greskata e', e);
+        console.log('Error updating post', e);
         return res.status(500).json(e);
     }
 };
@@ -396,26 +402,31 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
         return res.status(200).json(post);
         // return res.status(200).json([post, pimages]);
     }catch (err) {
-        console.log('greskata e:', err);
-        return res.status(400).json('Bad Request');
+        console.log('Error uploading post', err);
+        return res.status(500).json('Error uploading post');
     }
 };
 const deletePostImage = async (req, res, db, fs, S3FSImplementation) => {
-    const {id} = req.params;
-    let img = await db('post_images').del().where({id: id}).returning('*').catch(err => {
-        console.log('Error deleting image from db' + err);
-        throw new Error('Error deleting image from db' + err);
-    });
-    console.log('img is', img);
-    img = img[0].image;
-    S3FSImplementation.unlink(img, (err) => {
-        if (err) {
-            console.log('Error deleting image from S3' + err);
-            res.status(400).json('Cant delete this image').end();
-            throw new Error('Error deleting image from S3' + err);
-        }
-        res.status(200).json('Deleted!').end();
-    });
+    try {
+        const {id} = req.params;
+        let img = await db('post_images').del().where({id: id}).returning('*').catch(err => {
+            console.log('Error deleting image from db' + err);
+            throw new Error('Error deleting image from db' + err);
+        });
+        console.log('img is', img);
+        img = img[0].image;
+        S3FSImplementation.unlink(img, (err) => {
+            if (err) {
+                console.log('Error deleting image from S3' + err);
+                res.status(400).json('Cant delete this image').end();
+                throw new Error('Error deleting image from S3' + err);
+            }
+            res.status(200).json('Deleted!').end();
+        });
+    }catch (e) {
+        console.log('Error deleting image', e);
+        res.status(500).json('Error deleting post_image', e);
+    }
 };
 module.exports = {
     getPosts: getPosts,
