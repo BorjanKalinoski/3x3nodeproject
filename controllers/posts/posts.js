@@ -135,7 +135,6 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                             //shouldnt happen
                             throw new Error('error updating to db after sucessfull update on s3' + err);
                         });
-                    console.log('main image uploaded');
                 });
             } else {
                 console.log('Mainimage type not valid');
@@ -146,6 +145,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
         //da se proveri dali post_images.lengh === undefined
         let ext, flag = 0;
         if (post_images !== undefined && post_images.length === undefined) {
+            console.log('a');
             let ctr = await db('post_images').select('image').where({post_id: id})
                 .catch(err => {
                     console.log('Error selecting post_images for post ', id, err);
@@ -183,6 +183,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                 }
             }
         } else if (post_images !== undefined && post_images.length !== 0) {
+            console.log('b');
             pimages = [];
             let ctr = await db('post_images').select('image').where({post_id: id})
                 .catch(err => {
