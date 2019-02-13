@@ -252,11 +252,12 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                 throw new Error('Error updating description during update on post' + error);
             });
         }
-        const post = await db('posts').select('*').where({id: id})
+        let post = await db('posts').select('*').where({id: id})
             .catch(err => {
                 console.log('Error getting post' + err);
                 throw new Error('Error getting post_images' + err);
             });
+        post = post[0];
         const postimages = await db('post_images').select('*').where({post_id: id})
             .catch(err => {
                 console.log('Error getting post_images' + err);
@@ -264,6 +265,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             });
         console.log('post is', post, 'postimages', postimages);
         post.post_images = postimages;
+        console.log('EDIT POST IS', post);
         return res.status(200).json(post);
     } catch (e) {
         console.log('greskata e', e);
