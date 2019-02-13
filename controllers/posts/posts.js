@@ -157,7 +157,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             ext = post_images.name.slice((post_images.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
             if (!types.every(type => type !== post_images.type)) {
                 let imgquery = await db('post_images').insert({
-                    image: `post_${id}img_${ctr}.${ext}`,
+                    image: `post_${id}_img_${ctr}.${ext}`,
                     post_id: id
                 }).returning('*')
                     .catch(err => {
