@@ -4,9 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/controllers/posts/posts.js" line="352" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b689657-889c-4e1c-9f91-7052ed00cf81" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/controllers/posts/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/posts/posts.js" afterDir="false" />
-    </list>
+    <list default="true" id="0b689657-889c-4e1c-9f91-7052ed00cf81" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="142">
-              <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
+              <caret line="147" column="29" lean-forward="true" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -270,12 +268,12 @@
       <workItem from="1549892477762" duration="2907000" />
       <workItem from="1549917612845" duration="1674000" />
       <workItem from="1549968940883" duration="13534000" />
-      <workItem from="1550057814276" duration="8443000" />
+      <workItem from="1550057814276" duration="9238000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="293825000" />
+    <option name="totallyTimeSpent" value="294620000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -485,7 +483,7 @@
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="142">
-          <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
+          <caret line="147" column="29" lean-forward="true" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
         </state>
       </provider>
     </entry>
