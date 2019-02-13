@@ -248,14 +248,21 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
             await db('posts').update({descr: description}).where({id: id}).catch(error => {
                 //shouldnt happen
                 console.log('Error updating description during update on post', error);
-                throw error;
+                throw new Error('Error updating description during update on post' + error);
             });
         }
         const post = await db('posts').select('*').where({id: id})
             .catch(err => {
-                throw err;
+                console.log('Error getting post' + err);
+                throw new Error('Error getting post_images' + err);
             });
-        console.log('post is', post);
+        const postimages = await db('post_images').select('*').where({post_id: id})
+            .catch(err => {
+                console.log('Error getting post_images' + err);
+                throw new Error('Error getting post_images' + err);
+            });
+        console.log('post is', post, 'postimages', postimages);
+        post.
         return res.status(200).json(post);
     } catch (e) {
         console.log('greskata e', e);
@@ -373,17 +380,38 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             });
             ctr++;
         }
-        return res.status(200).json([post, pimages]);
+        post.post_images = pimages;
+        console.log('POST!', post);
+        return res.status(200).json(post);
+        // return res.status(200).json([post, pimages]);
     }catch (err) {
         console.log('greskata e:', err);
         return res.status(400).json('Bad Request');
     }
 };
+const deletePostImage = async (req, res, db, fs, S3FSImplementation) => {
+    const {id} = req.params;
+    let img = await db('post_images').del().where({id: id}).returning('*').catch(err => {
+        console.log('Error deleting image from db' + err);
+        throw new Error('Error deleting image from db' + err);
+    });
+    console.log('img is', img);
+    img = img[0].image;
+    S3FSImplementation.unlink(img, (err) => {
+        if (err) {
+            console.log('Error deleting image from S3' + err);
+            res.status(400).json('Cant delete this image').end();
+            throw new Error('Error deleting image from S3' + err);
+        }
+        res.status(200).json('Deleted!').end();
+    });
+};
 module.exports = {
     getPosts: getPosts,
     uploadPost: uploadPost,
     getImage: getImage,
-    editPost:editPost
+    editPost:editPost,
+    deletePostImage: deletePostImage
 };
 function getFileExtension(filename) {
     let ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
