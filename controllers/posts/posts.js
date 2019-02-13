@@ -414,6 +414,7 @@ const deletePostImage = async (req, res, db, fs, S3FSImplementation) => {
             throw new Error('Error deleting image from db' + err);
         });
         console.log('img is', img);
+
         img = img[0].image;
         S3FSImplementation.unlink(img, (err) => {
             if (err) {
