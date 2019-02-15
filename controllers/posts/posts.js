@@ -205,7 +205,7 @@ const editPost = async (req, res, db, fs, S3FSImplementation) => {
                     ext = post_image.name.slice((post_image.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
                     console.log('ctr is', ctr, 'for ', post_image);//ctr not updating for some reason?
                     let imgquery = await db('post_images').insert({
-                        image: `post_${id}_${ctr}.${ext}`,
+                        image: `post_${id}_${ctr++}.${ext}`,
                         post_id: id
                     })
                         .returning('*')
@@ -313,7 +313,6 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
             }
         } else {
             console.log('vlaga tuka2', post_images);
-
             for (let i of Object.keys(post_images)) {
                 if (types.every(type => type !== post_images[i].type)) {
                     console.log('Not a valid image type', post_images[i].name);
