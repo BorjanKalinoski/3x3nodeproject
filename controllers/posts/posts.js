@@ -416,9 +416,10 @@ const deletePost = async (req, res, db, fs, S3FSImplementation) => {
         if (post.length === 0) {
             return res.status(400).json('Error post not found!').end();
         }
-        console.log('dpost is', post_id);
+        console.log('post is', post);
         post = post[0];
         S3FSImplementation.unlink(post.mainimg, async (err) => {
+            console.log('main img is', post.mainimg);
             if (err) {
                 console.log('Error deleting post from S3' + err);
                 throw new Error('Error deleting post from S3' + err);
@@ -429,6 +430,7 @@ const deletePost = async (req, res, db, fs, S3FSImplementation) => {
                     throw new Error('Error selecting post images from db' + err);
                 });
             post_images.map(post_image => {
+                console.log('vlaga', post_image);
                 S3FSImplementation.unlink(post_image.image, (err) => {
                     if (err) {
                         console.log('Error deleting post image from S3', err);
@@ -436,7 +438,6 @@ const deletePost = async (req, res, db, fs, S3FSImplementation) => {
                     }
                     db('post_images').del().where({id: post_image.id})
                         .returning('*').catch(err => {
-
                         console.log('Error deleting post image from db', err);
                         throw new Error('Error deleting post image from db' + err);
                     });
