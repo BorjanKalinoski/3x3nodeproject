@@ -429,6 +429,7 @@ const deletePost = async (req, res, db, fs, S3FSImplementation) => {
                     console.log('Error selecting post images from db', err);
                     throw new Error('Error selecting post images from db' + err);
                 });
+            console.log('post images ARE', post_images);
             post_images.map(post_image => {
                 console.log('vlaga', post_image);
                 S3FSImplementation.unlink(post_image.image, (err) => {

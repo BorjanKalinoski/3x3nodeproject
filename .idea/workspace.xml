@@ -45,8 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="432" column="49" lean-forward="true" selection-start-line="432" selection-start-column="49" selection-end-line="432" selection-end-column="49" />
+            <state relative-caret-position="219">
+              <caret line="431" column="56" selection-start-line="431" selection-start-column="56" selection-end-line="431" selection-end-column="56" />
             </state>
           </provider>
         </entry>
@@ -260,12 +260,12 @@
       <workItem from="1549968940883" duration="13534000" />
       <workItem from="1550057814276" duration="13968000" />
       <workItem from="1550086208300" duration="1248000" />
-      <workItem from="1550244804992" duration="2573000" />
+      <workItem from="1550244804992" duration="2773000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="303171000" />
+    <option name="totallyTimeSpent" value="303371000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -299,7 +299,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.41911766" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4966443" visible="true" weight="0.48235294" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5033557" side_tool="true" weight="0.4970588" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -474,8 +474,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/posts/posts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="432" column="49" lean-forward="true" selection-start-line="432" selection-start-column="49" selection-end-line="432" selection-end-column="49" />
+        <state relative-caret-position="219">
+          <caret line="431" column="56" selection-start-line="431" selection-start-column="56" selection-end-line="431" selection-end-column="56" />
         </state>
       </provider>
     </entry>
