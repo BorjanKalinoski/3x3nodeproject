@@ -408,7 +408,26 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
 const deletePost = async (req, res, db, fs, S3FSImplementation) => {
     try {
         const {post_id} = req.params;
-        console.log('pOST ID IS!', post_id);
+        let post_images = await db('post_images').select('*').where({post_id: post_id})
+            .catch(err => {
+                console.log('Error selecting post images from db', err);
+                throw new Error('Error selecting post images from db' + err);
+            });
+        console.log('post images ARE', post_images);
+        post_images.map(post_image => {
+            console.log('vlaga', post_image);
+            S3FSImplementation.unlink(post_image.image, (err) => {
+                if (err) {
+                    console.log('Error deleting post image from S3', err);
+                    throw new Error('Error deleting post image from S3' + err);
+                }
+                db('post_images').del().where({id: post_image.id})
+                    .returning('*').catch(err => {
+                    console.log('Error deleting post image from db', err);
+                    throw new Error('Error deleting post image from db' + err);
+                });
+            });
+        });
         let post = await db('posts').del().where({id: post_id}).returning('*').catch(err => {
             console.log('Error deleting post', err);
             throw new Error('Error deleting post' + err);
@@ -424,26 +443,6 @@ const deletePost = async (req, res, db, fs, S3FSImplementation) => {
                 console.log('Error deleting post from S3' + err);
                 throw new Error('Error deleting post from S3' + err);
             }
-            let post_images = await db('post_images').select('*').where({post_id: post_id})
-                .catch(err => {
-                    console.log('Error selecting post images from db', err);
-                    throw new Error('Error selecting post images from db' + err);
-                });
-            console.log('post images ARE', post_images);
-            post_images.map(post_image => {
-                console.log('vlaga', post_image);
-                S3FSImplementation.unlink(post_image.image, (err) => {
-                    if (err) {
-                        console.log('Error deleting post image from S3', err);
-                        throw new Error('Error deleting post image from S3' + err);
-                    }
-                    db('post_images').del().where({id: post_image.id})
-                        .returning('*').catch(err => {
-                        console.log('Error deleting post image from db', err);
-                        throw new Error('Error deleting post image from db' + err);
-                    });
-                });
-            });
             return res.status(200).json('Post deleted!');
         });
     } catch (e) {
