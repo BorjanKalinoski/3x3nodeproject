@@ -480,7 +480,7 @@ module.exports = {
     uploadPost: uploadPost,
     getImage: getImage,
     editPost:editPost,
-    deletePost:deletePost
+    deletePost:deletePost,
     deletePostImage: deletePostImage
 };
 function getFileExtension(filename) {
