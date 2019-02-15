@@ -408,6 +408,7 @@ const uploadPost = async (req, res, db, moment, fs, S3FSImplementation) => {
 const deletePost = async (req, res, db, fs, S3FSImplementation) => {
     try {
         const {post_id} = req.params;
+        console.log('pOST ID IS!', post_id);
         let post = await db('posts').del().where({id: post_id}).returning('*').catch(err => {
             console.log('Error deleting post', err);
             throw new Error('Error deleting post' + err);
