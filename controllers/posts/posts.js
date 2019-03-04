@@ -47,6 +47,7 @@ const getPosts = async (req, res, db) => {
     try {
         let posts = await db('posts').select('*').catch(err => {
             console.log('greska ', err);
+            // throw ne
         });
         let data = [];
         for (let post of posts) {

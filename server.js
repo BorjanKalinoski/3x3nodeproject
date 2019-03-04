@@ -29,13 +29,16 @@ const multipartyMiddleware = multiparty();
 // to multipartmiddleware, intercepts the file and saves it %temp% requiest.files.file obect,
 // router.use(multipartMiddleware);
 app.set('views', './views');
+
+//For example, use the following code to serve images, CSS files, and JavaScript files in a directory named public:
 app.use(express.static('./public'));
 
+//not needed?
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
-app.use(multiparty(multipartyMiddleware));
+app.use(multiparty(multipartyMiddleware));//
 
 console.log('port', Number(process.env.PORT));
 console.log('THE BUCKET IS', process.env.S3_BUCKET);
